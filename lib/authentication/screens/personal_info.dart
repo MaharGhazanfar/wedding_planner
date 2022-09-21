@@ -11,12 +11,25 @@ class PersonalInfoPage extends StatefulWidget {
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
  late TextEditingController firstNameController;
+ late TextEditingController lastNameController;
+ late TextEditingController phoneNameController;
+ var globalKey = GlobalKey<FormState>();
 
  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    phoneNameController = TextEditingController();
+  }
+  @override
+  void dispose() {
+   firstNameController.dispose();
+   lastNameController.dispose();
+   phoneNameController.dispose();
+   // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -43,7 +56,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             height: MediaQuery.of(context).size.height * 0.9,
             width: MediaQuery.of(context).size.width * 0.9,
             child: Form(
-              child: Column(),
+              key: globalKey,
+              child: Column(children: [],),
             ),
           ),
         ),
