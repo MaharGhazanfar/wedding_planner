@@ -76,6 +76,34 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                 //     ModelValidation.gmailValidation(value!)
               ),
             ),
+             Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      alignment: Alignment.center,
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      decoration: BoxDecoration(
+                          color: CustomColors.buttonBackgroundColor,
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.06),
+                                offset: const Offset(
+                                  0,
+                                  2,
+                                ),
+                                spreadRadius: 3,
+                                blurRadius: 1),
+                          ]),
+                      child: Text('Create Account',
+                          style:
+                          ButtonsStyle.buttonTextStyle(context))),
+                ],
+              ),
+            ),
           ],),),
         ),
       ),

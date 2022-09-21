@@ -17,9 +17,9 @@ class CustomColors {
   static const Color appBarColor = Colors.transparent;
   static const Color outLineBorderColor = Colors.black;
   static const Color outLineBorderColor2 = Colors.black;
-  static const Color clipperColor = Color(0xFFFD00D4);
-  static const Color frameColor = Colors.black12;
-  static const Color personIconColor = Colors.black26;
+ // static const Color clipperColor = Color(0xFFFD00D4);
+  //static const Color frameColor = Colors.black12;
+  //static const Color personIconColor = Colors.black26;
 
 ////////////////////////////////////////////////////////////////
 
