@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
 
 class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({Key? key}) : super(key: key);
@@ -26,7 +26,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
     addressNameController = TextEditingController();
-
   }
 
   @override
@@ -65,7 +64,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             child: Form(
               key: globalKey,
               child: Column(
-               // mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Align(
                     alignment: Alignment.topLeft,
@@ -95,10 +94,24 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: CustomWidget.customTextField3(
-                        titleName: 'Phone Number',
-                        controller: phoneNameController,
-                        context: context),
+                    child: IntlPhoneField(
+                      decoration: InputDecoration(
+                          //labelText: 'Phone Number',
+
+                          hintText: 'Phone Number',
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(width: 1)),
+                          errorBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none),
+                      onChanged: (phone) {
+                        print(phone.completeNumber);
+                      },
+                      onCountryChanged: (country) {
+                        print('Country changed to: ' + country.name);
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
@@ -115,6 +128,4 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       ),
     );
   }
-
-
 }

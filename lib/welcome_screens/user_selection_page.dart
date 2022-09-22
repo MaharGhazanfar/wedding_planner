@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
-import 'package:wedding_planner/repositry/utils/data_constants.dart';
-
-import '../repositry/utils/custom_widgets.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({Key? key}) : super(key: key);
@@ -14,8 +12,8 @@ class UserSelectionPage extends StatefulWidget {
 }
 
 class _GenderCheckPageState extends State<UserSelectionPage> {
- // ModelPersonalInfo personalInfo= ModelPersonalInfo();
- // final googleSignIn = GoogleSignIn();
+  // ModelPersonalInfo personalInfo= ModelPersonalInfo();
+  // final googleSignIn = GoogleSignIn();
   bool borderEnabled1 = false;
   bool borderEnabled2 = false;
   bool borderEnabled3 = false;
@@ -32,7 +30,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                 Icons.arrow_back_ios,
                 color: CustomColors.headingTextFontColor,
               ),
-              onPressed: ()async {
+              onPressed: () async {
                 // googleSignIn.disconnect().whenComplete(() async {
                 //   await FirebaseAuth.instance.signOut();
                 // });
@@ -56,9 +54,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                   child: Text(
                     "I'm a... ",
                     textAlign: TextAlign.start,
-
-                    style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
-
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
                 // CustomWidget.dropdownButton4(
@@ -88,7 +84,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                           borderEnabled1 = true;
                           borderEnabled2 = false;
                           borderEnabled3 = false;
-
                         });
                         Navigator.push(
                             context,
@@ -116,7 +111,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                           borderEnabled1 = false;
                           borderEnabled2 = true;
                           borderEnabled3 = false;
-
                         });
                         // Navigator.push(
                         //     context,
@@ -136,7 +130,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                                 ? Colors.red
                                 : CustomColors.textFontColor,
                             fontSize: 18),
-
                       ),
                       height: 50,
                       borderEnabled: borderEnabled3,
@@ -145,7 +138,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                           borderEnabled1 = false;
                           borderEnabled2 = false;
                           borderEnabled3 = true;
-
                         });
                         // Navigator.push(
                         //     context,
@@ -154,7 +146,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                         //     ));
                       }),
                 ),
-
               ],
             ),
           ),
