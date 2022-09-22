@@ -51,16 +51,14 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
+                const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     "I'm a... ",
                     textAlign: TextAlign.start,
-                    style: GoogleFonts.tinos(
-                      textStyle: Theme.of(context).textTheme.headline4,
-                      fontWeight: FontWeight.bold,
-                      color: CustomColors.headingTextFontColor,
-                    ),
+
+                    style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),
+
                   ),
                 ),
                 // CustomWidget.dropdownButton4(
