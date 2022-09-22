@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wedding_planner/repositry/utils/custom_widgets.dart';
-import 'package:wedding_planner/repositry/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
+
 
 
 class EmailLoginPage extends StatefulWidget {
