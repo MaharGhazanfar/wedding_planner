@@ -3,8 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wedding_planner/authentication/screens/email_login_page.dart';
 import 'package:wedding_planner/authentication/screens/login_page.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
-import 'package:wedding_planner/repositry/utils/carousel_page.dart';
-import 'package:wedding_planner/repositry/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/carousel_page.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);

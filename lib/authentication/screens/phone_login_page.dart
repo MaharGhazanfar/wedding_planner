@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
 
-import '../../repositry/utils/custom_widgets.dart';
-import '../../repositry/utils/data_constants.dart';
+
 
 class PhoneLoginPage extends StatefulWidget {
   const PhoneLoginPage({Key? key}) : super(key: key);
