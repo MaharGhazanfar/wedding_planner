@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/model_location.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
@@ -40,6 +43,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    var getLocation = Provider.of<LocationPicker>(context, listen: false);
+    addressNameController.text = getLocation.currentAddress;
+    getLocation.getCurrentPosition();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -94,31 +100,53 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: IntlPhoneField(
-                      decoration: InputDecoration(
-                          //labelText: 'Phone Number',
-
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      child: IntlPhoneField(
+                        dropdownIconPosition: IconPosition.trailing,
+                        flagsButtonPadding: EdgeInsets.only(left: 5),
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.only(top: 17, bottom: 0),
                           hintText: 'Phone Number',
                           fillColor: Colors.white,
+                          filled: true,
+                          //enabledBorder: InputBorder.none,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(50),
-                              borderSide: const BorderSide(width: 1)),
-                          errorBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none),
-                      onChanged: (phone) {
-                        print(phone.completeNumber);
-                      },
-                      onCountryChanged: (country) {
-                        print('Country changed to: ' + country.name);
-                      },
+                              borderSide: const BorderSide(width: 0)),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        onChanged: (phone) {
+                          print(phone.completeNumber);
+                        },
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.black54),
+                        onCountryChanged: (country) {
+                          print('Country changed to: ' + country.name);
+                        },
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: CustomWidget.customTextField3(
-                        titleName: 'Location',
-                        controller: addressNameController,
-                        context: context),
+                    child: Consumer<LocationPicker>(
+                      builder: (BuildContext context, value, Widget? child) {
+                        addressNameController.text = value.currentAddress;
+                        return CustomWidget.customTextField3(
+                            //onTap: () => getLocation.getCurrentPosition(),
+                            titleName: 'Location',
+                            controller: addressNameController,
+                            context: context);
+                      },
+                    ),
                   ),
                 ],
               ),
