@@ -41,6 +41,10 @@ dependencies:
   splash_screen_view:
   carousel_slider:
   intl_phone_field:
+  awesome_dialog:
+  geolocator:
+  geocoding:
+  provider:
 
 dev_dependencies:
   flutter_test:

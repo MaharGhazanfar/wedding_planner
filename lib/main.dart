@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:wedding_planner/authentication/screens/personal_info.dart';
+import 'package:wedding_planner/repository/utils/model_location.dart';
 
 void main() {
   runApp(const MyApp());
-  //hello//////////////////////
 }
 
 class MyApp extends StatelessWidget {
@@ -15,22 +16,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        iconTheme: const IconThemeData(
-          color: Colors.black38,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          iconTheme: const IconThemeData(
+            color: Colors.black38,
+          ),
+          textTheme: GoogleFonts.tinosTextTheme(
+            Theme.of(context).textTheme.copyWith(
+                bodyText2: const TextStyle(color: Colors.black38),
+                bodyText1: const TextStyle(
+                  color: Colors.black38,
+                )),
+          ),
         ),
-        textTheme: GoogleFonts.tinosTextTheme(
-          Theme.of(context).textTheme.copyWith(
-              bodyText2: const TextStyle(color: Colors.black38),
-              bodyText1: const TextStyle(
-                color: Colors.black38,
-              )),
-        ),
-      ),
-      themeMode: ThemeMode.dark,
-      home: const HomePage(),
-    );
+        themeMode: ThemeMode.dark,
+        home: ChangeNotifierProvider<LocationPicker>(
+          create: (context) => LocationPicker(),
+          child: const PersonalInfoPage(),
+        ));
   }
 }
 
