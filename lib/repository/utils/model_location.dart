@@ -1,6 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -22,28 +20,13 @@ class LocationPicker extends ChangeNotifier {
 
   Position? _currentPosition;
 
-  Future<bool> _handleLocationPermission(BuildContext context) async {
+  Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission? permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      AwesomeDialog(
-        context: context,
-        btnOk: ElevatedButton(
-          child: const Text('Continue'),
-          onPressed: () {
-            Geolocator.openLocationSettings();
-          },
-        ),
-        btnCancel: ElevatedButton(
-          child: const Text('Continue'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ).show();
-
+      Geolocator.openLocationSettings();
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text(
       //         'Location services are disabled. Please enable the services')));
@@ -67,8 +50,8 @@ class LocationPicker extends ChangeNotifier {
     return true;
   }
 
-  Future<void> getCurrentPosition(BuildContext context) async {
-    final hasPermission = await _handleLocationPermission(context);
+  Future<void> getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
 
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
