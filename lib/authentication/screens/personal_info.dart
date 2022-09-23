@@ -44,8 +44,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   Widget build(BuildContext context) {
     var getLocation = Provider.of<LocationPicker>(context, listen: false);
+    getLocation.getCurrentPosition(context);
     addressNameController.text = getLocation.currentAddress;
-    getLocation.getCurrentPosition();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
