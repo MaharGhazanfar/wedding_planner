@@ -22,7 +22,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     firstNameController = TextEditingController();
@@ -37,7 +36,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     lastNameController.dispose();
     phoneNameController.dispose();
     addressNameController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -107,7 +105,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           borderRadius: BorderRadius.circular(50)),
                       child: IntlPhoneField(
                         dropdownIconPosition: IconPosition.trailing,
-                        flagsButtonPadding: EdgeInsets.only(left: 5),
+                        flagsButtonPadding: const EdgeInsets.only(left: 5),
                         decoration: InputDecoration(
                           contentPadding:
                               const EdgeInsets.only(top: 17, bottom: 0),
@@ -131,7 +129,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         style: const TextStyle(
                             fontSize: 14, color: Colors.black54),
                         onCountryChanged: (country) {
-                          print('Country changed to: ' + country.name);
+                          print('Country changed to: ${country.name}');
                         },
                       ),
                     ),
