@@ -92,7 +92,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 70,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),

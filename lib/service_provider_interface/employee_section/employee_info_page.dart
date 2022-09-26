@@ -15,6 +15,8 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController lastNameController;
   late TextEditingController phoneNameController;
   late TextEditingController addressNameController;
+  late TextEditingController emailNameController;
+  late TextEditingController passwordNameController;
   var globalKey = GlobalKey<FormState>();
 
   @override
@@ -26,6 +28,8 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
     addressNameController = TextEditingController();
+    emailNameController = TextEditingController();
+    passwordNameController = TextEditingController();
   }
 
   @override
@@ -76,7 +80,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 70,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
@@ -127,7 +131,21 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: CustomWidget.customTextField3(
+                        titleName: 'Email',
+                        controller: addressNameController,
+                        context: context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                    child: CustomWidget.customTextField3(
                         titleName: 'Address',
+                        controller: addressNameController,
+                        context: context),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                    child: CustomWidget.customTextField3(
+                        titleName: 'password',
                         controller: addressNameController,
                         context: context),
                   ),
@@ -158,7 +176,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                         spreadRadius: 3,
                                         blurRadius: 1),
                                   ]),
-                              child: Text('Continue',
+                              child: Text('Save',
                                   style:
                                       ButtonsStyle.buttonTextStyle(context))),
                         ],
