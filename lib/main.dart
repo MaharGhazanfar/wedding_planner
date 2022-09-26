@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           ),
           textTheme: GoogleFonts.tinosTextTheme(
             Theme.of(context).textTheme.copyWith(
-                bodyText2: const TextStyle(color: Colors.black38),
+                bodyText2: const TextStyle(color: Colors.black),
                 bodyText1: const TextStyle(
                   color: Colors.black38,
                 )),

@@ -1,9 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationPicker extends ChangeNotifier {
   String _currentAddress = '';
+  Position? _currentPosition;
 
   String get currentAddress => _currentAddress;
 
@@ -18,15 +21,37 @@ class LocationPicker extends ChangeNotifier {
     _currentPosition = value;
   }
 
-  Position? _currentPosition;
-
-  Future<bool> _handleLocationPermission() async {
+  Future<bool> _handleLocationPermission(BuildContext context) async {
     bool serviceEnabled;
     LocationPermission? permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      Geolocator.openLocationSettings();
+      AwesomeDialog(
+          context: context,
+          body: const Text('This app need your current location'),
+          title: 'Location',
+          animType: AnimType.scale,
+          closeIcon: Icon(Icons.clear),
+          customHeader: const Icon(
+            Icons.location_on,
+            size: 50,
+            color: Colors.green,
+          ),
+          btnCancel: ElevatedButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          btnOk: ElevatedButton(
+            child: const Text('Continue'),
+            onPressed: () {
+              Geolocator.openLocationSettings();
+              Navigator.pop(context);
+            },
+          )).show();
+
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text(
       //         'Location services are disabled. Please enable the services')));
@@ -50,8 +75,8 @@ class LocationPicker extends ChangeNotifier {
     return true;
   }
 
-  Future<void> getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
+  Future<void> getCurrentPosition(BuildContext context) async {
+    final hasPermission = await _handleLocationPermission(context);
 
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
@@ -70,7 +95,7 @@ class LocationPicker extends ChangeNotifier {
       Placemark place = placemarks[0];
       print("$place///////////////////////////");
       currentAddress =
-          '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+          '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.country}';
       // setState(() {
       //
       //   // addressController.text = _currentAddress!;
