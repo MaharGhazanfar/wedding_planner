@@ -47,6 +47,7 @@ dependencies:
   provider:
   image_picker:
   video_player:
+  chewie:
   xfile:
 
 dev_dependencies:
