@@ -45,6 +45,9 @@ dependencies:
   geolocator:
   geocoding:
   provider:
+  image_picker:
+  video_player:
+  xfile:
 
 dev_dependencies:
   flutter_test:

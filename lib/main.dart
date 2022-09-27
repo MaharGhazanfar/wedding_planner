@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
-import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
+import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.dark,
         home: ChangeNotifierProvider<LocationPicker>(
           create: (context) => LocationPicker(),
-          child: const Appointments(),
+          child: const PersonalInfoPage(),
         ));
   }
 }
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute: const Appointments(),
+      navigateRoute: const PersonalInfoPage(),
       backgroundColor: Colors.white,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,
