@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/model_location.dart';
+import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
+import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 
-class EmployeeInfoPage extends StatefulWidget {
-  const EmployeeInfoPage({Key? key}) : super(key: key);
+class PersonalInfoPage extends StatefulWidget {
+  const PersonalInfoPage({Key? key}) : super(key: key);
 
   @override
-  State<EmployeeInfoPage> createState() => _EmployeeInfoPageState();
+  State<PersonalInfoPage> createState() => _PersonalInfoPageState();
 }
 
-class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
+class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController phoneNameController;
   late TextEditingController addressNameController;
-  late TextEditingController emailNameController;
-  late TextEditingController passwordNameController;
+  late TextEditingController businessNameController;
+  late TextEditingController categoryNameController;
   var globalKey = GlobalKey<FormState>();
+  late LocationPicker getLocation;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getLocation = Provider.of<LocationPicker>(context, listen: false);
+    getLocation.getCurrentPosition(context);
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
     addressNameController = TextEditingController();
-    emailNameController = TextEditingController();
-    passwordNameController = TextEditingController();
+    businessNameController = TextEditingController();
+    categoryNameController = TextEditingController();
   }
 
   @override
@@ -38,12 +44,18 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
     lastNameController.dispose();
     phoneNameController.dispose();
     addressNameController.dispose();
+    businessNameController.dispose();
+    categoryNameController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    addressNameController.addListener(() {
+      addressNameController.text = getLocation.currentAddress;
+    });
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -73,14 +85,14 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Add few details about \n your Employee...',
+                      'A few more details\nabout you...',
                       textAlign: TextAlign.left,
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(
-                    height: 70,
+                    height: 50,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
@@ -131,29 +143,51 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: CustomWidget.customTextField3(
-                        titleName: 'Email',
-                        controller: addressNameController,
+                        titleName: 'Business',
+                        controller: businessNameController,
                         context: context),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: CustomWidget.customTextField3(
-                        titleName: 'Address',
-                        controller: addressNameController,
-                        context: context),
-                  ),
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                      child: CustomWidget.customTextField3(
+                          onTap: () => getLocation.getCurrentPosition(context),
+                          titleName: 'Location',
+                          controller: addressNameController,
+                          context: context)
+                      // Consumer<LocationPicker>(
+                      //   builder: (BuildContext context, value, Widget? child) {
+                      //     addressNameController.text = value.currentAddress;
+                      //     return CustomWidget.customTextField3(
+                      //         onTap: () =>
+                      //             getLocation.getCurrentPosition(context),
+                      //         titleName: 'Location',
+                      //         controller: addressNameController,
+                      //         context: context);
+                      //   },
+                      // ),
+                      ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: CustomWidget.customTextField3(
-                        titleName: 'password',
-                        controller: addressNameController,
+                        onTap: () {
+                          CategoryBottomSheetBar.categoryBottomSheet(context);
+                        },
+                        titleName: 'Categories',
+                        inputType: TextInputType.none,
+                        controller: categoryNameController,
                         context: context),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EmployeeInfoPage(),
+                          ));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Row(
@@ -176,7 +210,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                         spreadRadius: 3,
                                         blurRadius: 1),
                                   ]),
-                              child: Text('Save',
+                              child: Text('Continue',
                                   style:
                                       ButtonsStyle.buttonTextStyle(context))),
                         ],

@@ -47,6 +47,7 @@ class _ImageDetailsState extends State<ImageDetails> {
 
   @override
   Widget build(BuildContext context) {
+    //We are fetching multiple photos in this screen
     return Scaffold(
       backgroundColor: Colors.teal.shade300,
       //appBar: AppBar(centerTitle: true, title: const Text('Image Details')),
