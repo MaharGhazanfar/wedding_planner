@@ -3,6 +3,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
+import '../add_images.dart';
+
 class EmployeeInfoPage extends StatefulWidget {
   const EmployeeInfoPage({Key? key}) : super(key: key);
 
@@ -153,7 +155,13 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                     height: 20,
                   ),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddImages(),
+                          ));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Row(
