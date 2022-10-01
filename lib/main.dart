@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 void main() {
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.dark,
         home: ChangeNotifierProvider<LocationPicker>(
           create: (context) => LocationPicker(),
-          child: const VideoPlayerScreen(),
+          child: const PersonalInfoPage(),
         ));
   }
 }

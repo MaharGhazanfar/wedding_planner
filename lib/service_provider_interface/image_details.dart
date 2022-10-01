@@ -15,6 +15,7 @@ class ImageDetail extends StatefulWidget {
 class _ImageDetailState extends State<ImageDetail> {
   @override
   Widget build(BuildContext context) {
+    //We are fetching multiple photos in this screen
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
