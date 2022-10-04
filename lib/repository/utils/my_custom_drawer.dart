@@ -20,12 +20,12 @@ class _MyCustomDrawerState extends State<MyCustomDrawer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image(
+              const Image(
                 image: AssetImage('assets/images/logo.png'),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Icon(Icons.account_balance_sharp,
                       color: CustomColors.buttonBackgroundColor),
                   Text('All_ To-dos')
@@ -33,7 +33,7 @@ class _MyCustomDrawerState extends State<MyCustomDrawer> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Icon(Icons.category,
                       color: CustomColors.buttonBackgroundColor),
                   Text('Categories')
@@ -41,7 +41,7 @@ class _MyCustomDrawerState extends State<MyCustomDrawer> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Icon(Icons.ac_unit,
                       color: CustomColors.buttonBackgroundColor),
                   Text('Bookings')
@@ -49,24 +49,24 @@ class _MyCustomDrawerState extends State<MyCustomDrawer> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Icon(Icons.settings,
                       color: CustomColors.buttonBackgroundColor),
                   Text('Settings')
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0, right: 12),
+              const Padding(
+                padding: EdgeInsets.only(left: 12.0, right: 12),
                 child: Divider(
                   thickness: 2,
                 ),
               ),
-              Text(
+              const Text(
                 'RATE ON PLAY STORE',
               ),
-              Text('SEND US FEEDBACK'),
-              Text('SHARE THIS APP'),
-              Text('PRIVACY POLICY'),
+              const Text('SEND US FEEDBACK'),
+              const Text('SHARE THIS APP'),
+              const Text('PRIVACY POLICY'),
             ],
           )),
       body: Center(
