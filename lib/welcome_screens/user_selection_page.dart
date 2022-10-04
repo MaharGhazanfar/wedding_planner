@@ -41,7 +41,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
         ),
         backgroundColor: CustomColors.backGroundColor,
       ),
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(

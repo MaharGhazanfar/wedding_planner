@@ -289,31 +289,26 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     print(
         'dskfhasdjkgfasdhkgasdhjf///////////////${videosCollection}/////////////');
     return Container(
-      decoration: BoxDecoration(
-        gradient: RadialGradient(
-            colors: [Colors.tealAccent.shade400, Colors.tealAccent.shade200],
-            // begin: FractionalOffset(0.0, 0.0),
-            // end: FractionalOffset(1.0, 0.0),
-            radius: 0.5,
-            focalRadius: 0.75,
-            focal: Alignment(0.7, -0.7),
-            center: Alignment.topRight,
-            stops: const [
-              0.5,
-              1.0,
-            ],
-            tileMode: TileMode.clamp),
-      ),
+      // decoration: BoxDecoration(
+      //   gradient: RadialGradient(
+      //       colors: [Colors.tealAccent.shade400, Colors.tealAccent.shade200],
+      //       // begin: FractionalOffset(0.0, 0.0),
+      //       // end: FractionalOffset(1.0, 0.0),
+      //       radius: 0.5,
+      //       focalRadius: 0.75,
+      //       focal: Alignment(0.7, -0.7),
+      //       center: Alignment.topRight,
+      //       stops: const [
+      //         0.5,
+      //         1.0,
+      //       ],
+      //       tileMode: TileMode.clamp),
+      // ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
             child: Column(
           children: [
-            Expanded(
-                flex: 1,
-                child: Container(
-                  color: Colors.transparent,
-                )),
             Expanded(
               flex: 2,
               child: Card(

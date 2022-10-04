@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
-
+import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);
@@ -26,7 +23,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
-
   }
 
   @override
@@ -71,9 +67,9 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     Text(
                       "Great!\nLets get you started…",
                       textAlign: TextAlign.start,
-                      style: GoogleFonts.tinos(
-                        textStyle: Theme.of(context).textTheme.headline4,
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        fontSize: 30,
                         color: CustomColors.headingTextFontColor,
                       ),
                     ),
@@ -83,13 +79,13 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: CustomWidget.customTextField3(
-                          titleName: 'Email',
-                          context: context,
-                          controller: emailController,
-                          textInputType: TextInputType.emailAddress,
-                          // validate: (value) =>
-                          //     ModelValidation.gmailValidation(value!)
-                             ),
+                        titleName: 'Email',
+                        context: context,
+                        controller: emailController,
+                        textInputType: TextInputType.emailAddress,
+                        // validate: (value) =>
+                        //     ModelValidation.gmailValidation(value!)
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0, top: 8),
@@ -145,26 +141,11 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        // if (globalKey.currentState!.validate()) {
-                        //   var userLoginData = ModelUserLogin(
-                        //       userName: emailController.text.trim(),
-                        //       password: passwordController.text.trim());
-                        //   LoginProviders.signUpWithEmail(
-                        //       emailAddress: emailController.text.trim(),
-                        //       password: passwordController.text.trim());
-                        //
-                        //   FirebaseFirestore.instance
-                        //       .collection('user')
-                        //       .doc(emailController.text.toString())
-                        //       .set(userLoginData.toMap())
-                        //       .then((value) {
-                        //     return Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (context) => const GenderCheckPage(),
-                        //         ));
-                        //   });
-                        // }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PersonalInfoPage(),
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 16.0),

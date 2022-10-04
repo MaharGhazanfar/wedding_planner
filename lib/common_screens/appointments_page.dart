@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/common_screens/chat_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class Appointments extends StatefulWidget {
@@ -30,14 +31,22 @@ class _AppointmentsState extends State<Appointments> {
           child: ListView.builder(
             itemCount: 5,
             itemExtent: 70,
-            itemBuilder: (context, index) => const ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Icon(Icons.person),
-                ),
-                title: Text('Mahar Ghazanfar'),
-                subtitle: Text('location'),
-                trailing: Text('Time')),
+            itemBuilder: (context, index) => ListTile(
+              leading: CircleAvatar(
+                backgroundColor: CustomColors.buttonBackgroundColor,
+                child: Icon(Icons.person),
+              ),
+              title: Text('Mahar Ghazanfar'),
+              subtitle: Text('location'),
+              trailing: Text('Time'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChatPage(),
+                    ));
+              },
+            ),
           ),
         ),
       ),

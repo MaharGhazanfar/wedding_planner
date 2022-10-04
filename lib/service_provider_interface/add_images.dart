@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/image_details.dart';
 
 class AddImages extends StatefulWidget {
@@ -42,82 +43,97 @@ class _AddImagesState extends State<AddImages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade300,
-      body: SafeArea(
-          child: Center(
-        child: Column(
-          children: [
-            Expanded(
-                flex: 1,
-                child: Container(
-                  color: Colors.transparent,
-                )),
-            Expanded(
-              flex: 2,
-              child: Card(
-                color: Colors.white,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-                  child: GridView.builder(
-                    itemCount: images!.isNotEmpty ? images!.length : 3,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: images!.length < 4 ? 1 : 2,
-                        crossAxisSpacing: 3),
-                    itemBuilder: (context, index) {
-                      return Card(
-                          color: Colors.white,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          )),
-                          elevation: 5,
-                          child: images!.isEmpty
-                              ? GestureDetector(
-                                  onTap: () => ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                          backgroundColor: Colors.green,
-                                          content: Text(
-                                            'No image added yet',
-                                          ))),
-                                  child: const Icon(
-                                    Icons.camera_alt_sharp,
-                                    size: 100,
-                                    color: Colors.black26,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ImageDetail(
-                                              imgPath: images![index].path),
-                                        )),
-                                    child: Image.file(
-                                      File(
-                                        images![index].path,
-                                      ),
-                                      fit: BoxFit.cover,
-                                      filterQuality: FilterQuality.high,
-                                    ),
-                                  ),
-                                )
-                          //Image.file(image.path),
-                          );
-                    },
+      backgroundColor: CustomColors.backGroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: CustomColors.headingTextFontColor,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+        ),
+        backgroundColor: CustomColors.backGroundColor,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Container(
+                color: CustomColors.backGroundColor,
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Add your service Photos \ncollection here...',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: CustomColors.headingTextFontColor),
+                    ),
                   ),
+                ),
+              )),
+          Expanded(
+            flex: 4,
+            child: Card(
+              color: Colors.white70,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
+                child: GridView.builder(
+                  itemCount: images!.isNotEmpty ? images!.length : 3,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: images!.length < 4 ? 1 : 2,
+                      crossAxisSpacing: 3),
+                  itemBuilder: (context, index) {
+                    return images!.isEmpty
+                        ? GestureDetector(
+                            onTap: () => ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                    backgroundColor: Colors.green,
+                                    content: Text(
+                                      'No image added yet',
+                                    ))),
+                            child: const Icon(
+                              Icons.camera_alt_sharp,
+                              size: 100,
+                              color: Colors.black26,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImageDetail(
+                                        imgPath: images![index].path),
+                                  )),
+                              child: Image.file(
+                                File(
+                                  images![index].path,
+                                ),
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.high,
+                              ),
+                            ),
+                          );
+                  },
                 ),
               ),
             ),
-          ],
-        ),
-      )),
+          ),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -148,6 +164,7 @@ class _AddImagesState extends State<AddImages> {
               },
               heroTag: 'image1',
               tooltip: 'Pick Multiple Image from gallery',
+              backgroundColor: CustomColors.buttonBackgroundColor,
               child: const Icon(Icons.photo_library),
             ),
           ),
