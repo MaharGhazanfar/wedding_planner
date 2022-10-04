@@ -227,33 +227,15 @@ class CustomWidget {
       double? width,
       //Color? color,
       Widget? child}) {
-    return Stack(
-      children: [
-        Container(
-          height: height,
-          width: width,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-          ),
-          child: child,
-        ),
-        Positioned(
-          right: 10,
-          child: IconButton(
-              hoverColor: Colors.red,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.clear,
-                size: 30,
-                color: Colors.teal,
-              )),
-        )
-      ],
+    return Container(
+      height: height,
+      width: width,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+      ),
+      child: child,
     );
   }
 
@@ -282,8 +264,7 @@ class CustomWidget {
           ),
           Text(
             title!,
-            style: const TextStyle(
-                fontSize: 18, color: CustomColors.textFontColor),
+            style: TextStyle(fontSize: 18, color: CustomColors.textFontColor),
           )
         ],
       ),
