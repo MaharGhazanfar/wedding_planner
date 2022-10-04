@@ -6,7 +6,6 @@ import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
 import 'package:wedding_planner/repository/utils/carousel_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -42,7 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 50,
                       // width: MediaQuery.of(context).size.width * 0.7,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: CustomColors.buttonBackgroundColor,
                           borderRadius: BorderRadius.circular(40),
                           boxShadow: [
                             BoxShadow(
@@ -64,10 +63,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.email,
                             size: 30,
-                            color: CustomColors.signupOptionColors,
+                            color: CustomColors.backGroundColor,
                           ),
                           const SizedBox(
                             width: 15,
@@ -77,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: GoogleFonts.tinos(
                                 textStyle:
                                     Theme.of(context).textTheme.bodyText1,
-                                color: CustomColors.headingTextFontColor,
+                                color: CustomColors.backGroundColor,
                                 fontSize: 20),
                           ),
                         ],
@@ -100,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         height: 50,
                         //width: MediaQuery.of(context).size.width * 0.7,
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: CustomColors.buttonBackgroundColor,
                             borderRadius: BorderRadius.circular(50),
                             boxShadow: [
                               BoxShadow(
@@ -122,7 +121,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.phone_android,size: 32,color: CustomColors.signupOptionColors,),
+                            Icon(
+                              Icons.phone_android,
+                              size: 32,
+                              color: CustomColors.backGroundColor,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -131,7 +134,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: GoogleFonts.tinos(
                                   textStyle:
                                       Theme.of(context).textTheme.bodyText1,
-                                  color: CustomColors.headingTextFontColor,
+                                  color: CustomColors.backGroundColor,
                                   fontSize: 20),
                             ),
                           ],

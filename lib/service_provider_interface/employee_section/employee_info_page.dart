@@ -100,34 +100,72 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: IntlPhoneField(
-                      dropdownIconPosition: IconPosition.trailing,
-                      flagsButtonPadding: EdgeInsets.only(left: 5),
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(top: 17, bottom: 0),
-                        hintText: 'Phone Number',
-                        fillColor: Colors.white,
-                        filled: true,
-                        //enabledBorder: InputBorder.none,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(width: 0)),
-                        errorBorder: OutlineInputBorder(
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.09),
+                              offset: const Offset(
+                                0.1,
+                                1.5,
+                              ),
+                              spreadRadius: 1,
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.09),
+                              offset: const Offset(
+                                -0.1,
+                                -0.001,
+                              ),
+                              spreadRadius: -1,
+                            ),
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: IntlPhoneField(
+                          dropdownIconPosition: IconPosition.trailing,
+                          flagsButtonPadding: EdgeInsets.only(left: 5, top: 5),
+                          decoration: const InputDecoration(
+                              errorStyle: TextStyle(
+                                  color: CustomColors.buttonBackgroundColor,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even),
+                              contentPadding:
+                                  EdgeInsets.only(top: 17, bottom: 0),
+                              hintText: 'Phone Number',
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: InputBorder.none
+
+                              //enabledBorder: InputBorder.none,
+                              // border: OutlineInputBorder(
+                              //   borderRadius: BorderRadius.circular(10),
+                              //   borderSide: const BorderSide(
+                              //       width: 0, color: Colors.transparent),
+                              // ),
+                              // focusedBorder: OutlineInputBorder(
+                              //   borderSide: BorderSide(color: Colors.transparent),
+                              //   borderRadius: BorderRadius.circular(10),
+                              // ),
+                              // errorBorder: OutlineInputBorder(
+                              //   borderSide: BorderSide(color: Colors.transparent),
+                              //   borderRadius: BorderRadius.circular(10),
+                              // ),
+                              ),
+                          onChanged: (phone) {
+                            print(phone.completeNumber);
+                          },
+                          style: const TextStyle(
+                              fontSize: 14, color: Colors.black54),
+                          onCountryChanged: (country) {
+                            print('Country changed to: ' + country.name);
+                          },
+                          autovalidateMode: AutovalidateMode.disabled,
                         ),
                       ),
-                      onChanged: (phone) {
-                        print(phone.completeNumber);
-                      },
-                      style:
-                          const TextStyle(fontSize: 14, color: Colors.black54),
-                      onCountryChanged: (country) {
-                        print('Country changed to: ' + country.name);
-                      },
                     ),
                   ),
                   Padding(

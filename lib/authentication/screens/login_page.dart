@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
-
+import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -95,7 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                                           textStyle: Theme.of(context)
                                               .textTheme
                                               .bodyText1,
-                                          color: CustomColors.textFontColor,
+                                          color: CustomColors
+                                              .buttonBackgroundColor,
                                           fontSize: 18),
                                     ),
                                   ),
@@ -132,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                 'Forgot Password?',
                                 style: GoogleFonts.tinos(
                                     textStyle:
-                                    Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyText1,
                                     color: CustomColors.buttonTextFontColor,
                                     fontSize: 18),
                               ),
@@ -142,27 +141,12 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(top: 4.0),
                             child: InkWell(
                               onTap: () async {
-                                // var status =
-                                // await LoginProviders.userLoginWithEmail(
-                                //   userName: _emailController.text.trim(),
-                                //   password: _passwordController.text.trim(),
-                                // );
-                                // print(
-                                //     '///////////////////$status///////////////////////////');
-                                // if (status == 'login') {
-                                //   Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             BottomNavigationBarForDating(),
-                                //       ));
-                                // } else {
-                                //   ScaffoldMessenger.of(context)
-                                //       .showSnackBar(const SnackBar(
-                                //     content: Text(
-                                //       'Some Thing wentWrong',
-                                //     ),backgroundColor: Colors.red,));
-                                // }
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ServiceProviderDashBoard(),
+                                    ));
                               },
                               child: Container(
                                   alignment: Alignment.center,
@@ -205,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.center,
                               height: 50,
                               decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: CustomColors.buttonBackgroundColor,
                                   borderRadius: BorderRadius.circular(50),
                                   boxShadow: [
                                     BoxShadow(
@@ -237,19 +221,21 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Padding(
+                                    Padding(
                                       padding: EdgeInsets.all(10.0),
-                                      child:  Icon(Icons.phone_android,size: 32,color: CustomColors.signupOptionColors,),
+                                      child: Icon(
+                                        Icons.phone_android,
+                                        size: 32,
+                                        color: CustomColors.backGroundColor,
                                       ),
-
+                                    ),
                                     Text(
                                       'Login with Phone',
                                       style: GoogleFonts.tinos(
                                           textStyle: Theme.of(context)
                                               .textTheme
                                               .bodyText1,
-                                          color:
-                                          CustomColors.headingTextFontColor,
+                                          color: CustomColors.backGroundColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                     ),
@@ -265,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                                 "Don't have an account?",
                                 style: GoogleFonts.tinos(
                                     textStyle:
-                                    Theme.of(context).textTheme.bodyText1,
+                                        Theme.of(context).textTheme.bodyText1,
                                     color: CustomColors.buttonTextFontColor
                                         .withOpacity(0.9),
                                     fontSize: 18),

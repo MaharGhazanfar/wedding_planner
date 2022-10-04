@@ -45,3 +45,21 @@ class ButtonsStyle {
         fontWeight: FontWeight.bold);
   }
 }
+
+class Categories {
+  static final categoriesList = [
+    'cooker',
+    'Flower',
+    'beautification',
+    'jeweler'
+  ];
+
+  static var categoryList = [
+    'accessories',
+    'Beauty',
+    'ceremony',
+    'accessories',
+    'Beauty',
+    'ceremony'
+  ];
+}

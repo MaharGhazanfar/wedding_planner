@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyCustomCard {
@@ -17,7 +16,7 @@ class MyCustomCard {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             color: color,
-            elevation: 10,
+            elevation: 5,
             child: child,
           ),
         ));

@@ -49,6 +49,24 @@ dependencies:
   video_player:
   chewie:
   xfile:
+  diffutil_dart:
+  equatable:
+  file_picker:
+  open_filex:
+  path_provider:
+  mime_type:
+  http:
+  uuid:
+  flutter_chat_types:
+  flutter_link_previewer:
+  flutter_parsed_text:
+  intl:
+  meta:
+  photo_view:
+  url_launcher:
+  visibility_detector:
+  flutter_chat_ui:
+  dropdown_button2:
 
 dev_dependencies:
   flutter_test:
