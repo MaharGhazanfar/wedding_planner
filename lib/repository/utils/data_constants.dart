@@ -63,3 +63,9 @@ class Categories {
     'ceremony'
   ];
 }
+
+class Strings {
+  static const String serviceProvider = 'ServiceProvider';
+  static const String serviceUser = 'ServiceUser';
+  static const String employee = 'Employee';
+}

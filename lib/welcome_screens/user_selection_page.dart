@@ -4,6 +4,8 @@ import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
+import '../authentication/screens/login_page.dart';
+
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({Key? key}) : super(key: key);
 
@@ -21,49 +23,52 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: CustomColors.headingTextFontColor,
-              ),
-              onPressed: () async {
-                // googleSignIn.disconnect().whenComplete(() async {
-                //   await FirebaseAuth.instance.signOut();
-                // });
-                //
-                //
-                // Navigator.of(context).pop();
-              }),
-        ),
-        backgroundColor: CustomColors.backGroundColor,
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   leading: Padding(
+      //     padding: const EdgeInsets.only(left: 8.0),
+      //     child: IconButton(
+      //         icon: const Icon(
+      //           Icons.arrow_back_ios,
+      //           color: CustomColors.headingTextFontColor,
+      //         ),
+      //         onPressed: () async {
+      //           // googleSignIn.disconnect().whenComplete(() async {
+      //           //   await FirebaseAuth.instance.signOut();
+      //           // });
+      //           //
+      //           //
+      //           // Navigator.of(context).pop();
+      //         }),
+      //   ),
+      //   backgroundColor: CustomColors.backGroundColor,
+      // ),
       //backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.9,
+      body: Stack(
+        children: [
+          Image(
+            image: const AssetImage('assets/images/signup1.jpg'),
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.fill,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     "I'm a... ",
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
-                // CustomWidget.dropdownButton4(
-                //     items: DataLists.sports,
-                //     onChanged: (value) {},
-                //     selectedValues: [],
-                //     titleName: 'Sports'),
-                const SizedBox(
-                  height: 150,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0, bottom: 8),
@@ -74,21 +79,28 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             textStyle: Theme.of(context).textTheme.bodyText1,
                             color: borderEnabled1
                                 ? Colors.red
-                                : CustomColors.textFontColor,
+                                : CustomColors.backGroundColor,
                             fontSize: 18),
                       ),
                       height: 50,
                       borderEnabled: borderEnabled1,
                       onTap: () {
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (context) => TOdoDialog(),
+                        // );
                         setState(() {
                           borderEnabled1 = true;
                           borderEnabled2 = false;
                           borderEnabled3 = false;
                         });
+                        print('${Strings.serviceProvider}');
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const SignUpPage(),
+                              builder: (context) => SignUpPage(
+                                status: Strings.serviceProvider,
+                              ),
                             ));
                       }),
                 ),
@@ -101,7 +113,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             textStyle: Theme.of(context).textTheme.bodyText1,
                             color: borderEnabled2
                                 ? Colors.red
-                                : CustomColors.textFontColor,
+                                : CustomColors.backGroundColor,
                             fontSize: 18),
                       ),
                       height: 50,
@@ -112,11 +124,13 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                           borderEnabled2 = true;
                           borderEnabled3 = false;
                         });
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => const UserAgePage(),
-                        //     ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(
+                                status: Strings.serviceUser,
+                              ),
+                            ));
                       }),
                 ),
                 Padding(
@@ -128,7 +142,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             textStyle: Theme.of(context).textTheme.bodyText1,
                             color: borderEnabled3
                                 ? Colors.red
-                                : CustomColors.textFontColor,
+                                : CustomColors.backGroundColor,
                             fontSize: 18),
                       ),
                       height: 50,
@@ -139,17 +153,18 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                           borderEnabled2 = false;
                           borderEnabled3 = true;
                         });
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => const UserAgePage(),
-                        //     ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginPage(status: Strings.employee),
+                            ));
                       }),
                 ),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

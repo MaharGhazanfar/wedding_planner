@@ -7,7 +7,8 @@ import 'package:wedding_planner/repository/utils/carousel_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  final String status;
+  SignUpPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -16,6 +17,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
+    print('${widget.status}/////////////////////////////////');
     return Scaffold(
       backgroundColor: Colors.grey,
       body: Stack(
@@ -33,7 +35,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EmailLoginPage(),
+                            builder: (context) =>
+                                EmailLoginPage(status: widget.status!),
                           ));
                     },
                     child: Container(
@@ -85,11 +88,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   InkWell(
                     onTap: () async {
-                      // await LoginProviders.signInWithGoogle();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const PhoneLoginPage(),
+                            builder: (context) => PhoneLoginPage(
+                              status: widget.status,
+                            ),
                           ));
                     },
                     child: Padding(
@@ -200,7 +204,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
+                                    builder: (context) =>
+                                        LoginPage(status: widget.status),
                                   ));
                             },
                             child: Container(

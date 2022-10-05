@@ -38,6 +38,20 @@ class _PackageDetailsState extends State<PackageDetails> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Create your offer\n here...!',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: CustomColors.headingTextFontColor),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Container(
                   width: double.infinity,
                   height: 250,

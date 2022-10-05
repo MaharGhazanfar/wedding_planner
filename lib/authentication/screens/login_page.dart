@@ -5,7 +5,8 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  String? status;
+  LoginPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -141,12 +142,36 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(top: 4.0),
                             child: InkWell(
                               onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ServiceProviderDashBoard(),
-                                    ));
+                                if (widget.status == Strings.serviceProvider) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ServiceProviderDashBoard(),
+                                      ));
+                                } else if (widget.status ==
+                                    Strings.serviceUser) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ServiceProviderDashBoard(),
+                                      ));
+                                } else if (widget.status == Strings.employee) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ServiceProviderDashBoard(),
+                                      ));
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SizedBox();
+                                    },
+                                  );
+                                }
                               },
                               child: Container(
                                   alignment: Alignment.center,

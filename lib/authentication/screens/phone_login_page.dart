@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class PhoneLoginPage extends StatefulWidget {
-  const PhoneLoginPage({Key? key}) : super(key: key);
+  final String status;
+  const PhoneLoginPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<PhoneLoginPage> createState() => _PhoneLoginPageState();
@@ -138,29 +140,34 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          decoration: BoxDecoration(
-                              color: CustomColors.buttonBackgroundColor,
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withOpacity(0.06),
-                                    offset: const Offset(
-                                      0,
-                                      2,
-                                    ),
-                                    spreadRadius: 3,
-                                    blurRadius: 1),
-                              ]),
-                          child: Text('Create Account',
-                              style: ButtonsStyle.buttonTextStyle(context))),
-                    ],
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PersonalInfoPage(status: widget.status),
+                          ));
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        decoration: BoxDecoration(
+                            color: CustomColors.buttonBackgroundColor,
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.06),
+                                  offset: const Offset(
+                                    0,
+                                    2,
+                                  ),
+                                  spreadRadius: 3,
+                                  blurRadius: 1),
+                            ]),
+                        child: Text('Create Account',
+                            style: ButtonsStyle.buttonTextStyle(context))),
                   ),
                 ),
               ],

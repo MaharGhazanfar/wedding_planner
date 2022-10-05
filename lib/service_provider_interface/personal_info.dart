@@ -7,9 +7,11 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
+import 'package:wedding_planner/user_interface/user_dashboard.dart';
 
 class PersonalInfoPage extends StatefulWidget {
-  const PersonalInfoPage({Key? key}) : super(key: key);
+  String? status;
+  PersonalInfoPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
@@ -54,9 +56,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   Widget build(BuildContext context) {
     addressNameController.addListener(() {
-      setState(() {
-        addressNameController.text = getLocation.currentAddress;
-      });
+      addressNameController.text = getLocation.currentAddress;
     });
 
     return Scaffold(
@@ -254,12 +254,20 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const ServiceProviderDashBoard(),
-                          ));
+                      if (widget.status == Strings.serviceProvider) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ServiceProviderDashBoard(),
+                            ));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UserDashboard(),
+                            ));
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),

@@ -16,7 +16,7 @@ class _UserDashboardState extends State<UserDashboard> {
   double? width;
   double? height;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool getSize = true;
+  bool size = true;
 
   @override
   void initState() {
@@ -27,8 +27,8 @@ class _UserDashboardState extends State<UserDashboard> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    getSize ? taskContainer = MediaQuery.of(context).size.height * 0.25 : null;
-    getSize = false;
+    size ? taskContainer = MediaQuery.of(context).size.height * 0.25 : null;
+    size = false;
     return Scaffold(
       backgroundColor: Colors.black26,
       key: _scaffoldKey,
@@ -189,116 +189,112 @@ class _UserDashboardState extends State<UserDashboard> {
             AnimatedPositioned(
               top: taskContainer,
               duration: const Duration(milliseconds: 200),
-              child: Draggable(
-                feedback: const SizedBox(),
-                child: Container(
-                  width: width!,
-                  height: height! * 0.75,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10))),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: CustomColors.buttonBackgroundColor,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10))),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 12.0, right: 12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 40,
+              child: Container(
+                width: width!,
+                height: height! * 0.75,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: CustomColors.buttonBackgroundColor,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0, right: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 40,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
                                   alignment: Alignment.center,
                                   decoration: const BoxDecoration(
-                                    color: Colors.white,
+                                    color: CustomColors.buttonBackgroundColor,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Container(
-                                    height: 38,
-                                    width: 38,
-                                    alignment: Alignment.center,
-                                    decoration: const BoxDecoration(
-                                      color: CustomColors.buttonBackgroundColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      '85%',
-                                      style: TextStyle(
-                                          color: CustomColors.backGroundColor),
-                                    ),
+                                  child: Text(
+                                    '85%',
+                                    style: TextStyle(
+                                        color: CustomColors.backGroundColor),
                                   ),
                                 ),
-                                Text(
-                                  'Your Tasks',
-                                  style: TextStyle(
-                                      color: CustomColors.backGroundColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                              ),
+                              Text(
+                                'Your Tasks',
+                                style: TextStyle(
+                                    color: CustomColors.backGroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                alignment: Alignment.center,
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 25,
                                 ),
-                                IconButton(
-                                  onPressed: () {},
-                                  alignment: Alignment.center,
-                                  icon: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 25,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 7,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          separatorBuilder: (context, index) => const Divider(),
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Transform.scale(
-                                      scale: 1.5,
-                                      child: Checkbox(
-                                        activeColor:
-                                            CustomColors.buttonBackgroundColor,
-                                        value: true,
-                                        onChanged: (value) {},
-                                      ),
+                    ),
+                    Expanded(
+                      flex: 7,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: 10,
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: SizedBox(
+                              width: 100,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Transform.scale(
+                                    scale: 1.5,
+                                    child: Checkbox(
+                                      activeColor:
+                                          CustomColors.buttonBackgroundColor,
+                                      value: true,
+                                      onChanged: (value) {},
                                     ),
-                                    const Icon(
-                                      Icons.favorite_outline_sharp,
-                                      size: 20,
-                                      color: Colors.green,
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  const Icon(
+                                    Icons.favorite_outline_sharp,
+                                    size: 20,
+                                    color: Colors.green,
+                                  )
+                                ],
                               ),
-                              title: const Text('Details of what to do',
-                                  textAlign: TextAlign.start),
-                              tileColor: Colors.green,
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                            ),
+                            title: const Text('Details of what to do',
+                                textAlign: TextAlign.start),
+                            tileColor: Colors.green,
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
             )

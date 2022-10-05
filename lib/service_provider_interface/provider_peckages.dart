@@ -16,60 +16,66 @@ class _ProviderPackagesState extends State<ProviderPackages> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0,
+        elevation: 1,
         leading: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back_ios,
-                color: CustomColors.headingTextFontColor,
+                color: CustomColors.backGroundColor,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
         ),
-        backgroundColor: CustomColors.appBarColor,
+        backgroundColor: CustomColors.buttonBackgroundColor,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            children: [
-              Column(
-                children: [
-                  MyCustomCard.customCard(
-                    color: CustomColors.buttonBackgroundColor,
-                    height: 250.0,
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                      child: Text(
-                        'Awesome deals ready to\n delivered for you...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.backGroundColor),
-                      ),
-                    ),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                // height: MediaQuery.of(context).size.height * 0.20,
+                color: CustomColors.buttonBackgroundColor,
+              ),
+            ),
+            // MyCustomCard.customCard(
+            //   color: CustomColors.buttonBackgroundColor,
+            //   height: 250.0,
+            //   width: MediaQuery.of(context).size.width,
+            //   child: Center(
+            //     child: Text(
+            //       'Awesome deals ready to\n delivered for you...',
+            //       textAlign: TextAlign.center,
+            //       style: TextStyle(
+            //           fontSize: 30,
+            //           fontWeight: FontWeight.bold,
+            //           color: CustomColors.backGroundColor),
+            //     ),
+            //   ),
+            // ),
+
+            const Padding(
+              padding: EdgeInsets.only(left: 8.0, top: 16, bottom: 16),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Provider Packages!',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'My Packages!',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyCustomCard.customCard(
+                ),
+              ),
+            ),
+
+            Expanded(
+              flex: 3,
+              child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (BuildContext context, int index) {
+                  return MyCustomCard.customCard(
                       height: 250.0,
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.center,
@@ -148,40 +154,40 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                             ),
                           )
                         ],
-                      )),
-                  // MyCustomCard.customCard(
-                  //   height: 250.0,
-                  //   width: MediaQuery.of(context).size.width,
-                  //   child: const Align(
-                  //     alignment: Alignment.bottomCenter,
-                  //     child: Text(
-                  //       'Standard Peckage',
-                  //       textAlign: TextAlign.center,
-                  //       style:
-                  //           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Align(
-                  //   alignment: Alignment.bottomCenter,
-                  //   child: MyCustomCard.customCard(
-                  //     height: 250.0,
-                  //     width: MediaQuery.of(context).size.width,
-                  //     child: Align(
-                  //       alignment: Alignment.bottomCenter,
-                  //       child: Text(
-                  //         'Basic Peckage',
-                  //         textAlign: TextAlign.center,
-                  //         style: TextStyle(
-                  //             fontSize: 20, fontWeight: FontWeight.bold),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-                ],
+                      ));
+                },
               ),
-            ],
-          ),
+            ),
+            // MyCustomCard.customCard(
+            //   height: 250.0,
+            //   width: MediaQuery.of(context).size.width,
+            //   child: const Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: Text(
+            //       'Standard Peckage',
+            //       textAlign: TextAlign.center,
+            //       style:
+            //           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            //     ),
+            //   ),
+            // ),
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: MyCustomCard.customCard(
+            //     height: 250.0,
+            //     width: MediaQuery.of(context).size.width,
+            //     child: Align(
+            //       alignment: Alignment.bottomCenter,
+            //       child: Text(
+            //         'Basic Peckage',
+            //         textAlign: TextAlign.center,
+            //         style: TextStyle(
+            //             fontSize: 20, fontWeight: FontWeight.bold),
+            //       ),
+            //     ),
+            //   ),
+            // )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

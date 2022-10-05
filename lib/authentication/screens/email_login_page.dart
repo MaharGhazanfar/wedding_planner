@@ -4,7 +4,8 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class EmailLoginPage extends StatefulWidget {
-  const EmailLoginPage({Key? key}) : super(key: key);
+  String? status;
+  EmailLoginPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<EmailLoginPage> createState() => _EmailLoginPageState();
@@ -144,7 +145,8 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PersonalInfoPage(),
+                              builder: (context) =>
+                                  PersonalInfoPage(status: widget.status!),
                             ));
                       },
                       child: Padding(

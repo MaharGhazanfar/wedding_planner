@@ -90,43 +90,46 @@ class _AddImagesState extends State<AddImages> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0, left: 10, right: 10),
                 child: GridView.builder(
-                  itemCount: images!.isNotEmpty ? images!.length : 3,
+                  itemCount: images!.isNotEmpty ? images!.length : 6,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: images!.length < 4 ? 1 : 2,
+                      crossAxisCount: images!.length < 4 ? 2 : 2,
                       crossAxisSpacing: 3),
                   itemBuilder: (context, index) {
-                    return images!.isEmpty
-                        ? GestureDetector(
-                            onTap: () => ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                                    backgroundColor: Colors.green,
-                                    content: Text(
-                                      'No image added yet',
-                                    ))),
-                            child: const Icon(
-                              Icons.camera_alt_sharp,
-                              size: 100,
-                              color: Colors.black26,
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ImageDetail(
-                                        imgPath: images![index].path),
-                                  )),
-                              child: Image.file(
-                                File(
-                                  images![index].path,
+                    return Card(
+                      elevation: 3,
+                      child: images!.isEmpty
+                          ? GestureDetector(
+                              onTap: () => ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text(
+                                        'No image added yet',
+                                      ))),
+                              child: const Icon(
+                                Icons.camera_alt_sharp,
+                                size: 100,
+                                color: Colors.black26,
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageDetail(
+                                          imgPath: images![index].path),
+                                    )),
+                                child: Image.file(
+                                  File(
+                                    images![index].path,
+                                  ),
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
                                 ),
-                                fit: BoxFit.cover,
-                                filterQuality: FilterQuality.high,
                               ),
                             ),
-                          );
+                    );
                   },
                 ),
               ),

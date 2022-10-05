@@ -19,7 +19,7 @@ class CustomWidget {
       width: width,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: CustomColors.buttonBackgroundColor,
           borderRadius: BorderRadius.circular(50),
           boxShadow: [
             BoxShadow(
@@ -48,14 +48,15 @@ class CustomWidget {
             radius: const Radius.circular(50),
             inkWell: true,
             elevation: 5,
-            backgroundColor: Colors.white,
+            backgroundColor: CustomColors.buttonBackgroundColor,
             gradient: borderEnabled
                 ? LinearGradient(
                     colors: [Colors.orange, Colors.pink.shade200],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     stops: [0, width * 0.5])
-                : const LinearGradient(colors: [Colors.white, Colors.white70]),
+                : const LinearGradient(
+                    colors: [Colors.deepOrange, Colors.amberAccent]),
             child: Center(child: child)),
       ),
     );

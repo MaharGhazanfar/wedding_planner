@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class ImageDetail extends StatefulWidget {
@@ -19,20 +20,42 @@ class _ImageDetailState extends State<ImageDetail> {
     //We are fetching multiple photos in this screen
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: CustomColors.buttonBackgroundColor,
-        //title: const Text('Your Image'),
-      ),
-      body: Center(
-        child: Card(
+      // appBar: AppBar(
+      //   backgroundColor: CustomColors.buttonBackgroundColor,
+      //   //title: const Text('Your Image'),
+      // ),
+      body: Stack(
+        children: [
+          Center(
             child: SizedBox(
-          width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.9,
-          child: Image.file(
-            File(widget.imgPath),
-            fit: BoxFit.fill,
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
+              child: PhotoView(
+                imageProvider: FileImage(
+                  File(widget.imgPath),
+                ),
+                // child: Image.file(
+                //   File(widget.imgPath),
+                //   fit: BoxFit.fill,
+                // ),
+              ),
+            ),
           ),
-        )),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                size: 30,
+                color: CustomColors.backGroundColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
