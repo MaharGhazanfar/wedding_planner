@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +54,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   Widget build(BuildContext context) {
     addressNameController.addListener(() {
-      addressNameController.text = getLocation.currentAddress;
+      setState(() {
+        addressNameController.text = getLocation.currentAddress;
+      });
     });
 
     return Scaffold(
@@ -208,7 +211,38 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: CustomWidget.customTextField3(
                         onTap: () {
-                          CategoryBottomSheetBar.categoryBottomSheet(context);
+                          setState(() {
+                            CategoryBottomSheetBar.categoryBottomSheet(
+                              context: context,
+                              child: ListView.builder(
+                                itemCount: Categories.categoryList.length,
+                                dragStartBehavior: DragStartBehavior.start,
+                                physics: const BouncingScrollPhysics(),
+                                itemExtent: 50.0,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8, right: 8, bottom: 2, top: 2),
+                                    child: ListTile(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      title:
+                                          Text(Categories.categoryList[index]),
+                                      tileColor: Colors.white70,
+                                      onTap: () {
+                                        setState(() {
+                                          categoryNameController.text =
+                                              Categories.categoryList[index];
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          });
                         },
                         titleName: 'Categories',
                         inputType: TextInputType.none,

@@ -9,7 +9,7 @@ class CustomColors {
   static const Color signupOptionColors = Colors.red;
 
   static const Color buttonTextFontColor = Colors.white;
-  static const Color buttonBackgroundColor = Color(0xFF4baa97);
+  static const Color buttonBackgroundColor = Colors.teal;
 
   static Color backGroundColor = Colors.white;
 
