@@ -55,8 +55,7 @@ class CustomWidget {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     stops: [0, width * 0.5])
-                : const LinearGradient(
-                    colors: [Colors.deepOrange, Colors.amberAccent]),
+                : const LinearGradient(colors: [Colors.white, Colors.white10]),
             child: Center(child: child)),
       ),
     );

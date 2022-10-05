@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.dark,
-        home: const UserSelectionPage(),
+        home: const HomePage(),
       ),
     );
   }
@@ -52,8 +52,8 @@ class HomePage extends StatelessWidget {
       pageRouteTransition: PageRouteTransition.Normal,
       duration: 4000,
       imageSize: 300,
-      // imageSrc: 'assets/images/splash_logo.png',
-      text: 'Welcome',
+      imageSrc: 'assets/images/splash_logo.png',
+      //text: 'Welcome',
       //colors: [Colors.green,Colors.pink,Colors.yellowAccent],
     );
   }

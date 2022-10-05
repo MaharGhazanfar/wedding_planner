@@ -41,7 +41,10 @@ class _ChatPageState extends State<ChatPage> {
             children: const [
               CircleAvatar(
                 backgroundColor: Colors.white70,
-                child: Icon(Icons.person),
+                child: Icon(
+                  Icons.person,
+                  color: CustomColors.buttonBackgroundColor,
+                ),
               ),
               SizedBox(
                 width: 15,
@@ -63,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
               inputBackgroundColor: Colors.white,
               inputTextColor: CustomColors.textFontColor,
               attachmentButtonIcon: Icon(Icons.attach_file_outlined),
-              backgroundColor: Colors.black26,
+              backgroundColor: Colors.black12,
               primaryColor: Colors.white,
               sentMessageBodyTextStyle:
                   TextStyle(color: CustomColors.textFontColor)),

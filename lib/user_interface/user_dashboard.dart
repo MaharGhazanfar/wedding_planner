@@ -1,17 +1,23 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/common_screens/appointments_page.dart';
+import 'package:wedding_planner/repository/utils/todo_dialog.dart';
+import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
+import 'package:wedding_planner/user_interface/categories_details.dart';
 
 import '../repository/utils/custom_widgets.dart';
 import '../repository/utils/data_constants.dart';
 
 class UserDashboard extends StatefulWidget {
-  const UserDashboard({Key? key}) : super(key: key);
+  String? status;
+  UserDashboard({Key? key, required this.status}) : super(key: key);
 
   @override
   State<UserDashboard> createState() => _UserDashboardState();
 }
 
 class _UserDashboardState extends State<UserDashboard> {
-  bool isTrue = false;
+  bool isTrue = true;
   double? taskContainer;
   double? width;
   double? height;
@@ -34,7 +40,7 @@ class _UserDashboardState extends State<UserDashboard> {
       key: _scaffoldKey,
       drawer: CustomWidget.myCustomDrawer(
           context: context,
-          width: width! * 0.45,
+          width: width! * 0.55,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -49,13 +55,70 @@ class _UserDashboardState extends State<UserDashboard> {
                   Text('All_ To-dos')
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Icon(Icons.category,
-                      color: CustomColors.buttonBackgroundColor),
-                  Text('Categories')
-                ],
+              InkWell(
+                onTap: () {
+                  CategoryBottomSheetBar.categoryBottomSheet(
+                      context: context,
+                      child: ListView.builder(
+                        itemCount: Categories.categoryList.length,
+                        dragStartBehavior: DragStartBehavior.start,
+                        physics: const BouncingScrollPhysics(),
+                        itemExtent: 50.0,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 2, top: 2),
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              title: Text(Categories.categoryList[index]),
+                              tileColor: Colors.white70,
+                              onTap: () {
+                                if (widget.status == Strings.serviceUser) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CategoriesDetails(),
+                                      ));
+                                } else {
+                                  SizedBox();
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      status: widget.status);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(Icons.category,
+                        color: CustomColors.buttonBackgroundColor),
+                    Text('Categories')
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Appointments(),
+                        ));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Icon(Icons.meeting_room_outlined,
+                          color: CustomColors.buttonBackgroundColor),
+                      Text('Appointments')
+                    ],
+                  ),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -113,6 +176,7 @@ class _UserDashboardState extends State<UserDashboard> {
                           onTap: () {
                             setState(() {
                               taskContainer = height!;
+                              isTrue = false;
                             });
                           },
                           child: Container(
@@ -157,6 +221,7 @@ class _UserDashboardState extends State<UserDashboard> {
                               onPressed: () {
                                 setState(() {
                                   taskContainer = height! * 0.25;
+                                  isTrue = true;
                                 });
                               },
                               icon: const Padding(
@@ -243,12 +308,18 @@ class _UserDashboardState extends State<UserDashboard> {
                                     fontSize: 18),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TOdoDialog(),
+                                      ));
+                                },
                                 alignment: Alignment.center,
                                 icon: const Icon(
                                   Icons.add,
                                   color: Colors.white,
-                                  size: 25,
+                                  size: 35,
                                 ),
                               ),
                             ],

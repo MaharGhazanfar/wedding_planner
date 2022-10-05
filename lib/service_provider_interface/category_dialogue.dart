@@ -3,7 +3,9 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class CategoryBottomSheetBar {
   static void categoryBottomSheet(
-      {required BuildContext context, required Widget child}) {
+      {required BuildContext context,
+      required Widget child,
+      required String? status}) {
     showModalBottomSheet(
         context: context,
         isDismissible: true,

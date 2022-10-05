@@ -38,7 +38,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
     return Scaffold(
       backgroundColor: Colors.white70,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 40.0, left: 16, right: 16),
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
