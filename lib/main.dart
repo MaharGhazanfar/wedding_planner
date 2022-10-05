@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:wedding_planner/authentication/screens/email_login_page.dart';
+import 'package:wedding_planner/common_screens/blogs/all_blogs.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.dark,
-        home: const UserSelectionPage(),
+        home: BlogsPage(),
       ),
     );
   }
@@ -46,7 +47,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute: const UserSelectionPage(),
+      navigateRoute: EmailLoginPage(
+        status: '',
+      ),
       backgroundColor: Colors.white,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,

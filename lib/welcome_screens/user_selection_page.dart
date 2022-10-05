@@ -47,7 +47,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
       body: Stack(
         children: [
           Image(
-            image: const AssetImage('assets/images/signup1.jpg'),
+            image: const AssetImage('assets/images/login.jpg'),
             height: MediaQuery.of(context).size.height,
             fit: BoxFit.fill,
           ),
@@ -68,7 +68,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.4,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 16.0, bottom: 8),

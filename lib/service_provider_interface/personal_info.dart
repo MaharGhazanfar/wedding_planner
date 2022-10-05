@@ -213,6 +213,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         onTap: () {
                           setState(() {
                             CategoryBottomSheetBar.categoryBottomSheet(
+                              status: widget.status,
                               context: context,
                               child: ListView.builder(
                                 itemCount: Categories.categoryList.length,
@@ -265,7 +266,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const UserDashboard(),
+                              builder: (context) =>
+                                  UserDashboard(status: widget.status),
                             ));
                       }
                     },

@@ -53,9 +53,11 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.9,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Great!\nLets get you started…",
+                  textDirection: TextDirection.ltr,
                   textAlign: TextAlign.start,
                   style: GoogleFonts.tinos(
                     textStyle: Theme.of(context).textTheme.headline4,
@@ -136,10 +138,10 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
+                Align(
+                  alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
