@@ -112,7 +112,7 @@ class _CreateBlogState extends State<CreateBlog> {
                   child: const TextField(
                     // controller: aboutController,
                     maxLines: 10,
-                    minLines: 1,
+                    minLines: 5,
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10),

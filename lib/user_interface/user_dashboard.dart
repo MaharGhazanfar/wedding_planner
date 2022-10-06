@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
+import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/repository/utils/todo_dialog.dart';
 import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
 import 'package:wedding_planner/user_interface/categories_details.dart';
+import 'package:wedding_planner/user_interface/profile_page.dart';
 
 import '../repository/utils/custom_widgets.dart';
 import '../repository/utils/data_constants.dart';
@@ -123,18 +125,43 @@ class _UserDashboardState extends State<UserDashboard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
-                  Icon(Icons.ac_unit,
+                  Icon(Icons.add_shopping_cart_sharp,
                       color: CustomColors.buttonBackgroundColor),
                   Text('Bookings')
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Icon(Icons.settings,
-                      color: CustomColors.buttonBackgroundColor),
-                  Text('Settings')
-                ],
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BlogsPage(),
+                      ));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(Icons.book, color: CustomColors.buttonBackgroundColor),
+                    Text('Blog/post')
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(Icons.person,
+                        color: CustomColors.buttonBackgroundColor),
+                    Text('Profile')
+                  ],
+                ),
               ),
               const Padding(
                 padding: EdgeInsets.only(left: 12.0, right: 12),

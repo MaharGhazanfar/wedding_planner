@@ -14,7 +14,7 @@ class _BlogDetailsState extends State<BlogDetails> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(top: 30, left: 8.0, right: 8.0),
             child: Column(
               children: [
                 Expanded(
@@ -65,7 +65,7 @@ class _BlogDetailsState extends State<BlogDetails> {
             ),
           ),
           Positioned(
-              top: 10,
+              top: 20,
               left: 10,
               child: IconButton(
                   onPressed: () {

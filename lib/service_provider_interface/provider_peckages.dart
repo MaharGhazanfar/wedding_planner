@@ -34,7 +34,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
         child: Column(
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
                 // height: MediaQuery.of(context).size.height * 0.20,
                 color: CustomColors.buttonBackgroundColor,
@@ -56,12 +56,12 @@ class _ProviderPackagesState extends State<ProviderPackages> {
             //   ),
             // ),
 
-            const Padding(
-              padding: EdgeInsets.only(left: 8.0, top: 16, bottom: 16),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Expanded(
-                  flex: 1,
+            Expanded(
+              flex: 1,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 16.0, top: 16, bottom: 16),
+                child: Align(
+                  alignment: Alignment.topLeft,
                   child: Text(
                     'Provider Packages!',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -71,12 +71,12 @@ class _ProviderPackagesState extends State<ProviderPackages> {
             ),
 
             Expanded(
-              flex: 3,
+              flex: 6,
               child: ListView.builder(
                 itemCount: 3,
                 itemBuilder: (BuildContext context, int index) {
                   return MyCustomCard.customCard(
-                      height: 250.0,
+                      height: MediaQuery.of(context).size.height * 0.30,
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -88,7 +88,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                               elevation: 2,
                               color: Colors.white,
                               child: Container(
-                                height: 250,
+                                height: MediaQuery.of(context).size.width * 0.6,
                                 width: MediaQuery.of(context).size.width * 0.40,
                                 decoration: BoxDecoration(
                                     //color: Colors.blue,
