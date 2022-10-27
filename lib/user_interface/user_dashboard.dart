@@ -1,13 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:wedding_planner/common_screens/appointments_page.dart';
-import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/repository/utils/todo_dialog.dart';
-import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
-import 'package:wedding_planner/user_interface/categories_details.dart';
-import 'package:wedding_planner/user_interface/profile_page.dart';
 
-import '../repository/utils/custom_widgets.dart';
 import '../repository/utils/data_constants.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -40,244 +33,254 @@ class _UserDashboardState extends State<UserDashboard> {
     return Scaffold(
       backgroundColor: Colors.black26,
       key: _scaffoldKey,
-      drawer: CustomWidget.myCustomDrawer(
-          context: context,
-          width: width! * 0.55,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Image(
-                image: AssetImage('assets/images/logo.png'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Icon(Icons.account_balance_sharp,
-                      color: CustomColors.buttonBackgroundColor),
-                  Text('All_ To-dos')
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  CategoryBottomSheetBar.categoryBottomSheet(
-                      context: context,
-                      child: ListView.builder(
-                        itemCount: Categories.categoryList.length,
-                        dragStartBehavior: DragStartBehavior.start,
-                        physics: const BouncingScrollPhysics(),
-                        itemExtent: 50.0,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, bottom: 2, top: 2),
-                            child: ListTile(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              title: Text(Categories.categoryList[index]),
-                              tileColor: Colors.white70,
-                              onTap: () {
-                                if (widget.status == Strings.serviceUser) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CategoriesDetails(),
-                                      ));
-                                } else {
-                                  SizedBox();
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      status: widget.status);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(Icons.category,
-                        color: CustomColors.buttonBackgroundColor),
-                    Text('Categories')
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Appointments(),
-                        ));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Icon(Icons.meeting_room_outlined,
-                          color: CustomColors.buttonBackgroundColor),
-                      Text('Appointments')
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Icon(Icons.add_shopping_cart_sharp,
-                      color: CustomColors.buttonBackgroundColor),
-                  Text('Bookings')
-                ],
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const BlogsPage(),
-                      ));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(Icons.book, color: CustomColors.buttonBackgroundColor),
-                    Text('Blog/post')
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfilePage(),
-                      ));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Icon(Icons.person,
-                        color: CustomColors.buttonBackgroundColor),
-                    Text('Profile')
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 12.0, right: 12),
-                child: Divider(
-                  thickness: 2,
-                ),
-              ),
-              const Text(
-                'RATE ON PLAY STORE',
-              ),
-              const Text('SEND US FEEDBACK'),
-              const Text('SHARE THIS APP'),
-              const Text('PRIVACY POLICY'),
-            ],
-          )),
+      // drawer: CustomWidget.myCustomDrawer(
+      //     context: context,
+      //     width: width! * 0.55,
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //       children: [
+      //         const Image(
+      //           image: AssetImage('assets/images/logo.png'),
+      //         ),
+      //         InkWell(
+      //           onTap: () {
+      //             CategoryBottomSheetBar.categoryBottomSheet(
+      //                 context: context,
+      //                 child: ListView.builder(
+      //                   itemCount: Categories.categoryList.length,
+      //                   dragStartBehavior: DragStartBehavior.start,
+      //                   physics: const BouncingScrollPhysics(),
+      //                   itemExtent: 50.0,
+      //                   itemBuilder: (context, index) {
+      //                     return Padding(
+      //                       padding: const EdgeInsets.only(
+      //                           left: 8, right: 8, bottom: 2, top: 2),
+      //                       child: ListTile(
+      //                         shape: RoundedRectangleBorder(
+      //                             borderRadius: BorderRadius.circular(20)),
+      //                         title: Text(Categories.categoryList[index]),
+      //                         tileColor: Colors.white70,
+      //                         onTap: () {
+      //                           if (widget.status == Strings.serviceUser) {
+      //                             Navigator.push(
+      //                                 context,
+      //                                 MaterialPageRoute(
+      //                                   builder: (context) =>
+      //                                       CategoriesDetails(),
+      //                                 ));
+      //                           } else {
+      //                             SizedBox();
+      //                           }
+      //                         },
+      //                       ),
+      //                     );
+      //                   },
+      //                 ),
+      //                 status: widget.status);
+      //           },
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //             children: const [
+      //               Icon(Icons.category,
+      //                   color: CustomColors.buttonBackgroundColor),
+      //               Text('Categories')
+      //             ],
+      //           ),
+      //         ),
+      //         Padding(
+      //           padding: const EdgeInsets.only(left: 16.0),
+      //           child: InkWell(
+      //             onTap: () {
+      //               Navigator.push(
+      //                   context,
+      //                   MaterialPageRoute(
+      //                     builder: (context) => const Appointments(),
+      //                   ));
+      //             },
+      //             child: Row(
+      //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //               children: const [
+      //                 Icon(Icons.meeting_room_outlined,
+      //                     color: CustomColors.buttonBackgroundColor),
+      //                 Text('Appointments')
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //         InkWell(
+      //           onTap: () {
+      //             Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                   builder: (context) => const MyWishList(),
+      //                 ));
+      //           },
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //             children: const [
+      //               Icon(Icons.menu_book_sharp,
+      //                   color: CustomColors.buttonBackgroundColor),
+      //               Text('Wishlist')
+      //             ],
+      //           ),
+      //         ),
+      //         Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //           children: const [
+      //             Icon(Icons.add_shopping_cart_sharp,
+      //                 color: CustomColors.buttonBackgroundColor),
+      //             Text('Bookings')
+      //           ],
+      //         ),
+      //         InkWell(
+      //           onTap: () {
+      //             Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                   builder: (context) => const BlogsPage(),
+      //                 ));
+      //           },
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //             children: const [
+      //               Icon(Icons.book, color: CustomColors.buttonBackgroundColor),
+      //               Text('Blog/post')
+      //             ],
+      //           ),
+      //         ),
+      //         InkWell(
+      //           onTap: () {
+      //             Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                   builder: (context) => const ProfilePage(),
+      //                 ));
+      //           },
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //             children: const [
+      //               Icon(Icons.person,
+      //                   color: CustomColors.buttonBackgroundColor),
+      //               Text('Profile')
+      //             ],
+      //           ),
+      //         ),
+      //         const Padding(
+      //           padding: EdgeInsets.only(left: 12.0, right: 12),
+      //           child: Divider(
+      //             thickness: 2,
+      //           ),
+      //         ),
+      //         const Text(
+      //           'RATE ON PLAY STORE',
+      //         ),
+      //         const Text('SEND US FEEDBACK'),
+      //         const Text('SHARE THIS APP'),
+      //         const Text('PRIVACY POLICY'),
+      //       ],
+      //     )),
       body: Center(
         child: Stack(
           children: [
             SizedBox(
               height: height!,
               width: width!,
-              child: Image.asset("assets/images/first.jpg",
+              child: Image.asset("assets/images/white_background.png",
                   alignment: Alignment.center, fit: BoxFit.fill),
             ),
-            Transform.rotate(
-              origin: const Offset(50, -550),
-              angle: -0.2,
-              child: Transform.scale(
-                scale: 1.15,
-                child: Container(
-                  color: Colors.teal,
-                  width: width! * 0.6,
-                  child: ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              taskContainer = height!;
-                              isTrue = false;
-                            });
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            width: width! * 0.4,
-                            height: height! * 0.5,
-                            child: const Icon(
-                              Icons.image,
-                              size: 100,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+            // Transform.rotate(
+            //   origin: const Offset(50, -550),
+            //   angle: -0.2,
+            //   child: Transform.scale(
+            //     scale: 1.15,
+            //     child: Container(
+            //       color: Colors.teal,
+            //       width: width! * 0.6,
+            //       child: ListView.builder(
+            //         itemCount: 5,
+            //         itemBuilder: (context, index) {
+            //           return Padding(
+            //             padding: const EdgeInsets.all(8.0),
+            //             child: GestureDetector(
+            //               onTap: () {
+            //                 setState(() {
+            //                   taskContainer = height!;
+            //                   isTrue = false;
+            //                 });
+            //               },
+            //               child: Container(
+            //                 color: Colors.white,
+            //                 width: width! * 0.4,
+            //                 height: height! * 0.5,
+            //                 child: const Icon(
+            //                   Icons.image,
+            //                   size: 100,
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // isTrue
+            //     ?
+            Positioned(
+              top: 20,
+              child: IconButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
+                  icon: const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 30,
+                  )),
             ),
-            isTrue
-                ? Positioned(
-                    top: 20,
-                    child: IconButton(
-                        onPressed: () {
-                          _scaffoldKey.currentState!.openDrawer();
-                        },
-                        icon: const Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                          size: 30,
-                        )),
-                  )
-                : Positioned(
-                    top: 20,
-                    left: 10,
-                    right: 10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.black12,
-                          child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  taskContainer = height! * 0.25;
-                                  isTrue = true;
-                                });
-                              },
-                              icon: const Padding(
-                                padding: EdgeInsets.only(left: 4),
-                                child: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ),
-                        CircleAvatar(
-                          backgroundColor: Colors.black12,
-                          child: Padding(
-                            padding: const EdgeInsets.only(),
-                            child: IconButton(
-                              onPressed: () {},
-                              alignment: Alignment.center,
-                              icon: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+            // : Positioned(
+            //     top: 20,
+            //     left: 10,
+            //     right: 10,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         CircleAvatar(
+            //           backgroundColor: Colors.black12,
+            //           child: IconButton(
+            //               onPressed: () {
+            //                 setState(() {
+            //                   taskContainer = height! * 0.25;
+            //                   isTrue = true;
+            //                 });
+            //               },
+            //               icon: const Padding(
+            //                 padding: EdgeInsets.only(left: 4),
+            //                 child: Icon(
+            //                   Icons.arrow_back_ios,
+            //                   size: 20,
+            //                   color: Colors.white,
+            //                 ),
+            //               )),
+            //         ),
+            //         CircleAvatar(
+            //           backgroundColor: Colors.black12,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(),
+            //             child: IconButton(
+            //               onPressed: () {},
+            //               alignment: Alignment.center,
+            //               icon: const Icon(
+            //                 Icons.add,
+            //                 color: Colors.white,
+            //                 size: 25,
+            //               ),
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
             AnimatedPositioned(
               top: taskContainer,
               duration: const Duration(milliseconds: 200),
@@ -295,7 +298,7 @@ class _UserDashboardState extends State<UserDashboard> {
                       flex: 1,
                       child: Container(
                         decoration: const BoxDecoration(
-                            color: CustomColors.buttonBackgroundColor,
+                            color: CustomColors.greenish,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10))),
@@ -317,7 +320,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                   width: 38,
                                   alignment: Alignment.center,
                                   decoration: const BoxDecoration(
-                                    color: CustomColors.buttonBackgroundColor,
+                                    color: CustomColors.greenish,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Text(
@@ -371,8 +374,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                   Transform.scale(
                                     scale: 1.5,
                                     child: Checkbox(
-                                      activeColor:
-                                          CustomColors.buttonBackgroundColor,
+                                      activeColor: CustomColors.greenish,
                                       value: true,
                                       onChanged: (value) {},
                                     ),
@@ -387,7 +389,7 @@ class _UserDashboardState extends State<UserDashboard> {
                             ),
                             title: const Text('Details of what to do',
                                 textAlign: TextAlign.start),
-                            tileColor: Colors.green,
+                            // tileColor: Colors.green,
                           );
                         },
                       ),

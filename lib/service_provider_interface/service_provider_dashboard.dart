@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
+import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
@@ -20,52 +21,103 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2,
-        title: const Text(
-          'Business',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: CustomColors.buttonBackgroundColor,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.notifications_sharp),
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: ListView(
-          children: [
-            Container(
-              height: 250,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: CustomColors.buttonBackgroundColor,
-                  borderRadius:
-                      BorderRadius.only(bottomLeft: Radius.circular(50))),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+      // appBar: AppBar(
+      //   // elevation: 2,
+      //   title: const Text(
+      //     'Business',
+      //     style: TextStyle(fontWeight: FontWeight.bold),
+      //   ),
+      //   backgroundColor: Colors.transparent,
+      //   actions: const [
+      //     Padding(
+      //       padding: EdgeInsets.only(right: 8.0),
+      //       child: Icon(Icons.notifications_sharp),
+      //     )
+      //   ],
+      // ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const Image(
+            image: AssetImage('assets/images/front_page.png'),
+            fit: BoxFit.fill,
+          ),
+          ListView(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.32,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(50))),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: CustomColors.backGroundColor,
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Text(
+                              'Business',
+                              style: TextStyle(
+                                  color: CustomColors.backGroundColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                          ),
+                          const Spacer(),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BlogsPage(),
+                                    ));
+                              },
+                              icon: const Icon(
+                                Icons.markunread_mailbox_outlined,
+                                color: CustomColors.yellowIconsColor,
+                              )),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.notifications_sharp,
+                                color: CustomColors.yellowIconsColor,
+                              ))
+                        ],
+                      ),
+                    ),
                     Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.green,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 25,
-                            child: Text(
-                              'MI',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.buttonBackgroundColor),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: const CircleAvatar(
+                            radius: 28,
+                            backgroundColor: CustomColors.buttonBackgroundColor,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 25,
+                              child: Text(
+                                'MI',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.buttonBackgroundColor),
+                              ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 16.0),
+                          padding: const EdgeInsets.only(left: 16.0),
                           child: Text(
                             'Muhammad Imran',
                             style: TextStyle(
@@ -76,40 +128,65 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         ),
                       ],
                     ),
-                    Column(
-                      //mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.edit,
-                          size: 20,
-                          color: CustomColors.backGroundColor,
-                        ),
-                        const Align(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            'Edit',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   //mainAxisAlignment: MainAxisAlignment.end,
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: [
+                    //     Icon(
+                    //       Icons.edit,
+                    //       size: 20,
+                    //       color: CustomColors.backGroundColor,
+                    //     ),
+                    //     const Align(
+                    //       alignment: Alignment.topRight,
+                    //       child: Text(
+                    //         'Edit',
+                    //         style: TextStyle(color: Colors.white, fontSize: 14),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.mail,
-                            color: CustomColors.backGroundColor,
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.mail,
+                                color: CustomColors.backGroundColor,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text('nimanth...@gmail.com',
+                                  style: TextStyle(
+                                      //fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.backGroundColor)),
+                            ],
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Text('nimanth...@gmail.com',
-                              style: TextStyle(
-                                  //fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.backGroundColor))
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                  size: 20,
+                                  color: CustomColors.backGroundColor,
+                                ),
+                                const Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    'Edit',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -155,121 +232,121 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                   ],
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 34.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  // textAlign: TextAlign.start,
-                  'My Dash_Board',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              const SizedBox(
+                height: 20,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 34.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    // textAlign: TextAlign.start,
+                    'My DashBoard',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: Icons.photo_library,
-                    iconSize: 40,
-                    title: 'Photos',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddImages(),
-                          ));
-                    }),
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: Icons.slow_motion_video,
-                    iconSize: 40,
-                    title: 'Videos',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VideoPlayerScreen(),
-                          ));
-                    }),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: Icons.local_offer_sharp,
-                    iconSize: 40,
-                    title: 'Packages',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProviderPackages(),
-                          ));
-                    }),
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: Icons.meeting_room_outlined,
-                    iconSize: 40,
-                    title: 'Appointments',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Appointments(),
-                          ));
-                    }),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: CupertinoIcons.rectangle_stack_person_crop_fill,
-                    iconSize: 40,
-                    title: 'Employee',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EmployeeInfoPage(),
-                          ));
-                    }),
-                CustomWidget.customCardButton(
-                    height: MediaQuery.of(context).size.width * .25,
-                    width: MediaQuery.of(context).size.width * .30,
-                    icon: Icons.request_page,
-                    iconSize: 40,
-                    title: 'Ad_request',
-                    onTap: () {
-                      // Navigator.push(context,MaterialPageRoute(builder: (context) => const AddImages(),));
-                    }),
-              ],
-            ),
-          ],
-        ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: Icons.photo_library,
+                      iconSize: 40,
+                      title: 'Photos',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddImages(),
+                            ));
+                      }),
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: Icons.slow_motion_video,
+                      iconSize: 40,
+                      title: 'Videos',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const VideoPlayerScreen(),
+                            ));
+                      }),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: Icons.local_offer_sharp,
+                      iconSize: 40,
+                      title: 'Packages',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProviderPackages(),
+                            ));
+                      }),
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: Icons.meeting_room_outlined,
+                      iconSize: 40,
+                      title: 'Appointments',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Appointments(),
+                            ));
+                      }),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: CupertinoIcons.rectangle_stack_person_crop_fill,
+                      iconSize: 40,
+                      title: 'Employee',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EmployeeInfoPage(),
+                            ));
+                      }),
+                  CustomWidget.customCardButton(
+                      height: MediaQuery.of(context).size.width * .25,
+                      width: MediaQuery.of(context).size.width * .30,
+                      icon: Icons.request_page,
+                      iconSize: 40,
+                      title: 'Ad_request',
+                      onTap: () {
+                        // Navigator.push(context,MaterialPageRoute(builder: (context) => const AddImages(),));
+                      }),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   String? status;
+
   LoginPage({Key? key, required this.status}) : super(key: key);
 
   @override
@@ -35,39 +35,36 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Image.asset(
-                'assets/images/login.jpg',
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Center(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Form(
-                      key: globalKey,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const Image(
+            image: AssetImage('assets/images/signup.png'),
+            fit: BoxFit.fill,
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Form(
+              key: globalKey,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: ScreenPading.topPading,
+                    right: ScreenPading.topPading),
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Image.asset(
+                        'assets/images/Mayaringbar_logo.png',
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: Column(
-                        //mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 200,
-                            child: Image.asset('assets/images/white_logo.png',
-                                fit: BoxFit.cover),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height < 800
-                                ? 100
-                                : 250,
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: CustomWidget.customTextField3(
@@ -86,14 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                                   //     ModelValidation.passwordValidation(
                                   //         value!),
                                   controller: _passwordController,
-                                  suffix: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
+                                  suffix: const Padding(
+                                    padding: EdgeInsets.only(right: 16.0),
                                     child: Text(
                                       'Hide',
-                                      style: GoogleFonts.tinos(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1,
+                                      style: TextStyle(
                                           color: CustomColors
                                               .buttonBackgroundColor,
                                           fontSize: 18),
@@ -102,37 +96,13 @@ class _LoginPageState extends State<LoginPage> {
                                   titleName: 'Password',
                                   obscureText: true,
                                   context: context)),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(
-                          //       left: 36.0, right: 36.0, top: 24),
-                          //   child: TextFormField(
-                          //     decoration: const InputDecoration(
-                          //         enabledBorder: UnderlineInputBorder(
-                          //             borderSide: BorderSide(
-                          //                 color: Colors.grey, width: 1)),
-                          //         labelText: 'Password',
-                          //         labelStyle: TextStyle(color: Colors.black),
-                          //         prefixIcon: Icon(
-                          //           Icons.lock,
-                          //           color: CustomColors.textFontColor,
-                          //         ),
-                          //         suffix: Text(
-                          //           'Hide',
-                          //           style: TextStyle(
-                          //               color: CustomColors.textFontColor),
-                          //         )),
-                          //     obscureText: true,
-                          //   ),
-                          // ),
                           Container(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {},
-                              child: Text(
+                              child: const Text(
                                 'Forgot Password?',
-                                style: GoogleFonts.tinos(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText1,
+                                style: TextStyle(
                                     color: CustomColors.buttonTextFontColor,
                                     fontSize: 18),
                               ),
@@ -196,12 +166,9 @@ class _LoginPageState extends State<LoginPage> {
                                           spreadRadius: -1,
                                         ),
                                       ]),
-                                  child: Text(
+                                  child: const Text(
                                     'Login',
-                                    style: GoogleFonts.tinos(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                    style: TextStyle(
                                         color: CustomColors.buttonTextFontColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
@@ -256,10 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     Text(
                                       'Login with Phone',
-                                      style: GoogleFonts.tinos(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1,
+                                      style: TextStyle(
                                           color: CustomColors.backGroundColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
@@ -274,9 +238,7 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Text(
                                 "Don't have an account?",
-                                style: GoogleFonts.tinos(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText1,
+                                style: TextStyle(
                                     color: CustomColors.buttonTextFontColor
                                         .withOpacity(0.9),
                                     fontSize: 18),
@@ -290,12 +252,10 @@ class _LoginPageState extends State<LoginPage> {
                                     //       const SignUpPage(),
                                     //     ));
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Sign Up',
-                                    style: GoogleFonts.tinos(
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         color: CustomColors.buttonTextFontColor,
                                         fontSize: 18),
                                   ))
@@ -303,13 +263,36 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-                    ),
-                  ),
+                    )
+
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //       left: 36.0, right: 36.0, top: 24),
+                    //   child: TextFormField(
+                    //     decoration: const InputDecoration(
+                    //         enabledBorder: UnderlineInputBorder(
+                    //             borderSide: BorderSide(
+                    //                 color: Colors.grey, width: 1)),
+                    //         labelText: 'Password',
+                    //         labelStyle: TextStyle(color: Colors.black),
+                    //         prefixIcon: Icon(
+                    //           Icons.lock,
+                    //           color: CustomColors.textFontColor,
+                    //         ),
+                    //         suffix: Text(
+                    //           'Hide',
+                    //           style: TextStyle(
+                    //               color: CustomColors.textFontColor),
+                    //         )),
+                    //     obscureText: true,
+                    //   ),
+                    // ),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

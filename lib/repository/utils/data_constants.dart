@@ -1,21 +1,22 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomColors {
   static const Color textFontColor = Colors.black54;
-  static const Color headingTextFontColor = Colors.black;
+  static const Color headingTextFontColor = Colors.white;
   static const Color signupOptionColors = Colors.red;
 
   static const Color buttonTextFontColor = Colors.white;
-  static const Color buttonBackgroundColor = Colors.teal;
+  static const Color greenish = Color(0xFF48B7B1);
+  static const Color buttonBackgroundColor = Color(0xFFFFC000);
 
   static Color backGroundColor = Colors.white;
 
-  static const Color iconsColor = Colors.black54;
+  static const Color yellowIconsColor = Color(0xFFFFC000);
+
   static const Color appBarColor = Colors.transparent;
-  static const Color outLineBorderColor = Colors.black;
+  static const Color blackText = Colors.black;
   static const Color outLineBorderColor2 = Colors.black;
   // static const Color clipperColor = Color(0xFFFD00D4);
   //static const Color frameColor = Colors.black12;
@@ -39,8 +40,8 @@ class ButtonsStyle {
   static TextStyle buttonTextStyle(
     BuildContext context,
   ) {
-    return GoogleFonts.tinos(
-        textStyle: Theme.of(context).textTheme.headline6,
+    return TextStyle(
+        fontSize: 20,
         color: CustomColors.buttonTextFontColor,
         fontWeight: FontWeight.bold);
   }
@@ -68,4 +69,11 @@ class Strings {
   static const String serviceProvider = 'ServiceProvider';
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
+}
+
+class ScreenPading {
+  static const double topPading = 32;
+  static const double leftPading = 16;
+  static const double rightPading = 16;
+  static const double bottomPading = 16;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class BlogDetails extends StatefulWidget {
   const BlogDetails({Key? key}) : super(key: key);
@@ -12,9 +13,14 @@ class _BlogDetailsState extends State<BlogDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
         children: [
+          Image.asset("assets/images/signup.png",
+              alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
-            padding: const EdgeInsets.only(top: 30, left: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(
+              top: 30,
+            ),
             child: Column(
               children: [
                 Expanded(
@@ -65,8 +71,8 @@ class _BlogDetailsState extends State<BlogDetails> {
             ),
           ),
           Positioned(
-              top: 20,
-              left: 10,
+              top: 24,
+              left: 6,
               child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -77,6 +83,10 @@ class _BlogDetailsState extends State<BlogDetails> {
                   ))),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.buttonBackgroundColor,
+          onPressed: () {},
+          child: const Icon(Icons.favorite_border)),
     );
   }
 }

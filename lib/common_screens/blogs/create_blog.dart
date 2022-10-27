@@ -15,26 +15,46 @@ class _CreateBlogState extends State<CreateBlog> {
   Widget build(BuildContext context) {
     return Scaffold(
         // backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: CustomColors.headingTextFontColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-          ),
-          backgroundColor: CustomColors.appBarColor,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   leading: Padding(
+        //     padding: const EdgeInsets.only(left: 8.0),
+        //     child: IconButton(
+        //         icon: const Icon(
+        //           Icons.arrow_back_ios,
+        //           color: CustomColors.headingTextFontColor,
+        //         ),
+        //         onPressed: () {
+        //           Navigator.of(context).pop();
+        //         }),
+        //   ),
+        //   backgroundColor: CustomColors.appBarColor,
+        // ),
+        body: SingleChildScrollView(
+      child: Stack(
+        children: [
+          Image.asset("assets/images/signup.png",
+              alignment: Alignment.center, fit: BoxFit.fill),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: ScreenPading.topPading,
+                left: ScreenPading.leftPading,
+                right: ScreenPading.rightPading),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                IconButton(
+                    padding: EdgeInsets.only(
+                      top: 8,
+                    ),
+                    alignment: Alignment.topLeft,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      color: CustomColors.backGroundColor,
+                    )),
                 const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -156,6 +176,8 @@ class _CreateBlogState extends State<CreateBlog> {
               ],
             ),
           ),
-        ));
+        ],
+      ),
+    ));
   }
 }

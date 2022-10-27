@@ -41,15 +41,23 @@ class _TOdoDialogState extends State<TOdoDialog> {
         padding: const EdgeInsets.only(top: 40.0, left: 16, right: 16),
         child: SingleChildScrollView(
           child: Container(
-            color: Colors.white,
             width: width,
             height: height * 0.9,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
             child: Column(
               children: [
                 Container(
                   height: 60,
                   width: width,
-                  color: CustomColors.buttonBackgroundColor,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                    color: CustomColors.greenish,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -64,7 +72,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
                         },
                       ),
                       const Text(
-                        'To_do',
+                        'To Do',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -88,7 +96,12 @@ class _TOdoDialogState extends State<TOdoDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(flex: 1, child: Text('TO_DO')),
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            'TO_DO',
+                            style: TextStyle(color: CustomColors.blackText),
+                          )),
                       Expanded(
                         flex: 3,
                         child: TextField(
@@ -96,8 +109,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
                             border: InputBorder.none,
                           ),
                           textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                              color: CustomColors.buttonBackgroundColor),
+                          style: TextStyle(color: CustomColors.blackText),
                           controller: _todoController,
                           maxLines: 3,
                           minLines: 1,
@@ -117,8 +129,14 @@ class _TOdoDialogState extends State<TOdoDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('DUE DATE'),
-                      Text('11/30/22, 8.00 am'),
+                      Text(
+                        'DUE DATE',
+                        style: TextStyle(color: CustomColors.blackText),
+                      ),
+                      Text(
+                        '11/30/22, 8.00 am',
+                        style: TextStyle(color: CustomColors.blackText),
+                      ),
                     ],
                   ),
                 ),
@@ -132,7 +150,16 @@ class _TOdoDialogState extends State<TOdoDialog> {
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('Reminder'), Text('Off')],
+                    children: [
+                      Text(
+                        'Reminder',
+                        style: TextStyle(color: CustomColors.blackText),
+                      ),
+                      Text(
+                        'Off',
+                        style: TextStyle(color: CustomColors.blackText),
+                      )
+                    ],
                   ),
                 ),
                 const Padding(
@@ -146,13 +173,20 @@ class _TOdoDialogState extends State<TOdoDialog> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Expanded(child: Text('Category')),
+                      Expanded(
+                          child: Text(
+                        'Category',
+                        style: TextStyle(color: CustomColors.blackText),
+                      )),
                       Expanded(
                           child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Icon(Icons.favorite_border),
-                          Text('Flowers'),
+                          Text(
+                            'Flowers',
+                            style: TextStyle(color: CustomColors.blackText),
+                          ),
                         ],
                       )),
 
@@ -207,15 +241,17 @@ class _TOdoDialogState extends State<TOdoDialog> {
                     children: [
                       const Flexible(
                         flex: 1,
-                        child: Text('Notes'),
+                        child: Text(
+                          'Notes',
+                          style: TextStyle(color: CustomColors.blackText),
+                        ),
                       ),
                       Flexible(
                         flex: 4,
                         child: TextField(
                           textDirection: TextDirection.rtl,
                           controller: _notesController,
-                          style: const TextStyle(
-                              color: CustomColors.buttonBackgroundColor),
+                          style: const TextStyle(color: CustomColors.blackText),
                           minLines: null,
                           expands: true,
                           maxLines: null,
@@ -240,7 +276,10 @@ class _TOdoDialogState extends State<TOdoDialog> {
                         Icons.delete,
                         color: Colors.red,
                       ),
-                      Text('DELETE TO-DO')
+                      Text(
+                        'DELETE TO-DO',
+                        style: TextStyle(color: CustomColors.blackText),
+                      )
                     ],
                   ),
                 ),

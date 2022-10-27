@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.buttonBackgroundColor,
+          backgroundColor: CustomColors.greenish,
           leadingWidth: 30,
           title: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,24 +59,31 @@ class _ChatPageState extends State<ChatPage> {
             )
           ],
         ),
-        body: Chat(
-          timeFormat: DateFormat(),
-          messages: _messages,
-          theme: const DefaultChatTheme(
-              inputBackgroundColor: Colors.white,
-              inputTextColor: CustomColors.textFontColor,
-              attachmentButtonIcon: Icon(Icons.attach_file_outlined),
-              backgroundColor: Colors.black12,
-              primaryColor: Colors.white,
-              sentMessageBodyTextStyle:
-                  TextStyle(color: CustomColors.textFontColor)),
-          onAttachmentPressed: _handleAtachmentPressed,
-          onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
-          onSendPressed: _handleSendPressed,
-          showUserAvatars: true,
-          showUserNames: true,
-          user: _user,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset("assets/images/white_background.png",
+                alignment: Alignment.center, fit: BoxFit.fill),
+            Chat(
+              timeFormat: DateFormat(),
+              messages: _messages,
+              theme: const DefaultChatTheme(
+                  inputBackgroundColor: Colors.white,
+                  inputTextColor: CustomColors.textFontColor,
+                  attachmentButtonIcon: Icon(Icons.attach_file_outlined),
+                  backgroundColor: Colors.black12,
+                  primaryColor: Colors.white,
+                  sentMessageBodyTextStyle:
+                      TextStyle(color: CustomColors.textFontColor)),
+              onAttachmentPressed: _handleAtachmentPressed,
+              onMessageTap: _handleMessageTap,
+              onPreviewDataFetched: _handlePreviewDataFetched,
+              onSendPressed: _handleSendPressed,
+              showUserAvatars: true,
+              showUserNames: true,
+              user: _user,
+            ),
+          ],
         ),
       );
 

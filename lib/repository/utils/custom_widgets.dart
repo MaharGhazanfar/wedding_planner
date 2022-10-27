@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 
 import 'data_constants.dart';
@@ -51,11 +50,11 @@ class CustomWidget {
             backgroundColor: CustomColors.buttonBackgroundColor,
             gradient: borderEnabled
                 ? LinearGradient(
-                    colors: [Colors.orange, Colors.pink.shade200],
+                    colors: [Colors.white, Colors.white],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     stops: [0, width * 0.5])
-                : const LinearGradient(colors: [Colors.white, Colors.white10]),
+                : const LinearGradient(colors: [Colors.white, Colors.white]),
             child: Center(child: child)),
       ),
     );
@@ -74,9 +73,12 @@ class CustomWidget {
     TextInputType textInputType = TextInputType.text,
     int? maxLength,
     Key? key,
+    void Function(String)? onChanged,
     TextInputType? inputType,
     List<TextInputFormatter>? inputFormatters,
     String? prefixText,
+    int? maxLines = 1,
+    int? minLines = 1,
   }) {
     return Container(
       height: 50,
@@ -106,27 +108,25 @@ class CustomWidget {
         controller: controller,
         key: key,
         onTap: onTap,
+        onChanged: onChanged,
         inputFormatters: inputFormatters,
         validator: validate,
         autofocus: false,
+        minLines: minLines,
+        maxLines: maxLines,
         keyboardType: inputType,
         maxLength: maxLength,
         obscureText: obscureText,
         cursorColor: Colors.black,
         // maxLines: 1,
-        style: GoogleFonts.tinos(
-            textStyle: Theme.of(context).textTheme.bodyText1,
-            color: CustomColors.textFontColor,
-            fontSize: 14),
+        style: const TextStyle(color: CustomColors.textFontColor, fontSize: 14),
         decoration: InputDecoration(
           prefixText: prefixText,
 
           suffix: suffix,
           hintText: titleName,
-          hintStyle: GoogleFonts.tinos(
-              textStyle: Theme.of(context).textTheme.bodyText1,
-              color: CustomColors.textFontColor,
-              fontSize: 14),
+          hintStyle:
+              const TextStyle(color: CustomColors.textFontColor, fontSize: 14),
           fillColor: Colors.white70,
           border: InputBorder.none,
           // errorBorder:  OutlineInputBorder(borderRadius:BorderRadius.circular(50),borderSide: BorderSide(width: 1,color: Colors.red)),
@@ -178,19 +178,15 @@ class CustomWidget {
             border: InputBorder.none,
           ),
           isExpanded: true,
-          icon:
-              const Icon(Icons.arrow_drop_down, color: CustomColors.iconsColor),
+          icon: const Icon(Icons.arrow_drop_down,
+              color: CustomColors.textFontColor),
           iconSize: 25,
           buttonHeight: 50,
           hint: Text(titleName,
-              style: GoogleFonts.tinos(
-                  textStyle: Theme.of(context).textTheme.bodyText1,
-                  color: CustomColors.textFontColor,
-                  fontSize: 14)),
-          style: GoogleFonts.tinos(
-              textStyle: Theme.of(context).textTheme.bodyText1,
-              color: CustomColors.textFontColor,
-              fontSize: 14),
+              style: const TextStyle(
+                  color: CustomColors.textFontColor, fontSize: 14)),
+          style:
+              const TextStyle(color: CustomColors.textFontColor, fontSize: 14),
           scrollbarAlwaysShow: true,
           scrollbarRadius: const Radius.circular(20),
           scrollbarThickness: 10,
@@ -206,10 +202,8 @@ class CustomWidget {
                     value: item,
                     child: Text(
                       item,
-                      style: GoogleFonts.tinos(
-                          textStyle: Theme.of(context).textTheme.bodyText1,
-                          color: CustomColors.textFontColor,
-                          fontSize: 14),
+                      style: const TextStyle(
+                          color: CustomColors.textFontColor, fontSize: 14),
                     ),
                   ))
               .toList(),
@@ -245,6 +239,7 @@ class CustomWidget {
     IconData? icon,
     double? iconSize,
     String? title,
+    Color? color,
     required void Function()? onTap,
   }) {
     return InkWell(
@@ -254,6 +249,7 @@ class CustomWidget {
           MyCustomCard.customCard(
               height: height!,
               width: width!,
+              color: color,
               child: Icon(
                 icon!,
                 size: iconSize!,

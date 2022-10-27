@@ -1,12 +1,40 @@
+import 'dart:convert';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 class LocationPicker extends ChangeNotifier {
   String _currentAddress = '';
   Position? _currentPosition;
+  String? _sessionToken;
+  var uuid = const Uuid();
+  List<dynamic> _placesList = [];
+  bool _isSearching = false;
+
+  bool get isSearching => _isSearching;
+
+  set isSearching(bool value) {
+    _isSearching = value;
+    notifyListeners();
+  }
+
+  String? get sessionToken => _sessionToken;
+
+  set sessionToken(String? value) {
+    _sessionToken = value;
+    notifyListeners();
+  }
+
+  List<dynamic> get placesList => _placesList;
+
+  set placesList(List<dynamic> value) {
+    _placesList = value;
+    notifyListeners();
+  }
 
   String get currentAddress => _currentAddress;
 
@@ -81,7 +109,7 @@ class LocationPicker extends ChangeNotifier {
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      //_currentPosition = position;
+      _currentPosition = position;
       //setState(() => _currentPosition = position);
       _getAddressFromLatLng(position);
     }).catchError((e) {
@@ -103,5 +131,21 @@ class LocationPicker extends ChangeNotifier {
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  void getSuggestions(String input) async {
+    const kGoogleApiKey = 'AIzaSyCuPO4QpbmH7zZ3Q-FmyBfQMZQjC0I5vns';
+    String baseURL =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+    String request =
+        '$baseURL?input=$input&key=$kGoogleApiKey&sessiontoken=$sessionToken';
+    var response = await http.get(Uri.parse(request));
+    if (response.statusCode == 200) {
+      print(
+          '///////////////////${response.body.toString()}/////////////////////////');
+      placesList = jsonDecode(response.body.toString())['predictions'];
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
 }

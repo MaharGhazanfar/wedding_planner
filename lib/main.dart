@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
 
@@ -24,14 +24,13 @@ class MyApp extends StatelessWidget {
           iconTheme: const IconThemeData(
             color: Colors.black38,
           ),
-          textTheme: GoogleFonts.tinosTextTheme(
-            Theme.of(context).textTheme.copyWith(
-                bodyText2: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-                bodyText1: const TextStyle(
-                  color: Colors.black38,
-                )),
-          ),
+          textTheme: (Theme.of(context).textTheme.copyWith(
+              bodyText2: TextStyle(
+                  color: CustomColors.backGroundColor,
+                  fontWeight: FontWeight.bold),
+              bodyText1: const TextStyle(
+                color: Colors.black38,
+              ))),
         ),
         themeMode: ThemeMode.dark,
         home: const HomePage(),
@@ -47,14 +46,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SplashScreenView(
       navigateRoute: const UserSelectionPage(),
-      backgroundColor: Colors.white,
+      backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,
       duration: 4000,
       imageSize: 300,
-      imageSrc: 'assets/images/splash_logo.png',
-      //text: 'Welcome',
-      //colors: [Colors.green,Colors.pink,Colors.yellowAccent],
+      imageSrc: 'assets/images/Mayaring_splash.png',
     );
   }
 }
