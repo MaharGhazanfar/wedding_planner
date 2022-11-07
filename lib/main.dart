@@ -1,18 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
+import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
+import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
 import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
-
 import 'firebase_options.dart';
+import 'modelClasses/personal_login_info.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  PersonalLoginInfo.prefs = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -52,7 +60,22 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute: const UserSelectionPage(),
+      navigateRoute:  StreamBuilder(
+        stream: FirebaseAuth.instance
+            .authStateChanges(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            if( PersonalLoginInfo.prefs!.getString('service') == Strings.serviceProvider){
+              return ServiceProviderDashBoard();
+            }else{
+              return BottomNavigationBarForUser(status: Strings.serviceUser);
+            }
+          }else{
+
+            return UserSelectionPage();
+          }
+        },
+      ),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,

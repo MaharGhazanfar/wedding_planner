@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class EmailLoginPage extends StatefulWidget {
-  String? status;
-  EmailLoginPage({Key? key, required this.status}) : super(key: key);
+  final String status;
+
+  const EmailLoginPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<EmailLoginPage> createState() => _EmailLoginPageState();
@@ -15,6 +17,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
+
   bool _isObscure = true;
   var globalKey = GlobalKey<FormState>();
   double? width;
@@ -41,21 +44,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 8.0),
-      //     child: IconButton(
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios,
-      //           color: CustomColors.headingTextFontColor,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         }),
-      //   ),
-      //   backgroundColor: CustomColors.appBarColor,
-      // ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -85,7 +73,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                             Icons.arrow_back_ios,
                             color: CustomColors.backGroundColor,
                           )),
-                      //  const SizedBox(height: 50,),
                       Padding(
                         padding: const EdgeInsets.only(top: 32),
                         child: const Text(
@@ -98,7 +85,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                           ),
                         ),
                       ),
-
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.55,
                         child: Column(
@@ -111,8 +97,8 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                 context: context,
                                 controller: emailController,
                                 textInputType: TextInputType.emailAddress,
-                                // validate: (value) =>
-                                //     ModelValidation.gmailValidation(value!)
+                                //   validate: (value) =>
+                                //       ModelValidation.gmailValidation(value!)
                               ),
                             ),
                             Padding(
@@ -169,12 +155,50 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PersonalInfoPage(
-                                          status: widget.status!),
-                                    ));
+                                if (emailController.text.toString().length !=
+                                        0 &&
+                                    passwordController.text.toString().length !=
+                                        0 &&
+                                    confirmPasswordController.text
+                                            .toString()
+                                            .length !=
+                                        0) {
+                                  if (emailController.text
+                                      .toString()
+                                      .toLowerCase()
+                                      .contains('@gmail.com')) {
+                                    if (passwordController.text.toString() ==
+                                        confirmPasswordController.text
+                                            .toString()) {
+                                      String status = await loginWithEmailPas(
+                                          email: emailController.text
+                                            ..toString(),
+                                          password: passwordController.text
+                                              .toString());
+                                      if (status == 'Login Successful') {
+                                        ShowCustomToast(msg: status);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PersonalInfoPage(
+                                                      status: widget.status),
+                                            ));
+                                      } else {
+                                        ShowCustomToast(msg: status);
+
+                                      }
+                                    } else {
+                                      ShowCustomToast(msg: "Password Not Match");
+
+                                    }
+                                  } else {
+                                    ShowCustomToast(msg: "Invalid Gmail");
+
+                                  }
+                                } else {
+                                  ShowCustomToast(msg: "All Field Must Be Filled");
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 24.0),
@@ -223,4 +247,25 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
       ),
     );
   }
+}
+
+Future<String> loginWithEmailPas(
+    {required String email, required String password}) async {
+  try {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return 'Login Successful';
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      return 'The password provided is too weak';
+    } else if (e.code == 'email-already-in-use') {
+      return 'The account already exists for that email.';
+    }
+  } catch (e) {
+    print(e);
+    return 'SomeThing went wrong';
+  }
+  return 'Please try again later';
 }

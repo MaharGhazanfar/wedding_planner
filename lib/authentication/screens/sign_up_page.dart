@@ -45,19 +45,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
+                      /// sign up with email.........................
+
                       InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    EmailLoginPage(status: widget.status!),
+                                    EmailLoginPage(status: widget.status),
                               ));
                         },
                         child: Container(
                           alignment: Alignment.center,
                           height: 50,
-                          // width: MediaQuery.of(context).size.width * 0.7,
                           decoration: BoxDecoration(
                               color: CustomColors.buttonBackgroundColor,
                               borderRadius: BorderRadius.circular(40),
@@ -100,12 +102,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
+
+                      /// sign up with phone.........................
                       InkWell(
                         onTap: () async {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PhoneLoginPage(
+                                  signFor: 'create',
                                   status: widget.status,
                                 ),
                               ));
@@ -115,7 +120,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Container(
                             alignment: Alignment.center,
                             height: 50,
-                            //width: MediaQuery.of(context).size.width * 0.7,
                             decoration: BoxDecoration(
                                 color: CustomColors.buttonBackgroundColor,
                                 borderRadius: BorderRadius.circular(50),
@@ -159,9 +163,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
+
+
+
                       SizedBox(
                         height: 30,
-                        // width: MediaQuery.of(context).size.width * 0.7,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
@@ -186,6 +192,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           ],
                         ),
                       ),
+
+
+
                       SizedBox(
                         //width: MediaQuery.of(context).size.width*0.7,
                         child: Row(
