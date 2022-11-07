@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
+import 'package:wedding_planner/modelClasses/personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
@@ -11,7 +14,7 @@ import 'package:wedding_planner/service_provider_interface/service_provider_dash
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
 
 class PersonalInfoPage extends StatefulWidget {
-  String? status;
+  final String status;
 
   PersonalInfoPage({Key? key, required this.status}) : super(key: key);
 
@@ -26,36 +29,42 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController addressNameController;
   late TextEditingController businessNameController;
   late TextEditingController categoryNameController;
-  late TextEditingController _searchController;
+  late TextEditingController locationController;
+  late  CollectionReference collectionInfo;
 
   var globalKey = GlobalKey<FormState>();
   late LocationPicker getLocation;
   double? width;
   double? height;
-  //
-  // bool isSearching = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    if(widget.status == Strings.serviceProvider) {
+      collectionInfo =
+          FirebaseFirestore.instance.collection(Strings.serviceProvider);
+    }else{
+      collectionInfo =
+          FirebaseFirestore.instance.collection(Strings.serviceUser);
+    }
     getLocation = Provider.of<LocationPicker>(context, listen: false);
     getLocation.getCurrentPosition(context);
-
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
     addressNameController = TextEditingController();
     businessNameController = TextEditingController();
     categoryNameController = TextEditingController();
-    _searchController = TextEditingController();
+    locationController = TextEditingController();
 
-    _searchController.addListener(() {
+    locationController.addListener(() {
       if (getLocation.sessionToken == null) {
         getLocation.sessionToken = getLocation.uuid.v4();
-        _searchController.text = getLocation.currentAddress;
+        locationController.text = getLocation.currentAddress;
       } else {
-        getLocation.getSuggestions(_searchController.text);
+        getLocation.getSuggestions(locationController.text);
       }
     });
   }
@@ -86,7 +95,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     addressNameController.dispose();
     businessNameController.dispose();
     categoryNameController.dispose();
-    _searchController.dispose();
+    locationController.dispose();
 
     // TODO: implement dispose
     super.dispose();
@@ -94,24 +103,15 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   Widget build(BuildContext mainContext) {
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
+    width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 8.0),
-      //     child: IconButton(
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios,
-      //           color: CustomColors.headingTextFontColor,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.of(mainContext).pop();
-      //         }),
-      //   ),
-      //   backgroundColor: CustomColors.appBarColor,
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -128,7 +128,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .3,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * .3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -161,7 +164,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * .7,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * .7,
                       child: ListView(
                         shrinkWrap: true,
                         children: [
@@ -204,39 +210,25 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: IntlPhoneField(
+                                  controller: phoneNameController,
                                   dropdownIconPosition: IconPosition.trailing,
                                   flagsButtonPadding:
-                                      const EdgeInsets.only(left: 5, top: 5),
+                                  const EdgeInsets.only(left: 5, top: 5),
                                   decoration: const InputDecoration(
                                       prefixStyle:
-                                          TextStyle(color: Colors.black54),
+                                      TextStyle(color: Colors.black54),
                                       errorStyle: TextStyle(
                                           color: CustomColors
                                               .buttonBackgroundColor,
                                           leadingDistribution:
-                                              TextLeadingDistribution.even),
+                                          TextLeadingDistribution.even),
                                       contentPadding:
-                                          EdgeInsets.only(top: 17, bottom: 0),
+                                      EdgeInsets.only(top: 17, bottom: 0),
                                       hintText: 'Phone Number',
                                       fillColor: Colors.white,
                                       filled: true,
-                                      border: InputBorder.none
-
-                                      //enabledBorder: InputBorder.none,
-                                      // border: OutlineInputBorder(
-                                      //   borderRadius: BorderRadius.circular(10),
-                                      //   borderSide: const BorderSide(
-                                      //       width: 0, color: Colors.transparent),
-                                      // ),
-                                      // focusedBorder: OutlineInputBorder(
-                                      //   borderSide: BorderSide(color: Colors.transparent),
-                                      //   borderRadius: BorderRadius.circular(10),
-                                      // ),
-                                      // errorBorder: OutlineInputBorder(
-                                      //   borderSide: BorderSide(color: Colors.transparent),
-                                      //   borderRadius: BorderRadius.circular(10),
-                                      // ),
-                                      ),
+                                      border: InputBorder.none,
+                                  ),
                                   onChanged: (phone) {
                                     print(phone.completeNumber);
                                   },
@@ -248,10 +240,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   },
                                   autovalidateMode: AutovalidateMode.disabled,
                                   dropdownTextStyle:
-                                      TextStyle(color: Colors.black54),
+                                  TextStyle(color: Colors.black54),
                                   pickerDialogStyle: PickerDialogStyle(
                                       countryCodeStyle:
-                                          TextStyle(color: Colors.black54)),
+                                      TextStyle(color: Colors.black54)),
                                 ),
                               ),
                             ),
@@ -277,9 +269,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                       context: mainContext,
                                       child: ListView.builder(
                                         itemCount:
-                                            Categories.categoryList.length,
+                                        Categories.categoryList.length,
                                         dragStartBehavior:
-                                            DragStartBehavior.start,
+                                        DragStartBehavior.start,
                                         physics: const BouncingScrollPhysics(),
                                         itemExtent: 50.0,
                                         itemBuilder: (context, index) {
@@ -292,16 +284,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                             child: ListTile(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
+                                                  BorderRadius.circular(
+                                                      20)),
                                               title: Text(Categories
                                                   .categoryList[index]),
                                               tileColor: Colors.white70,
                                               onTap: () {
                                                 setState(() {
                                                   categoryNameController.text =
-                                                      Categories
-                                                          .categoryList[index];
+                                                  Categories
+                                                      .categoryList[index];
                                                   Navigator.pop(context);
                                                 });
                                               },
@@ -325,52 +317,53 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                 children: [
                                   getLocation.isSearching
                                       ? Consumer<LocationPicker>(
-                                          builder: (context, value, child) =>
-                                              ListView.builder(
-                                                  itemCount:
-                                                      value.placesList.length,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                        title: Text(
-                                                          value.placesList[
-                                                                  index]
-                                                              ['description'],
-                                                        ),
-                                                        //     tileColor: Colors.white70,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        15)),
-                                                        onTap: () async {
-                                                          _searchController
-                                                                  .text =
-                                                              value.placesList[
-                                                                      index][
-                                                                  'description'];
+                                    builder: (context, value, child) =>
+                                        ListView.builder(
+                                            itemCount:
+                                            value.placesList.length,
+                                            shrinkWrap: true,
+                                            physics:
+                                            const NeverScrollableScrollPhysics(),
+                                            itemBuilder:
+                                                (context, index) {
+                                              return ListTile(
+                                                  title: Text(
+                                                    value.placesList[
+                                                    index]
+                                                    ['description'],
+                                                  ),
+                                                  //     tileColor: Colors.white70,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          15)),
+                                                  onTap: () async {
+                                                    locationController
+                                                        .text =
+                                                    value.placesList[
+                                                    index][
+                                                    'description'];
 
-                                                          value.isSearching =
-                                                              false;
-                                                          value.placesList = [];
-                                                          FocusScopeNode
-                                                              currentFocus =
-                                                              FocusScope.of(
-                                                                  context);
+                                                    value.isSearching =
+                                                    false;
+                                                    value.placesList = [];
+                                                    FocusScopeNode
+                                                    currentFocus =
+                                                    FocusScope.of(
+                                                        context);
 
-                                                          if (!currentFocus
-                                                              .hasPrimaryFocus) {
-                                                            currentFocus
-                                                                .unfocus();
-                                                          }
-                                                          print(
-                                                              '_searchController.text ==${_searchController.text}/////////');
-                                                        });
-                                                  }),
-                                        )
+                                                    if (!currentFocus
+                                                        .hasPrimaryFocus) {
+                                                      currentFocus
+                                                          .unfocus();
+                                                    }
+                                                    print(
+                                                        '_searchController.text ==${locationController
+                                                            .text}/////////');
+                                                  });
+                                            }),
+                                  )
                                       : const SizedBox(),
                                   CustomWidget.customTextField3(
                                       onChanged: (value) async {
@@ -387,36 +380,64 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                         //           .2));
                                         // }
                                       },
-                                      onTap: () => getLocation
-                                          .getCurrentPosition(context),
+                                      onTap: () =>
+                                          getLocation
+                                              .getCurrentPosition(context),
                                       titleName: 'Location',
                                       maxLines: 2,
                                       inputType: TextInputType.multiline,
-                                      // onTap: () {
-                                      //
-                                      //
-                                      // },
-                                      controller: _searchController,
+
+                                      controller: locationController,
                                       context: mainContext),
                                 ],
                               )),
                           GestureDetector(
                             onTap: () async {
-                              if (widget.status == Strings.serviceProvider) {
-                                Navigator.push(
-                                    mainContext,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ServiceProviderDashBoard(),
-                                    ));
+                              print(phoneNameController.text.toString());
+                              if (firstNameController.text
+                                  .toString()
+                                  .length != 0
+                                  && lastNameController.text
+                                      .toString()
+                                      .length != 0
+                                  && phoneNameController.text
+                                      .toString()
+                                      .length != 0
+                                  && businessNameController.text
+                                      .toString()
+                                      .length != 0
+                                  && categoryNameController.text
+                                      .toString()
+                                      .length != 0
+                                  && locationController.text
+                                      .toString()
+                                      .length != 0
+                              ) {
+                                var personalInfo = PersonalLoginInfo(
+                                    firstName: firstNameController.text
+                                        .toString(),
+                                    lastName: lastNameController.text
+                                        .toString(),
+                                    number: phoneNameController.text.toString(),
+                                    business: businessNameController.text
+                                        .toString(),
+                                    category: categoryNameController.text
+                                        .toString(),
+                                    location: locationController.text
+                                        .toString());
+                                collectionInfo.doc(FirebaseAuth.instance.currentUser!.uid.toString()).set(personalInfo.toMap());
+                                if (widget.status == Strings.serviceProvider) {
+
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ServiceProviderDashBoard(),), (route) => false);
+                                } else {
+
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>  BottomNavigationBarForUser(
+                                      status: widget.status),), (route) => false);
+
+                                }
                               } else {
-                                Navigator.push(
-                                    mainContext,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BottomNavigationBarForUser(
-                                              status: widget.status),
-                                    ));
+                                ShowCustomToast(
+                                    msg: "All Field Must Be Filled");
                               }
                             },
                             child: Padding(
@@ -427,15 +448,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   Container(
                                       alignment: Alignment.center,
                                       height: 50,
-                                      width: MediaQuery.of(mainContext)
-                                              .size
-                                              .width *
+                                      width: MediaQuery
+                                          .of(mainContext)
+                                          .size
+                                          .width *
                                           0.5,
                                       decoration: BoxDecoration(
                                           color: CustomColors
                                               .buttonBackgroundColor,
                                           borderRadius:
-                                              BorderRadius.circular(50),
+                                          BorderRadius.circular(50),
                                           boxShadow: [
                                             BoxShadow(
                                                 color: Colors.black

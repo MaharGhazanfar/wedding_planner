@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
@@ -21,20 +22,6 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   // elevation: 2,
-      //   title: const Text(
-      //     'Business',
-      //     style: TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      //   backgroundColor: Colors.transparent,
-      //   actions: const [
-      //     Padding(
-      //       padding: EdgeInsets.only(right: 8.0),
-      //       child: Icon(Icons.notifications_sharp),
-      //     )
-      //   ],
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -167,24 +154,29 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                       color: CustomColors.backGroundColor)),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 16.0),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.edit,
-                                  size: 20,
-                                  color: CustomColors.backGroundColor,
-                                ),
-                                const Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    'Edit',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14),
+                          InkWell(
+                            onTap: (){
+                              FirebaseAuth.instance.signOut();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    size: 20,
+                                    color: CustomColors.backGroundColor,
                                   ),
-                                ),
-                              ],
+                                  const Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Edit',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         ],

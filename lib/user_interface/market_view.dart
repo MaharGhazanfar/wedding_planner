@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
@@ -66,7 +67,9 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseAuth.instance.signOut();
+                                },
                                 color: CustomColors.backGroundColor,
                                 icon: Icon(CupertinoIcons.color_filter),
                               ),

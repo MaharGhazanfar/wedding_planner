@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 
+import '../../user_interface/bottom_navigationBar_screen.dart';
+
 class LoginPage extends StatefulWidget {
-  String? status;
+  final String status;
 
   LoginPage({Key? key, required this.status}) : super(key: key);
 
@@ -14,8 +18,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var globalKey = GlobalKey<FormFieldState>();
-  final TextEditingController _emailController = TextEditingController();
 
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -68,8 +72,6 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: CustomWidget.customTextField3(
-                                // validate: (value) =>
-                                //     ModelValidation.gmailValidation(value!),
                                 controller: _emailController,
                                 titleName: 'Email',
                                 context: context),
@@ -79,9 +81,6 @@ class _LoginPageState extends State<LoginPage> {
                                 top: 8,
                               ),
                               child: CustomWidget.customTextField3(
-                                  // validate: (value) =>
-                                  //     ModelValidation.passwordValidation(
-                                  //         value!),
                                   controller: _passwordController,
                                   suffix: const Padding(
                                     padding: EdgeInsets.only(right: 16.0),
@@ -112,35 +111,50 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(top: 4.0),
                             child: InkWell(
                               onTap: () async {
-                                if (widget.status == Strings.serviceProvider) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ServiceProviderDashBoard(),
-                                      ));
-                                } else if (widget.status ==
-                                    Strings.serviceUser) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ServiceProviderDashBoard(),
-                                      ));
-                                } else if (widget.status == Strings.employee) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ServiceProviderDashBoard(),
-                                      ));
+                                if (_emailController.text.toString().length !=
+                                        0 &&
+                                    _passwordController.text
+                                            .toString()
+                                            .length !=
+                                        0) {
+                                  if (_emailController.text
+                                      .toString()
+                                      .contains('@gmail.com')) {
+                                    String status = await signInWithEmail(
+                                        password:
+                                            _passwordController.text.toString(),
+                                        email:
+                                            _emailController.text.toString());
+                                    if (status == 'Login Successful') {
+                                      ShowCustomToast(msg: status);
+                                      if (widget.status ==
+                                          Strings.serviceProvider) {
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ServiceProviderDashBoard(),
+                                            ),
+                                            (route) => false);
+                                      } else if (widget.status ==
+                                          Strings.serviceUser) {
+                                        Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomNavigationBarForUser(
+                                                      status: widget.status,
+                                                    )),
+                                            (route) => false);
+                                      }
+                                    } else {
+                                      ShowCustomToast(msg: status);
+                                    }
+                                  } else {
+                                    ShowCustomToast(msg: 'inValid Email');
+                                  }
                                 } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return SizedBox();
-                                    },
-                                  );
+                                  ShowCustomToast(msg: 'Field Must BE Filled');
                                 }
                               },
                               child: Container(
@@ -202,13 +216,13 @@ class _LoginPageState extends State<LoginPage> {
                                   ]),
                               child: InkWell(
                                 onTap: () async {
-                                  // await LoginProviders.signInWithGoogle();
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           BottomNavigationBarForDating(),
-                                  //     ));
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            PhoneLoginPage(status: widget.status, signFor: 'login'),
+                                      ));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -297,17 +311,19 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-// TextFormField(
-// decoration: const InputDecoration(
-// enabledBorder: UnderlineInputBorder(
-// borderSide: BorderSide(
-// color: CustomColors.textFontColor,
-// width: 1)),
-// labelText: 'Email',
-// labelStyle: TextStyle(
-// color: CustomColors.textFontColor),
-// prefixIcon: Icon(
-// Icons.person,
-// color: CustomColors.textFontColor,
-// )),
-// ),
+
+Future<String> signInWithEmail(
+    {required String password, required String email}) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    return 'Login Successful';
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      return 'No user found for that email';
+    } else if (e.code == 'wrong-password') {
+      return 'Wrong password provided for that user';
+    }
+  }
+  return 'SomeThing Went Wrong';
+}

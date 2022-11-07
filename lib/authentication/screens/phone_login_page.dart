@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:wedding_planner/authentication/screens/otp_screen.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class PhoneLoginPage extends StatefulWidget {
   final String status;
-  const PhoneLoginPage({Key? key, required this.status}) : super(key: key);
+  final String signFor;
+  const PhoneLoginPage({Key? key, required this.status, required this.signFor}) : super(key: key);
 
   @override
   State<PhoneLoginPage> createState() => _PhoneLoginPageState();
@@ -16,6 +18,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   late TextEditingController phoneController;
   GlobalKey globalKey = GlobalKey<FormFieldState>();
   double? width;
+  String number = '';
   double? height;
 
   @override
@@ -35,21 +38,6 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 8.0),
-      //     child: IconButton(
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios,
-      //           color: CustomColors.headingTextFontColor,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         }),
-      //   ),
-      //   backgroundColor: CustomColors.appBarColor,
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -114,15 +102,12 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: IntlPhoneField(
+                            controller: phoneController,
                             dropdownIconPosition: IconPosition.trailing,
                             flagsButtonPadding:
                                 EdgeInsets.only(left: 5, top: 5),
                             decoration: const InputDecoration(
                                 prefixStyle: TextStyle(color: Colors.black54),
-                                //labelStyle: TextStyle(color: Colors.black),
-                                // labelStyle: TextStyle(color: Colors.red),
-                                // floatingLabelStyle:
-                                //     TextStyle(color: Colors.yellow),
 
                                 errorStyle: TextStyle(
                                     color: Colors.red,
@@ -134,24 +119,10 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                 fillColor: Colors.white,
                                 filled: true,
                                 border: InputBorder.none
-
-                                //enabledBorder: InputBorder.none,
-                                // border: OutlineInputBorder(
-                                //   borderRadius: BorderRadius.circular(10),
-                                //   borderSide: const BorderSide(
-                                //       width: 0, color: Colors.transparent),
-                                // ),
-                                // focusedBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.transparent),
-                                //   borderRadius: BorderRadius.circular(10),
-                                // ),
-                                // errorBorder: OutlineInputBorder(
-                                //   borderSide: BorderSide(color: Colors.transparent),
-                                //   borderRadius: BorderRadius.circular(10),
-                                // ),
                                 ),
                             onChanged: (phone) {
                               print(phone.completeNumber);
+                              number = phone.completeNumber;
                             },
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.black54),
@@ -170,12 +141,13 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                         padding: const EdgeInsets.only(top: 24.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      PersonalInfoPage(status: widget.status),
-                                ));
+                            if(phoneController.text.toString().length != 0){
+
+                              phoneAuthentication(number: number,signFor: widget.signFor, context: context, status: widget.status);
+                            }else{
+                              ShowCustomToast(msg: 'Field Must Be Filled');
+                            }
+
                           },
                           child: Container(
                               alignment: Alignment.center,
@@ -194,7 +166,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                         spreadRadius: 3,
                                         blurRadius: 1),
                                   ]),
-                              child: Text('Create Account',
+                              child: Text( widget.signFor == 'login' ?  'Login Account' : 'Create Account',
                                   style:
                                       ButtonsStyle.buttonTextStyle(context))),
                         ),
@@ -210,3 +182,5 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
     );
   }
 }
+
+
