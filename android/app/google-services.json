@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "860975537168",
+    "project_id": "mayaring",
+    "storage_bucket": "mayaring.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860975537168:android:bf3a2a286df6f01180be95",
+        "android_client_info": {
+          "package_name": "com.org.nimanthaliyan.wedding_planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860975537168-1nkj26cd3irsscq7aor5lo2ids150u37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4homOcsvgQTQLKxPM8gNzkmFQnNPTlVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860975537168-1nkj26cd3irsscq7aor5lo2ids150u37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
