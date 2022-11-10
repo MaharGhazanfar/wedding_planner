@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
+import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
 import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
@@ -19,6 +23,16 @@ class ServiceProviderDashBoard extends StatefulWidget {
 }
 
 class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
+  late final CollectionReference providerCollectionReference;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('collection data///////////////////////////////');
+    providerCollectionReference = DBHandler.personalInfoCollectionForProvider();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,196 +46,204 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
           ListView(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.32,
+                height: DeviceOrientation == DeviceOrientation.portraitUp
+                    ? MediaQuery.of(context).size.height * 0.35
+                    : 250,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50))),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
+                child: StreamBuilder<DocumentSnapshot>(
+                  stream: providerCollectionReference
+                      .doc(DBHandler.user!.uid.toString())
+                      .snapshots(),
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: const Text('Something went wrong'));
+                    }
+                    ;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      Map<String, dynamic> doc =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      print(
+                          '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()};;;;;;;;;;;');
+                      return Column(
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: CustomColors.backGroundColor,
-                              )),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              'Business',
-                              style: TextStyle(
-                                  color: CustomColors.backGroundColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
+                            padding: const EdgeInsets.all(4.0),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: CustomColors.backGroundColor,
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: Text(
+                                    doc[ModelPersonalLoginInfo.businessKey],
+                                    style: TextStyle(
+                                        color: CustomColors.backGroundColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => BlogsPage(),
+                                          ));
+                                    },
+                                    icon: const Icon(
+                                      Icons.markunread_mailbox_outlined,
+                                      color: CustomColors.yellowIconsColor,
+                                    )),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.notifications_sharp,
+                                      color: CustomColors.yellowIconsColor,
+                                    ))
+                              ],
                             ),
                           ),
-                          const Spacer(),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => BlogsPage(),
-                                    ));
-                              },
-                              icon: const Icon(
-                                Icons.markunread_mailbox_outlined,
-                                color: CustomColors.yellowIconsColor,
-                              )),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.notifications_sharp,
-                                color: CustomColors.yellowIconsColor,
-                              ))
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: const CircleAvatar(
-                            radius: 28,
-                            backgroundColor: CustomColors.buttonBackgroundColor,
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 25,
-                              child: Text(
-                                'MI',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: CustomColors.buttonBackgroundColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            'Muhammad Imran',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.backGroundColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Column(
-                    //   //mainAxisAlignment: MainAxisAlignment.end,
-                    //   crossAxisAlignment: CrossAxisAlignment.end,
-                    //   children: [
-                    //     Icon(
-                    //       Icons.edit,
-                    //       size: 20,
-                    //       color: CustomColors.backGroundColor,
-                    //     ),
-                    //     const Align(
-                    //       alignment: Alignment.topRight,
-                    //       child: Text(
-                    //         'Edit',
-                    //         style: TextStyle(color: Colors.white, fontSize: 14),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
                           Row(
                             children: [
-                              Icon(
-                                Icons.mail,
-                                color: CustomColors.backGroundColor,
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Text('nimanth...@gmail.com',
-                                  style: TextStyle(
-                                      //fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: CustomColors.backGroundColor)),
-                            ],
-                          ),
-                          InkWell(
-                            onTap: (){
-                              FirebaseAuth.instance.signOut();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.edit,
-                                    size: 20,
-                                    color: CustomColors.backGroundColor,
-                                  ),
-                                  const Align(
-                                    alignment: Alignment.topRight,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: CircleAvatar(
+                                  radius: 28,
+                                  backgroundColor:
+                                      CustomColors.buttonBackgroundColor,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 25,
                                     child: Text(
-                                      'Edit',
+                                      '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
+                                      '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 14),
+                                          fontWeight: FontWeight.bold,
+                                          color: CustomColors
+                                              .buttonBackgroundColor),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.backGroundColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mail,
+                                      color: CustomColors.backGroundColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(DBHandler.user!.email!,
+                                        style: TextStyle(
+                                            //fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                CustomColors.backGroundColor)),
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    FirebaseAuth.instance.signOut();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 16.0),
+                                    child: Column(
+                                      children: [
+                                        Icon(
+                                          Icons.edit,
+                                          size: 20,
+                                          color: CustomColors.backGroundColor,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                            'Edit',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, top: 6),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.phone_callback_outlined,
+                                  color: CustomColors.backGroundColor,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Text(doc[ModelPersonalLoginInfo.numberKey],
+                                    style: TextStyle(
+                                        //fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: CustomColors.backGroundColor))
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, top: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: CustomColors.backGroundColor,
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(doc[ModelPersonalLoginInfo.locationKey],
+                                    style: TextStyle(
+                                        //fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: CustomColors.backGroundColor))
+                              ],
                             ),
                           )
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, top: 6),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.phone_callback_outlined,
-                            color: CustomColors.backGroundColor,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Text('+932100000000',
-                              style: TextStyle(
-                                  //fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.backGroundColor))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, top: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: CustomColors.backGroundColor,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text('Bahawalpur Pakistan',
-                              style: TextStyle(
-                                  //fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.backGroundColor))
-                        ],
-                      ),
-                    )
-                  ],
+                      );
+                    }
+                  },
                 ),
               ),
               const SizedBox(
@@ -267,7 +289,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const VideoPlayerScreen(),
+                              builder: (context) => VideoPlayerScreen(),
                             ));
                       }),
                 ],
