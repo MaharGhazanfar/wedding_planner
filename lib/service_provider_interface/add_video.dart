@@ -157,292 +157,136 @@
 // }
 
 import 'dart:io';
+import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wedding_planner/modelClasses/model_services_photos_videos.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 
-import 'aspect_ratio_of_video.dart';
+import '../repository/utils/custom_widgets.dart';
+import 'video_item.dart';
 
-class VideoPlayerScreen extends StatefulWidget {
-  const VideoPlayerScreen({Key? key}) : super(key: key);
+class VideoPlayerScreen extends StatelessWidget {
+  VideoPlayerScreen({Key? key}) : super(key: key);
 
-  @override
-  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
-}
+//   @override
+//   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+// }
 
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  VideoPlayerController? _controller;
+// class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  final bool isLoading = false;
+  final ImagePicker _picker = ImagePicker();
   List<XFile> videosCollection = [];
 
-  bool isVideo = false;
-  VideoPlayerController? _toBeDisposed;
-  String? _retrieveDataError;
-  final ImagePicker _picker = ImagePicker();
+  // late final firebaseStorageRef;
+  // late final CollectionReference videosDataCollection;
+  final videosDataCollection = DBHandler.videosCollection();
+  final firebaseStorageRef = FirebaseStorage.instance.ref();
 
-  Future<void> _disposeVideoController() async {
-    if (_toBeDisposed != null) {
-      await _toBeDisposed!.dispose();
-    }
-    _toBeDisposed = _controller;
-    _controller = null;
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   videosDataCollection = DBHandler.videosCollection();
+  //   firebaseStorageRef = FirebaseStorage.instance.ref();
+  // }
 
-  Future<void> _playVideo(XFile? file) async {
-    if (file != null && mounted) {
-      await _disposeVideoController();
-      late VideoPlayerController controller;
-      if (kIsWeb) {
-        controller = VideoPlayerController.network(file.path);
-      } else {
-        controller = VideoPlayerController.file(File(file.path));
-      }
-      _controller = controller;
-      const double volume = kIsWeb ? 0.0 : 1.0;
-      await controller.setVolume(volume);
-      await controller.initialize();
-      await controller.setLooping(true);
-      await controller.play();
-      setState(() {});
-    }
-  }
+  Future<String> uploadVideos(File imageFile) async {
+    var random = Random();
+    var upload = firebaseStorageRef
+        .child('ServicesVideos/${random.nextInt(900000) + 10000000}.MayaRing');
 
-  Widget _previewVideo() {
-    final Text? retrieveError = _getRetrieveErrorWidget();
-    if (retrieveError != null) {
-      return retrieveError;
-    }
-    if (_controller == null) {
-      return const Text(
-        'There are no videos in your collection! \n Please pick from your gallery .',
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: CustomColors.buttonBackgroundColor),
-        textAlign: TextAlign.center,
-      );
-    }
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: AspectRatioVideo(_controller),
-    );
-  }
-
-  Future<void> retrieveLostData() async {
-    final LostDataResponse response = await _picker.retrieveLostData();
-    if (response.isEmpty) {
-      return;
-    }
-    if (response.file != null) {
-      if (response.type == RetrieveType.video) {
-        isVideo = true;
-        await _playVideo(response.file);
-      }
-    } else {
-      _retrieveDataError = response.exception!.code;
-    }
-  }
-
-  Text? _getRetrieveErrorWidget() {
-    if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError!);
-      _retrieveDataError = null;
-      return result;
-    }
-    return null;
-  }
-
-  @override
-  void deactivate() {
-    if (_controller != null) {
-      _controller!.setVolume(0.0);
-      _controller!.pause();
-    }
-    super.deactivate();
+    await upload.putFile(imageFile);
+    return upload.getDownloadURL();
   }
 
   Future pickVideo() async {
     try {
-      final pickedVideo =
-          await ImagePicker().pickVideo(source: ImageSource.gallery);
+      final pickedVideo = await _picker.pickVideo(source: ImageSource.gallery);
+
       if (pickedVideo == null) return;
-      await _playVideo(pickedVideo);
-      setState(() => videosCollection.add(pickedVideo));
+      var videoUrl = await uploadVideos(File(pickedVideo.path));
+      var modelServicesVideos = ModelServicesPhotosAndVideos(url: videoUrl);
+      videosDataCollection.doc().set(modelServicesVideos.toMap());
     } on PlatformException catch (e) {
-      print('Failed to pick video: $e');
+      ShowCustomToast(msg: 'Failed to pick image: $e');
     }
   }
 
   @override
-  void dispose() {
-    _disposeVideoController();
-    //_controller!.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print(
-        'dskfhasdjkgfasdhkgasdhjf///////////////${videosCollection}/////////////');
-    return Container(
-      // decoration: BoxDecoration(
-      //   gradient: RadialGradient(
-      //       colors: [Colors.tealAccent.shade400, Colors.tealAccent.shade200],
-      //       // begin: FractionalOffset(0.0, 0.0),
-      //       // end: FractionalOffset(1.0, 0.0),
-      //       radius: 0.5,
-      //       focalRadius: 0.75,
-      //       focal: Alignment(0.7, -0.7),
-      //       center: Alignment.topRight,
-      //       stops: const [
-      //         0.5,
-      //         1.0,
-      //       ],
-      //       tileMode: TileMode.clamp),
-      // ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-            child: Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Card(
-                color: Colors.white,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 20.0, left: 10, right: 10),
-                  child: FutureBuilder<void>(
-                    future: retrieveLostData(),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<void> snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: CustomColors.buttonBackgroundColor,
-                          ));
-                        case ConnectionState.done:
-                          return ListView.builder(
-                            itemCount: 1,
-                            itemBuilder: (context, index) {
-                              //  _playVideo(videosCollection[index]);
-                              return _previewVideo();
-                            },
-                          );
-                        default:
-                          if (snapshot.hasError) {
-                            return Text(
-                              'Pick image/video error: ${snapshot.error}}',
-                              textAlign: TextAlign.center,
-                            );
-                          } else {
-                            return const Center(
-                              child: Text(
-                                'There are no videos in your collection! Please pick from your gallery .',
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }
-                      }
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Card(
+          color: Colors.white,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+          child: StreamBuilder<QuerySnapshot>(
+              stream: videosDataCollection.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: const Text('Something went wrong'),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> doc = snapshot.data!.docs[index]
+                          .data() as Map<String, dynamic>;
+
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 300,
+                          width: double.infinity,
+                          color: Colors.black,
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: VideoItem(
+                                videoPlayerController:
+                                    VideoPlayerController.network(doc[
+                                        ModelServicesPhotosAndVideos.urlKey]),
+                                looping: false,
+                                autoplay: false),
+                          ),
+                        ),
+                      );
                     },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        )),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: CustomColors.buttonBackgroundColor,
-          elevation: 5,
-          onPressed: () {
+                  );
+                }
+              })),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: CustomColors.buttonBackgroundColor,
+        elevation: 5,
+        splashColor: Colors.white70,
+        onPressed: () async {
+          var status = await Permission.storage.status;
+
+          if (status.isGranted) {
             pickVideo();
-          },
-          // icon
-          child: const Icon(
-            //_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-            Icons.video_collection_rounded,
-            color: CustomColors.buttonTextFontColor,
-            size: 30,
-          ),
+          } else if (await Permission.storage.request().isGranted) {
+            pickVideo();
+          } else {
+            ShowCustomToast(msg: 'Permission denied');
+          }
+        },
+        child: const Icon(
+          Icons.video_collection_rounded,
+          color: CustomColors.buttonTextFontColor,
+          size: 30,
         ),
       ),
     );
   }
-
-// Widget build(BuildContext context) {
-//   print(
-//       'dskfhasdjkgfasdhkgasdhjf///////////////${videosCollection}/////////////');
-//   return Scaffold(
-//     appBar: AppBar(
-//       title: const Text('GeeksForGeeks'),
-//       backgroundColor: Colors.green,
-//     ),
-//     body: videosCollection.isNotEmpty
-//         ? ListView.builder(
-//       itemCount: videosCollection.length,
-//       itemBuilder: (context, index) {
-//         _controller =
-//             VideoPlayerController.file(videosCollection[index]);
-//         _controller!.initialize();
-//         _controller!.setLooping(true);
-//         _controller!.play();
-//         return AspectRatio(
-//           aspectRatio: _controller!.value.aspectRatio,
-//           child: VideoPlayer(_controller!),
-//         );
-//       },
-//     )
-//         : const Center(child: Text('No Videos available yet ')),
-//     floatingActionButton: Column(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       children: [
-//         FloatingActionButton(
-//           onPressed: () {
-//             // setState(() {
-//             //   // pause
-//             //   if (_controller.value.isPlaying) {
-//             //     _controller.pause();
-//             //   } else {
-//             //     // play
-//             //     _controller.play();
-//             //   }
-//             // });
-//             pickVideo();
-//           },
-//           // icon
-//           child: const Icon(
-//             //_controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-//               Icons.video_collection_rounded),
-//         ),
-//         // FloatingActionButton(
-//         //   onPressed: () {
-//         //     setState(() {
-//         //       // pause
-//         //       if (_controller!.value.isPlaying) {
-//         //         _controller!.pause();
-//         //       } else {
-//         //         // play
-//         //         _controller!.play();
-//         //       }
-//         //     });
-//         //   },
-//         //   // icon
-//         //   child: Icon(
-//         //     _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-//         //   ),
-//         // ),
-//       ],
-//     ),
-//   );
-// }
 }
