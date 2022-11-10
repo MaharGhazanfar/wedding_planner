@@ -1,4 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/my_custom_card.dart';
 import 'package:wedding_planner/service_provider_interface/package_details.dart';
@@ -15,21 +19,6 @@ class _ProviderPackagesState extends State<ProviderPackages> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   elevation: 1,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 8.0),
-      //     child: IconButton(
-      //         icon: Icon(
-      //           Icons.arrow_back_ios,
-      //           color: CustomColors.backGroundColor,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         }),
-      //   ),
-      //   backgroundColor: CustomColors.buttonBackgroundColor,
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -95,95 +84,201 @@ class _ProviderPackagesState extends State<ProviderPackages> {
 
                 Expanded(
                   flex: 7,
-                  child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      return MyCustomCard.customCard(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                flex: 4,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  elevation: 2,
-                                  color: Colors.white,
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.40,
-                                    decoration: BoxDecoration(
-                                        //color: Colors.blue,
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: const Icon(
-                                      Icons.camera_alt,
-                                      size: 100,
-                                      color: CustomColors.yellowIconsColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 6,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 16.0, left: 6.0, right: 6.0),
-                                  child: Column(
-                                    children: [
-                                      const Text(
-                                        'Offer Name',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: CustomColors.textFontColor),
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection(Strings.serviceProvider)
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection('Packages')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return MyCustomCard.customCard(
+                                height: 150,
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      flex: 4,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        elevation: 2,
+                                        color: Colors.white,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.40,
+                                          decoration: BoxDecoration(
+                                              //color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: CachedNetworkImage(
+                                              imageUrl:
+                                                  snapshot.data!.docs[index][
+                                                      ModelServicePackages
+                                                          .imageURLKey],
+                                              alignment: Alignment.center,
+                                              imageBuilder: (context,
+                                                      imageProvider) =>
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      image: DecorationImage(
+                                                        image: imageProvider,
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    ),
+                                                  ),
+                                              placeholder: (context, url) =>
+                                                  Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Container()),
+                                        ),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 16.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: const [
+                                    ),
+                                    Flexible(
+                                      flex: 6,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 16.0, left: 6.0, right: 6.0),
+                                        child: Column(
+                                          children: [
                                             Text(
-                                              'Offer Price',
+                                              snapshot.data!.docs[index][
+                                                  ModelServicePackages
+                                                      .offerNameKey],
                                               style: TextStyle(
-                                                  // fontSize: 20,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: CustomColors
                                                       .textFontColor),
                                             ),
-                                            Text(
-                                              'Discount %',
-                                              style: TextStyle(
-                                                  // fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: CustomColors
-                                                      .textFontColor),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 16.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+
+                                                  snapshot
+                                                      .data!
+                                                      .docs[index][
+                                                  ModelServicePackages
+                                                      .discountKey] != 0 ?
+                                                  RichText(
+                                                    text:  TextSpan(children: [
+                                                      TextSpan(
+
+                                                          text:'${snapshot
+                                                              .data!
+                                                              .docs[index][
+                                                          ModelServicePackages
+                                                              .priceKey]
+                                                              .toString()}' ,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                      TextSpan(
+                                                          text:'  ${(snapshot
+                                                              .data!
+                                                              .docs[index][
+                                                          ModelServicePackages
+                                                              .discountKey] / 100) * snapshot
+                                                              .data!
+                                                              .docs[index][
+                                                          ModelServicePackages
+                                                              .priceKey]
+                                                              }',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                    ]),
+                                                  ) :
+                                                  Text(
+                                                    snapshot.data!.docs[index][ModelServicePackages.priceKey].toString(),
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                        color: CustomColors
+                                                            .textFontColor),
+                                                  ),
+                                                  snapshot
+                                                      .data!
+                                                      .docs[index][
+                                                  ModelServicePackages
+                                                      .discountKey] != 0 ?
+                                                  Text(
+                                                    '${snapshot
+                                                        .data!
+                                                        .docs[index][
+                                                            ModelServicePackages
+                                                                .discountKey]
+                                                        .toString()}%',
+                                                    style: TextStyle(
+                                                        // fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: CustomColors
+                                                            .textFontColor),
+                                                  ) : const SizedBox()
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 20.0),
+                                              child: Text(
+                                                snapshot
+                                                    .data!
+                                                    .docs[index][
+                                                        ModelServicePackages
+                                                            .descriptionKey]
+                                                    .toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: CustomColors
+                                                        .textFontColor),
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 20.0),
-                                        child: Text(
-                                          'Description',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color:
-                                                  CustomColors.textFontColor),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ));
+                                    )
+                                  ],
+                                ));
+                          },
+                        );
+                      } else {
+                        return Center(child: const CircularProgressIndicator());
+                      }
                     },
                   ),
                 ),

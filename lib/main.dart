@@ -20,7 +20,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  PersonalLoginInfo.prefs = await SharedPreferences.getInstance();
+  ModelPersonalLoginInfo.prefs = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -65,13 +65,12 @@ class HomePage extends StatelessWidget {
             .authStateChanges(),
         builder: (context, snapshot) {
           if(snapshot.hasData){
-            if( PersonalLoginInfo.prefs!.getString('service') == Strings.serviceProvider){
+            if( ModelPersonalLoginInfo.prefs!.getString('service') == Strings.serviceProvider){
               return ServiceProviderDashBoard();
             }else{
               return BottomNavigationBarForUser(status: Strings.serviceUser);
             }
           }else{
-
             return UserSelectionPage();
           }
         },

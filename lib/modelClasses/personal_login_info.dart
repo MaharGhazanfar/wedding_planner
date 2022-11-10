@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PersonalLoginInfo {
+class ModelPersonalLoginInfo {
   late String _firstName;
   late String _lastName;
   late String _number;
@@ -17,7 +17,7 @@ class PersonalLoginInfo {
   static const categoryKey = 'categoryKey';
   static const locationKey = 'locationKey';
 
-  PersonalLoginInfo({
+  ModelPersonalLoginInfo({
     required String firstName,
     required String lastName,
     required String number,

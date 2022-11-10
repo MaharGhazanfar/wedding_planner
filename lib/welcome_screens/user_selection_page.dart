@@ -66,7 +66,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             onTap: () {
 
 
-                              PersonalLoginInfo.prefs!.setString('service', Strings.serviceProvider);
+                              ModelPersonalLoginInfo.prefs!.setString('service', Strings.serviceProvider);
                               setState(() {
                                 borderEnabled1 = true;
                                 borderEnabled2 = false;
@@ -96,7 +96,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled2,
                             onTap: () {
-                              PersonalLoginInfo.prefs!.setString('service', Strings.serviceUser);
+                              ModelPersonalLoginInfo.prefs!.setString('service', Strings.serviceUser);
                               setState(() {
                                 borderEnabled1 = false;
                                 borderEnabled2 = true;

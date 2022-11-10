@@ -75,6 +75,9 @@ dependencies:
   fluttertoast:
   firebase_auth:
   cloud_firestore:
+  firebase_storage:
+  permission_handler:
+  cached_network_image:
 
 
 
