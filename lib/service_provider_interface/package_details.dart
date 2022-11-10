@@ -1,9 +1,16 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -15,15 +22,23 @@ class PackageDetails extends StatefulWidget {
 }
 
 class _PackageDetailsState extends State<PackageDetails> {
-  var list = ['0.0%'];
-  String? selectDiscount;
   late TextEditingController categoryNameController;
-  late TextEditingController _searchController;
+  late TextEditingController offerNameController;
+  late TextEditingController locationController;
+  late TextEditingController discountController;
+  late TextEditingController descriptionController;
+  late TextEditingController priceController;
   late ScrollController scrollController;
-
   late LocationPicker getLocation;
-
+  File? ImagesFile;
   bool isSearching = false;
+  final firebaseStorage = FirebaseStorage.instance.ref();
+
+  Future<String> uploadImage() async {
+    var upload = firebaseStorage.child('Package/${DateTime.now().millisecond}');
+    await upload.putFile(ImagesFile!);
+    return upload.getDownloadURL();
+  }
 
   @override
   void initState() {
@@ -33,15 +48,19 @@ class _PackageDetailsState extends State<PackageDetails> {
     getLocation.getCurrentPosition(context);
 
     categoryNameController = TextEditingController();
-    _searchController = TextEditingController();
+    discountController = TextEditingController();
+    priceController = TextEditingController();
+    offerNameController = TextEditingController();
+    descriptionController = TextEditingController();
+    locationController = TextEditingController();
     scrollController = ScrollController();
 
-    _searchController.addListener(() {
+    locationController.addListener(() {
       if (getLocation.sessionToken == null) {
         getLocation.sessionToken = getLocation.uuid.v4();
-        _searchController.text = getLocation.currentAddress;
+        locationController.text = getLocation.currentAddress;
       } else {
-        getLocation.getSuggestions(_searchController.text);
+        getLocation.getSuggestions(locationController.text);
       }
     });
   }
@@ -49,30 +68,18 @@ class _PackageDetailsState extends State<PackageDetails> {
   @override
   void dispose() {
     categoryNameController.dispose();
-    _searchController.dispose();
+    locationController.dispose();
     scrollController.dispose();
+    priceController.dispose();
+    discountController.dispose();
+    offerNameController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: Colors.white,
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   leading: Padding(
-        //     padding: const EdgeInsets.only(left: 8.0),
-        //     child: IconButton(
-        //         icon: const Icon(
-        //           Icons.arrow_back_ios,
-        //           color: CustomColors.headingTextFontColor,
-        //         ),
-        //         onPressed: () {
-        //           Navigator.of(context).pop();
-        //         }),
-        //   ),
-        //   backgroundColor: CustomColors.appBarColor,
-        // ),
         body: SingleChildScrollView(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -86,8 +93,8 @@ class _PackageDetailsState extends State<PackageDetails> {
                   top: ScreenPading.topPading,
                   left: ScreenPading.leftPading,
                   right: ScreenPading.leftPading),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
                       padding: EdgeInsets.only(top: 8),
@@ -114,45 +121,67 @@ class _PackageDetailsState extends State<PackageDetails> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 250,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.09),
-                              offset: const Offset(
-                                0.1,
-                                1.5,
+                    padding:
+                        const EdgeInsets.only(top: 16.0, left: 4, right: 4),
+                    child: InkWell(
+                      onTap: () async {
+                        XFile? xFile = await pickImage();
+                        if (xFile != null) {
+                          ImagesFile = File(xFile.path);
+                        }
+                        setState(() {});
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 250,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.09),
+                                offset: const Offset(
+                                  0.1,
+                                  1.5,
+                                ),
+                                spreadRadius: 1,
                               ),
-                              spreadRadius: 1,
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.09),
-                              offset: const Offset(
-                                -0.1,
-                                -0.001,
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.09),
+                                offset: const Offset(
+                                  -0.1,
+                                  -0.001,
+                                ),
+                                spreadRadius: -1,
                               ),
-                              spreadRadius: -1,
-                            ),
-                          ]),
-                      child: Icon(
-                        Icons.photo_camera,
-                        size: 150,
-                        color: CustomColors.buttonBackgroundColor,
+                            ]),
+                        child: ImagesFile == null
+                            ? Icon(
+                                Icons.photo_camera,
+                                size: 150,
+                                color: CustomColors.buttonBackgroundColor,
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                    image: FileImage(ImagesFile!),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                     child: CustomWidget.customTextField3(
-                        context: context, titleName: 'OfferName'),
+                        controller: offerNameController,
+                        context: context,
+                        titleName: 'OfferName'),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                     child: CustomWidget.customTextField3(
                         onTap: () {
                           setState(() {
@@ -195,9 +224,8 @@ class _PackageDetailsState extends State<PackageDetails> {
                         context: context),
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8.0,
-                      ),
+                      padding:
+                          const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                       child: Column(
                         children: [
                           CustomWidget.customTextField3(
@@ -221,7 +249,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                               //
                               //
                               // },
-                              controller: _searchController,
+                              controller: locationController,
                               context: context),
                           isSearching
                               ? Consumer<LocationPicker>(
@@ -244,7 +272,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                                                             15)),
                                                 onTap: () async {
                                                   isSearching = false;
-                                                  _searchController.text =
+                                                  locationController.text =
                                                       value.placesList[index]
                                                           ['description'];
                                                   FocusScopeNode currentFocus =
@@ -255,7 +283,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                                                     currentFocus.unfocus();
                                                   }
                                                   print(
-                                                      '_searchController.text ==${_searchController.text}/////////');
+                                                      '_searchController.text ==${locationController.text}/////////');
                                                 });
                                           }),
                                 )
@@ -263,29 +291,38 @@ class _PackageDetailsState extends State<PackageDetails> {
                         ],
                       )),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                     child: Row(
                       children: [
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
-                                context: context, titleName: 'Price')),
+                                inputType: TextInputType.number,
+                                controller: priceController,
+                                context: context,
+                                titleName: 'Price')),
                         Spacer(),
                         Flexible(
-                          flex: 5,
-                          child: CustomWidget.dropdownButton2(
-                              items: list,
-                              context: context,
-                              titleName: 'Discount',
-                              onChanged: (value) {
-                                selectDiscount = value;
-                              }),
-                        ),
+                            flex: 5,
+                            child: CustomWidget.customTextField3(
+                                inputType: TextInputType.number,
+                                suffix: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    '%',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                controller: discountController,
+                                context: context,
+                                titleName: 'Discount')),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -308,40 +345,65 @@ class _PackageDetailsState extends State<PackageDetails> {
                               spreadRadius: -1,
                             ),
                           ]),
-                      child: const TextField(
-                        // controller: aboutController,
+                      child: TextField(
                         maxLines: 5,
-                        // /maxLength: 500,
-
-                        // autofocus: true,
-
-                        //k;expands: true,
+                        controller: descriptionController,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                            //labelText: 'Description',
-
                             contentPadding: EdgeInsets.all(10),
                             hintText: 'Describe about your offer',
-                            border: InputBorder.none
-                            //fillColor: Colors.white70,
-                            // filled: true,
-                            // hintStyle: TextStyle(color: AppColors.black),
-                            // enabledBorder: OutlineInputBorder(
-                            //     borderSide: BorderSide(
-                            //       width: 1,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(15)),
-                            // focusedBorder: OutlineInputBorder(
-                            //     borderSide: BorderSide(
-                            //       width: 1,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(15)),
-                            ),
+                            border: InputBorder.none),
                       ),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () async {},
+                    onTap: () async {
+                      //  print( FirebaseAuth.instance.currentUser!.uid);
+
+                      if (ImagesFile != null) {
+                        if (offerNameController.text.toString().length != 0 &&
+                            categoryNameController.text.toString().length !=
+                                0 &&
+                            locationController.text.toString().length != 0 &&
+                            priceController.text.toString().length != 0 &&
+                            descriptionController.text.toString().length != 0) {
+                          var imageURL = await uploadImage();
+
+                          var packagesInfo = ModelServicePackages(
+                              offerName: offerNameController.text.toString(),
+                              description:
+                                  descriptionController.text.toString(),
+                              price:
+                                  double.parse(priceController.text.toString()),
+                              discount:
+                                  discountController.text.toString().length == 0
+                                      ? 0
+                                      : double.parse(
+                                          discountController.text.toString()),
+                              category: categoryNameController.text.toString(),
+                              imageURL: imageURL,
+                              location: locationController.text.toString());
+
+                          await FirebaseFirestore.instance
+                              .collection(Strings.serviceProvider)
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection('Packages')
+                              .doc()
+                              .set(packagesInfo.toMap());
+
+                          offerNameController.clear();
+                          locationController.clear();
+                          categoryNameController.clear();
+                          priceController.clear();
+                          descriptionController.clear();
+                          Navigator.pop(context);
+                        } else {
+                          ShowCustomToast(msg: 'All Field Are Must Filled');
+                        }
+                      } else {
+                        ShowCustomToast(msg: 'Please Select Image');
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Row(
@@ -379,4 +441,21 @@ class _PackageDetailsState extends State<PackageDetails> {
       ),
     ));
   }
+}
+
+Future<XFile?> pickImage() async {
+  try {
+    if (await Permission.storage.request().isGranted) {
+      final pickedImage = await ImagePicker().pickImage(
+          source: ImageSource.gallery,
+          maxWidth: 450,
+          maxHeight: 450,
+          imageQuality: 100);
+      if (pickedImage == null) return null;
+      return pickedImage;
+    }
+  } on PlatformException catch (e) {
+    print('Failed to pick image: $e');
+  }
+  return null;
 }

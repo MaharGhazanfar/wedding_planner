@@ -14,16 +14,6 @@ class _AppointmentsState extends State<Appointments> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   elevation: 2,
-      //   centerTitle: true,
-      //   title: const Text(
-      //     'Appointments',
-      //     style: TextStyle(
-      //         fontSize: 20, fontWeight: FontWeight.bold, color: Colors.teal),
-      //   ),
-      //   backgroundColor: Colors.white,
-      // ),
       body: Stack(
         fit: StackFit.expand,
         children: [

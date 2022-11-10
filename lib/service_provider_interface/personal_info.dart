@@ -413,7 +413,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                       .toString()
                                       .length != 0
                               ) {
-                                var personalInfo = PersonalLoginInfo(
+                                var personalInfo = ModelPersonalLoginInfo(
                                     firstName: firstNameController.text
                                         .toString(),
                                     lastName: lastNameController.text

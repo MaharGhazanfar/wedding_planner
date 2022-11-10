@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -20,10 +18,6 @@ class _ImageDetailState extends State<ImageDetail> {
     //We are fetching multiple photos in this screen
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   backgroundColor: CustomColors.buttonBackgroundColor,
-      //   //title: const Text('Your Image'),
-      // ),
       body: Stack(
         children: [
           Center(
