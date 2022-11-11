@@ -133,7 +133,9 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ServiceProviderDashBoard(),
+                                                  ServiceProviderDashBoard(
+                                                status: widget.status,
+                                              ),
                                             ),
                                             (route) => false);
                                       } else if (widget.status ==
@@ -216,12 +218,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ]),
                               child: InkWell(
                                 onTap: () async {
-
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            PhoneLoginPage(status: widget.status, signFor: 'login'),
+                                        builder: (context) => PhoneLoginPage(
+                                            status: widget.status,
+                                            signFor: 'login'),
                                       ));
                                 },
                                 child: Row(

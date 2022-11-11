@@ -14,8 +14,13 @@ import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 import 'package:wedding_planner/service_provider_interface/provider_peckages.dart';
 
+import '../user_interface/profile_page.dart';
+
 class ServiceProviderDashBoard extends StatefulWidget {
-  const ServiceProviderDashBoard({Key? key}) : super(key: key);
+  final String status;
+
+  const ServiceProviderDashBoard({Key? key, required this.status})
+      : super(key: key);
 
   @override
   State<ServiceProviderDashBoard> createState() =>
@@ -24,6 +29,7 @@ class ServiceProviderDashBoard extends StatefulWidget {
 
 class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   late final CollectionReference providerCollectionReference;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -36,6 +42,137 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: CustomWidget.myCustomDrawer(
+          context: context,
+          width: MediaQuery.of(context).size.width * 0.55,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image(
+                  fit: BoxFit.fill,
+                  height: MediaQuery.of(context).size.height * 0.18,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  image: AssetImage('assets/images/Mayaring_app_logo.png'),
+                ),
+                // InkWell(
+                //   onTap: () {
+                //     CategoryBottomSheetBar.categoryBottomSheet(
+                //         context: context,
+                //         child: ListView.builder(
+                //           itemCount: Categories.categoryList.length,
+                //           dragStartBehavior: DragStartBehavior.start,
+                //           physics: const BouncingScrollPhysics(),
+                //           itemExtent: 50.0,
+                //           itemBuilder: (context, index) {
+                //             return Padding(
+                //               padding: const EdgeInsets.only(
+                //                   left: 8, right: 8, bottom: 2, top: 2),
+                //               child: ListTile(
+                //                 shape: RoundedRectangleBorder(
+                //                     borderRadius: BorderRadius.circular(20)),
+                //                 title: Text(Categories.categoryList[index]),
+                //                 tileColor: Colors.white70,
+                //                 onTap: () {
+                //                   if (widget.status == Strings.serviceUser) {
+                //                     Navigator.push(
+                //                         context,
+                //                         MaterialPageRoute(
+                //                           builder: (context) =>
+                //                               CategoriesDetails(),
+                //                         ));
+                //                   } else {
+                //                     SizedBox();
+                //                   }
+                //                 },
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //         status: widget.status);
+                //   },
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: const [
+                //       Icon(Icons.category,
+                //           color: CustomColors.buttonBackgroundColor),
+                //       Text('Categories')
+                //     ],
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 16.0),
+                //   child: InkWell(
+                //     onTap: () {
+                //       Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => const Appointments(),
+                //           ));
+                //     },
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //       children: const [
+                //         Icon(Icons.meeting_room_outlined,
+                //             color: CustomColors.buttonBackgroundColor),
+                //         Text('Appointments')
+                //       ],
+                //     ),
+                //   ),
+                // ),
+
+                InkWell(
+                  onTap: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => const MyWishList(),
+                    //     ));
+                  },
+                  child: Text(
+                    'Bookings',
+                    style: TextStyle(),
+                  ),
+                ),
+                Text('Employee Details'),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfilePage(),
+                        ));
+                  },
+                  child: Text('Update Profile'),
+                ),
+                InkWell(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                  child: Text('LogOut'),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 12.0, right: 12),
+                  child: Divider(
+                    thickness: 2,
+                  ),
+                ),
+                const Text(
+                  'RATE ON PLAY STORE',
+                ),
+                const Text('SEND US FEEDBACK'),
+                const Text('SHARE THIS APP'),
+                const Text('PRIVACY POLICY'),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                ),
+              ],
+            ),
+          )),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -78,10 +215,10 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
+                                      _scaffoldKey.currentState!.openDrawer();
                                     },
                                     icon: Icon(
-                                      Icons.arrow_back_ios,
+                                      Icons.menu,
                                       color: CustomColors.backGroundColor,
                                     )),
                                 Padding(
@@ -119,7 +256,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
+                                padding: const EdgeInsets.only(left: 4.0),
                                 child: CircleAvatar(
                                   radius: 28,
                                   backgroundColor:
@@ -151,7 +288,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
+                            padding: const EdgeInsets.only(left: 20.0, top: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -172,32 +309,32 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                                 CustomColors.backGroundColor)),
                                   ],
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    FirebaseAuth.instance.signOut();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.edit,
-                                          size: 20,
-                                          color: CustomColors.backGroundColor,
-                                        ),
-                                        const Align(
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'Edit',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                // InkWell(
+                                //   onTap: () {
+                                //     FirebaseAuth.instance.signOut();
+                                //   },
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(right: 16.0),
+                                //     child: Column(
+                                //       children: [
+                                //         Icon(
+                                //           Icons.edit,
+                                //           size: 20,
+                                //           color: CustomColors.backGroundColor,
+                                //         ),
+                                //         const Align(
+                                //           alignment: Alignment.topRight,
+                                //           child: Text(
+                                //             'Edit',
+                                //             style: TextStyle(
+                                //                 color: Colors.white,
+                                //                 fontSize: 14),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // )
                               ],
                             ),
                           ),

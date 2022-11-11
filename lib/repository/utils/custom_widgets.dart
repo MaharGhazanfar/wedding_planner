@@ -218,15 +218,15 @@ class CustomWidget {
 
   static Widget myCustomDrawer(
       {required BuildContext context,
-      double? height,
-      double? width,
+      double? height = double.infinity,
+      double? width = double.infinity,
       //Color? color,
       Widget? child}) {
     return Container(
       height: height,
       width: width,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: CustomColors.greenish,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
       ),

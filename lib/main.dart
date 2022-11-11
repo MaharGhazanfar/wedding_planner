@@ -65,7 +65,9 @@ class HomePage extends StatelessWidget {
           if (snapshot.hasData) {
             if (ModelPersonalLoginInfo.prefs!.getString('service') ==
                 Strings.serviceProvider) {
-              return ServiceProviderDashBoard();
+              return ServiceProviderDashBoard(
+                status: Strings.serviceProvider,
+              );
             } else {
               return BottomNavigationBarForUser(status: Strings.serviceUser);
             }

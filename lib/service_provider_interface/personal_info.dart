@@ -412,7 +412,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            ServiceProviderDashBoard(),
+                                            ServiceProviderDashBoard(
+                                          status: widget.status,
+                                        ),
                                       ),
                                       (route) => false);
                                 } else {
