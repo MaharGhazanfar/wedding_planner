@@ -77,7 +77,7 @@ dependencies:
   cloud_firestore:
   firebase_storage:
   cached_network_image:
-  permission_handler:ik
+  permission_handler:
 
 
 

@@ -27,4 +27,8 @@ class DBHandler {
         .doc(user!.uid)
         .collection('Videos');
   }
+
+  static CollectionReference blogsPost() {
+    return FirebaseFirestore.instance.collection(Strings.blogPost);
+  }
 }

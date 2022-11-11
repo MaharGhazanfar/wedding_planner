@@ -75,11 +75,11 @@ class CustomWidget {
     int? maxLength,
     Key? key,
     void Function(String)? onChanged,
-    TextInputType? inputType,
     List<TextInputFormatter>? inputFormatters,
     String? prefixText,
     int? maxLines = 1,
     int? minLines = 1,
+    EdgeInsetsGeometry? contentPadding = const EdgeInsets.only(left: 20),
   }) {
     return Container(
       height: 50,
@@ -115,7 +115,7 @@ class CustomWidget {
         autofocus: false,
         minLines: minLines,
         maxLines: maxLines,
-        keyboardType: inputType,
+        keyboardType: textInputType,
         maxLength: maxLength,
         obscureText: obscureText,
         cursorColor: Colors.black,
@@ -131,7 +131,7 @@ class CustomWidget {
           fillColor: Colors.white70,
           border: InputBorder.none,
           // errorBorder:  OutlineInputBorder(borderRadius:BorderRadius.circular(50),borderSide: BorderSide(width: 1,color: Colors.red)),
-          contentPadding: const EdgeInsets.only(left: 20),
+          contentPadding: contentPadding,
         ),
       ),
     );
@@ -269,12 +269,7 @@ class CustomWidget {
   }
 }
 
-
-
-
-
-
-ShowCustomToast({required String msg}){
+ShowCustomToast({required String msg}) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,

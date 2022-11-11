@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CustomColors {
   static const Color textFontColor = Colors.black54;
@@ -70,6 +69,7 @@ class Strings {
   static const String serviceProvider = 'ServiceProvider';
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
+  static const String blogPost = 'BlogPost';
 }
 
 class ScreenPading {
@@ -78,5 +78,3 @@ class ScreenPading {
   static const double rightPading = 16;
   static const double bottomPading = 16;
 }
-
-

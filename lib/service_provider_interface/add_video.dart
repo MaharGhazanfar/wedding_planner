@@ -201,7 +201,7 @@ class VideoPlayerScreen extends StatelessWidget {
     var random = Random();
     var upload = firebaseStorageRef
         .child('ServicesVideos/${random.nextInt(900000) + 10000000}.MayaRing');
-
+    print('hello');
     await upload.putFile(imageFile);
     return upload.getDownloadURL();
   }
@@ -244,7 +244,7 @@ class VideoPlayerScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       Map<String, dynamic> doc = snapshot.data!.docs[index]
                           .data() as Map<String, dynamic>;
-/////////
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(

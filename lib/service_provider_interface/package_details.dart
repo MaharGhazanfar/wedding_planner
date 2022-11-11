@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
+
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -219,7 +221,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                           });
                         },
                         titleName: 'Categories',
-                        inputType: TextInputType.none,
+                        textInputType: TextInputType.none,
                         controller: categoryNameController,
                         context: context),
                   ),
@@ -244,7 +246,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                               //     getLocation.getCurrentPosition(context),
                               titleName: 'Location',
                               maxLines: 2,
-                              inputType: TextInputType.multiline,
+                              textInputType: TextInputType.multiline,
                               // onTap: () {
                               //
                               //
@@ -297,7 +299,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
-                                inputType: TextInputType.number,
+                                textInputType: TextInputType.number,
                                 controller: priceController,
                                 context: context,
                                 titleName: 'Price')),
@@ -305,7 +307,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
-                                inputType: TextInputType.number,
+                                textInputType: TextInputType.number,
                                 suffix: Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(

@@ -291,7 +291,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   });
                                 },
                                 titleName: 'Categories',
-                                inputType: TextInputType.none,
+                                textInputType: TextInputType.none,
                                 controller: categoryNameController,
                                 context: mainContext),
                           ),
@@ -369,7 +369,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                           .getCurrentPosition(context),
                                       titleName: 'Location',
                                       maxLines: 2,
-                                      inputType: TextInputType.multiline,
+                                      textInputType: TextInputType.multiline,
                                       controller: locationController,
                                       context: mainContext),
                                 ],
