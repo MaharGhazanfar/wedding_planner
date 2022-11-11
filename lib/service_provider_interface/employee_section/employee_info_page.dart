@@ -1,18 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
-import '../add_images.dart';
+import '../../modelClasses/employee_info.dart';
 
 class EmployeeInfoPage extends StatefulWidget {
   const EmployeeInfoPage({Key? key}) : super(key: key);
-
   @override
   State<EmployeeInfoPage> createState() => _EmployeeInfoPageState();
 }
-
 class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -20,13 +19,13 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController addressNameController;
   late TextEditingController emailNameController;
   late TextEditingController passwordNameController;
+  String completeNumber = '';
   var globalKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
     phoneNameController = TextEditingController();
@@ -48,21 +47,6 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 8.0),
-      //     child: IconButton(
-      //         icon: const Icon(
-      //           Icons.arrow_back_ios,
-      //           color: CustomColors.headingTextFontColor,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.of(context).pop();
-      //         }),
-      //   ),
-      //   backgroundColor: CustomColors.appBarColor,
-      // ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -174,28 +158,14 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                         hintText: 'Phone Number',
                                         fillColor: Colors.white,
                                         filled: true,
-                                        border: InputBorder.none
-
-                                        //enabledBorder: InputBorder.none,
-                                        // border: OutlineInputBorder(
-                                        //   borderRadius: BorderRadius.circular(10),
-                                        //   borderSide: const BorderSide(
-                                        //       width: 0, color: Colors.transparent),
-                                        // ),
-                                        // focusedBorder: OutlineInputBorder(
-                                        //   borderSide: BorderSide(color: Colors.transparent),
-                                        //   borderRadius: BorderRadius.circular(10),
-                                        // ),
-                                        // errorBorder: OutlineInputBorder(
-                                        //   borderSide: BorderSide(color: Colors.transparent),
-                                        //   borderRadius: BorderRadius.circular(10),
-                                        // ),
-                                        ),
+                                        border: InputBorder.none),
                                     onChanged: (phone) {
                                       print(phone.completeNumber);
+                                      completeNumber = phone.completeNumber;
                                     },
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black54),
+                                    controller: phoneNameController,
                                     onCountryChanged: (country) {
                                       print('Country changed to: ' +
                                           country.name);
@@ -214,7 +184,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: CustomWidget.customTextField3(
                                   titleName: 'Email',
-                                  controller: addressNameController,
+                                  controller: emailNameController,
                                   context: context),
                             ),
                             Padding(
@@ -230,16 +200,54 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: CustomWidget.customTextField3(
                                   titleName: 'password',
-                                  controller: addressNameController,
+                                  controller: passwordNameController,
                                   context: context),
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const AddImages(),
-                                    ));
+                                if (firstNameController.text.toString().length != 0 &&
+                                    lastNameController.text.toString().length !=
+                                        0 &&
+                                    phoneNameController.text
+                                            .toString()
+                                            .length !=
+                                        0 &&
+                                    emailNameController.text
+                                            .toString()
+                                            .length !=
+                                        0 &&
+                                    addressNameController.text
+                                            .toString()
+                                            .length !=
+                                        0 &&
+                                    passwordNameController.text
+                                            .toString()
+                                            .length !=
+                                        0) {
+                                  var employeeInfo = ModelEmployeeInfo(
+                                      firstName:
+                                          firstNameController.text.toString(),
+                                      address:
+                                          addressNameController.text.toString(),
+                                      email:
+                                          emailNameController.text.toString(),
+                                      lastName:
+                                          lastNameController.text.toString(),
+                                      number:
+                                      completeNumber,
+                                      password: passwordNameController.text
+                                          .toString(),
+                                      UID: FirebaseAuth
+                                          .instance.currentUser!.uid);
+                                  FirebaseFirestore.instance.collection('Employee').doc().set(employeeInfo.toMap());
+
+                                  ShowCustomToast(
+                                      msg: 'Successful Added');
+                                  Navigator.pop(context);
+                                } else {
+                                  ShowCustomToast(
+                                      msg: 'Fields are Must Filled');
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
