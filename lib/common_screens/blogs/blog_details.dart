@@ -37,8 +37,8 @@ class _BlogDetailsState extends State<BlogDetails> {
                           width: MediaQuery.of(context).size.width,
                           child: CachedNetworkImage(
                             imageUrl: widget.map[ModelBlogPost.keyBlogImageUrl],
-                            width: 70,
-                            height: 100,
+                            //width: 70,
+
                             colorBlendMode: BlendMode.colorDodge,
                             placeholder: (context, url) =>
                                 CircularProgressIndicator(),
@@ -47,25 +47,46 @@ class _BlogDetailsState extends State<BlogDetails> {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        Positioned(
-                            bottom: 10,
-                            left: 20,
-                            child: Text(
-                              widget.map[ModelBlogPost.keyBlogImageUrl],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-                            ))
+                        // Positioned(
+                        //     bottom: 10,
+                        //     left: 20,
+                        //     child: Text(
+                        //       widget.map[ModelBlogPost.keyBlogTitle],
+                        //       style: TextStyle(
+                        //           color: CustomColors.buttonBackgroundColor,
+                        //           fontWeight: FontWeight.bold,
+                        //           fontSize: 25),
+                        //     ))
                       ],
                     )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0, top: 12),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget.map[ModelBlogPost.keyBlogTitle],
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: CustomColors.buttonBackgroundColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    ),
+                  ),
+                ),
                 Expanded(
                     flex: 3,
                     child: SizedBox(
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          widget.map[ModelBlogPost.keyBlogImageUrl],
-                          style: TextStyle(),
-                          textAlign: TextAlign.start,
+                        padding:
+                            EdgeInsets.only(left: 32.0, top: 12, right: 10),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            widget.map[ModelBlogPost.keyBlogBody],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ),
                     ))

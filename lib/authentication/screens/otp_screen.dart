@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rive/rive.dart';
+
 import '../../repository/utils/data_constants.dart';
 import '../../service_provider_interface/personal_info.dart';
 import '../../service_provider_interface/service_provider_dashboard.dart';
@@ -37,7 +39,7 @@ class _OTPScreenState extends State<OTPScreen> {
       if (counter == 0) {
         timer.cancel();
       } else {
-        if(mounted) {
+        if (mounted) {
           setState(() {
             counter--;
           });
@@ -116,17 +118,27 @@ class _OTPScreenState extends State<OTPScreen> {
                                 await FirebaseAuth.instance
                                     .signInWithCredential(credential)
                                     .then((value) {
-                                      if(widget.signFor == 'login'){
-                                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ServiceProviderDashBoard(),), (route) => false);
-                                      }else{
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => PersonalInfoPage(
-                                                  status: widget.status),
-                                            ));
-                                      }
-
+                                  if (widget.signFor == 'login') {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ServiceProviderDashBoard(
+                                            status: widget.status,
+                                          ),
+                                        ),
+                                        (route) => false);
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PersonalInfoPage(
+                                            status: widget.status,
+                                            mode: Strings.normalMode,
+                                          ),
+                                        ));
+                                  }
                                 });
                               },
                               child: Container(
@@ -175,7 +187,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                     child: CupertinoButton(
                                         color: Colors.indigo,
                                         onPressed: () async {
-                                          setState((){
+                                          setState(() {
                                             counter = 60;
                                             timer();
                                           });

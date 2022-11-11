@@ -119,12 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                                         0) {
                                   if (_emailController.text
                                       .toString()
+                                      .trim()
                                       .contains('@gmail.com')) {
                                     String status = await signInWithEmail(
-                                        password:
-                                            _passwordController.text.toString(),
-                                        email:
-                                            _emailController.text.toString());
+                                        password: _passwordController.text
+                                            .toString()
+                                            .trim(),
+                                        email: _emailController.text
+                                            .toString()
+                                            .trim());
                                     if (status == 'Login Successful') {
                                       ShowCustomToast(msg: status);
                                       if (widget.status ==
@@ -133,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  ServiceProviderDashBoard(),
+                                                  ServiceProviderDashBoard(
+                                                status: widget.status,
+                                              ),
                                             ),
                                             (route) => false);
                                       } else if (widget.status ==
@@ -216,12 +221,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ]),
                               child: InkWell(
                                 onTap: () async {
-
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            PhoneLoginPage(status: widget.status, signFor: 'login'),
+                                        builder: (context) => PhoneLoginPage(
+                                            status: widget.status,
+                                            signFor: 'login'),
                                       ));
                                 },
                                 child: Row(

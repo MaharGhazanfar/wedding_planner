@@ -56,12 +56,33 @@ class Categories {
   ];
 
   static var categoryList = [
-    'accessories',
-    'Beauty',
-    'ceremony',
-    'accessories',
-    'Beauty',
-    'ceremony'
+    'Wedding venues',
+    'Bridal salons',
+    'Groom salons',
+    ' Groom wears',
+    'Groom shoes',
+    'Bridal wears',
+    'Bridal shoes',
+    'Wedding planners',
+    'Video and photographers',
+    'Music',
+    'Huts ',
+    'lights',
+    'chairs',
+    'tables',
+    'Dancing',
+    'Ashtaka and Jayamangala gatha',
+    'Florists',
+    'Flower bouquets',
+    'Gifts',
+    'Cake makers',
+    'Wedding cake',
+    'Wedding cards',
+    'Transport',
+    'Car renting',
+    'Jewelleries',
+    'Hotel/Honeymoon packages'
+        'Poruwa and other decorations',
   ];
 }
 
@@ -70,6 +91,8 @@ class Strings {
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
   static const String blogPost = 'BlogPost';
+  static const String editMode = 'EditMode';
+  static const String normalMode = 'normalMode';
 }
 
 class ScreenPading {
