@@ -63,6 +63,7 @@ class _BottomNavigationBarForUserState
     );
   }
 
+/////////////////
   Widget _buildTitle() {
     return CustomNavigationBar(
       scaleFactor: 0.2,

@@ -9,10 +9,9 @@ import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
 import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
+
 import 'firebase_options.dart';
-import 'modelClasses/personal_login_info.dart';
-
-
+import 'modelClasses/model_personal_login_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,17 +59,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute:  StreamBuilder(
-        stream: FirebaseAuth.instance
-            .authStateChanges(),
+      navigateRoute: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if(snapshot.hasData){
-            if( ModelPersonalLoginInfo.prefs!.getString('service') == Strings.serviceProvider){
+          if (snapshot.hasData) {
+            if (ModelPersonalLoginInfo.prefs!.getString('service') ==
+                Strings.serviceProvider) {
               return ServiceProviderDashBoard();
-            }else{
+            } else {
               return BottomNavigationBarForUser(status: Strings.serviceUser);
             }
-          }else{
+          } else {
             return UserSelectionPage();
           }
         },

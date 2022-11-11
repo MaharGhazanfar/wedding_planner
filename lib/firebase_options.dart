@@ -62,7 +62,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '860975537168',
     projectId: 'mayaring',
     storageBucket: 'mayaring.appspot.com',
-
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -71,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '860975537168',
     projectId: 'mayaring',
     storageBucket: 'mayaring.appspot.com',
-    iosClientId: '860975537168-sdvr9ap5rb3in5ilsprjdv3hq24r29b1.apps.googleusercontent.com',
+    iosClientId:
+        '860975537168-sdvr9ap5rb3in5ilsprjdv3hq24r29b1.apps.googleusercontent.com',
     iosBundleId: 'com.org.nimanthaliyan.weddingPlanner',
   );
 }

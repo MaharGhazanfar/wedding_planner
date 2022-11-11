@@ -3,7 +3,7 @@ import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
-import '../modelClasses/personal_login_info.dart';
+import '../modelClasses/model_personal_login_info.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({Key? key}) : super(key: key);
@@ -13,12 +13,9 @@ class UserSelectionPage extends StatefulWidget {
 }
 
 class _GenderCheckPageState extends State<UserSelectionPage> {
-
-
   bool borderEnabled1 = false;
   bool borderEnabled2 = false;
   bool borderEnabled3 = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +29,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(
-                left: ScreenPading.leftPading,
-                right: ScreenPading.rightPading),
+                left: ScreenPading.leftPading, right: ScreenPading.rightPading),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -63,9 +59,8 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled1,
                             onTap: () {
-
-
-                              ModelPersonalLoginInfo.prefs!.setString('service', Strings.serviceProvider);
+                              ModelPersonalLoginInfo.prefs!.setString(
+                                  'service', Strings.serviceProvider);
                               setState(() {
                                 borderEnabled1 = true;
                                 borderEnabled2 = false;
@@ -95,7 +90,8 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled2,
                             onTap: () {
-                              ModelPersonalLoginInfo.prefs!.setString('service', Strings.serviceUser);
+                              ModelPersonalLoginInfo.prefs!
+                                  .setString('service', Strings.serviceUser);
                               setState(() {
                                 borderEnabled1 = false;
                                 borderEnabled2 = true;
