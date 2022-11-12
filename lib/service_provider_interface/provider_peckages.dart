@@ -176,80 +176,67 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: [
-
-                                                  snapshot
-                                                      .data!
-                                                      .docs[index][
-                                                  ModelServicePackages
-                                                      .discountKey] != 0 ?
-                                                  RichText(
-                                                    text:  TextSpan(children: [
-                                                      TextSpan(
-
-                                                          text:'${snapshot
+                                                  snapshot.data!.docs[index][
+                                                              ModelServicePackages
+                                                                  .discountKey] !=
+                                                          0
+                                                      ? RichText(
+                                                          text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                    text:
+                                                                        '${snapshot.data!.docs[index][ModelServicePackages.priceKey].toString()}',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .lineThrough,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                                TextSpan(
+                                                                    text:
+                                                                        '  ${(snapshot.data!.docs[index][ModelServicePackages.discountKey] / 100) * snapshot.data!.docs[index][ModelServicePackages.priceKey]}',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                              ]),
+                                                        )
+                                                      : Text(
+                                                          snapshot
                                                               .data!
                                                               .docs[index][
-                                                          ModelServicePackages
-                                                              .priceKey]
-                                                              .toString()}' ,
+                                                                  ModelServicePackages
+                                                                      .priceKey]
+                                                              .toString(),
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold)),
-                                                      TextSpan(
-                                                          text:'  ${(snapshot
-                                                              .data!
-                                                              .docs[index][
-                                                          ModelServicePackages
-                                                              .discountKey] / 100) * snapshot
-                                                              .data!
-                                                              .docs[index][
-                                                          ModelServicePackages
-                                                              .priceKey]
-                                                              }',
+                                                                      .bold,
+                                                              color: CustomColors
+                                                                  .textFontColor),
+                                                        ),
+                                                  snapshot.data!.docs[index][
+                                                              ModelServicePackages
+                                                                  .discountKey] !=
+                                                          0
+                                                      ? Text(
+                                                          '${snapshot.data!.docs[index][ModelServicePackages.discountKey].toString()}%',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              // fontSize: 20,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold)),
-                                                    ]),
-                                                  ) :
-                                                  Text(
-                                                    snapshot.data!.docs[index][ModelServicePackages.priceKey].toString(),
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight
-                                                            .bold,
-                                                        color: CustomColors
-                                                            .textFontColor),
-                                                  ),
-                                                  snapshot
-                                                      .data!
-                                                      .docs[index][
-                                                  ModelServicePackages
-                                                      .discountKey] != 0 ?
-                                                  Text(
-                                                    '${snapshot
-                                                        .data!
-                                                        .docs[index][
-                                                            ModelServicePackages
-                                                                .discountKey]
-                                                        .toString()}%',
-                                                    style: TextStyle(
-                                                        // fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: CustomColors
-                                                            .textFontColor),
-                                                  ) : const SizedBox()
+                                                                      .bold,
+                                                              color: CustomColors
+                                                                  .textFontColor),
+                                                        )
+                                                      : const SizedBox()
                                                 ],
                                               ),
                                             ),
+                                            ///////
                                             Padding(
                                               padding:
                                                   EdgeInsets.only(top: 20.0),
