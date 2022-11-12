@@ -124,7 +124,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ServiceProviderDashBoard(
-                                            status: widget.status,
+                                            status: Strings.normalMode,
                                           ),
                                         ),
                                         (route) => false);
