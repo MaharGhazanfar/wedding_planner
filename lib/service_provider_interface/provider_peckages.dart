@@ -236,7 +236,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                 ],
                                               ),
                                             ),
-                                            ///////
+                                            ////////
                                             Padding(
                                               padding:
                                                   EdgeInsets.only(top: 20.0),
