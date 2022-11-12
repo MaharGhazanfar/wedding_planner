@@ -261,7 +261,7 @@ class CustomWidget {
           ),
           Text(
             title!,
-            style: TextStyle(fontSize: 18, color: CustomColors.textFontColor),
+            style: TextStyle(fontSize: 18, color: CustomColors.backGroundColor),
           )
         ],
       ),

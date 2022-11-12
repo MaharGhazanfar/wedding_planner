@@ -134,7 +134,9 @@ class _OTPScreenState extends State<OTPScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PersonalInfoPage(
-                                                  status: widget.status),
+                                            status: widget.status,
+                                            mode: Strings.normalMode,
+                                          ),
                                         ));
                                   }
                                 });

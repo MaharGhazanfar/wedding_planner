@@ -182,22 +182,23 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   PersonalInfoPage(
-                                                      status: widget.status),
+                                                status: widget.status,
+                                                mode: Strings.normalMode,
+                                              ),
                                             ));
                                       } else {
                                         ShowCustomToast(msg: status);
-
                                       }
                                     } else {
-                                      ShowCustomToast(msg: "Password Not Match");
-
+                                      ShowCustomToast(
+                                          msg: "Password Not Match");
                                     }
                                   } else {
                                     ShowCustomToast(msg: "Invalid Gmail");
-
                                   }
                                 } else {
-                                  ShowCustomToast(msg: "All Field Must Be Filled");
+                                  ShowCustomToast(
+                                      msg: "All Field Must Be Filled");
                                 }
                               },
                               child: Padding(

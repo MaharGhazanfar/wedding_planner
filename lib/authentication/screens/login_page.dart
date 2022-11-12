@@ -119,12 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                                         0) {
                                   if (_emailController.text
                                       .toString()
+                                      .trim()
                                       .contains('@gmail.com')) {
                                     String status = await signInWithEmail(
-                                        password:
-                                            _passwordController.text.toString(),
-                                        email:
-                                            _emailController.text.toString());
+                                        password: _passwordController.text
+                                            .toString()
+                                            .trim(),
+                                        email: _emailController.text
+                                            .toString()
+                                            .trim());
                                     if (status == 'Login Successful') {
                                       ShowCustomToast(msg: status);
                                       if (widget.status ==

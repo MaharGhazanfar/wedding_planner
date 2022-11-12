@@ -15,8 +15,12 @@ import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart'
 
 class PersonalInfoPage extends StatefulWidget {
   final String status;
+  final String mode;
+  final Map<String, dynamic>? doc;
 
-  PersonalInfoPage({Key? key, required this.status}) : super(key: key);
+  PersonalInfoPage(
+      {Key? key, required this.status, required this.mode, this.doc})
+      : super(key: key);
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
@@ -26,7 +30,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController phoneNameController;
-  late TextEditingController addressNameController;
+  // late TextEditingController addressNameController;
   late TextEditingController businessNameController;
   late TextEditingController categoryNameController;
   late TextEditingController locationController;
@@ -48,14 +52,36 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       collectionInfo = DBHandler.personalInfoCollectionForServiceUser();
     }
     getLocation = Provider.of<LocationPicker>(context, listen: false);
-    getLocation.getCurrentPosition(context);
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
-    phoneNameController = TextEditingController();
-    addressNameController = TextEditingController();
-    businessNameController = TextEditingController();
-    categoryNameController = TextEditingController();
-    locationController = TextEditingController();
+    if (widget.mode != Strings.editMode) {
+      getLocation.getCurrentPosition(context);
+    }
+    firstNameController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.firstNameKey]
+            : null);
+    lastNameController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.lastNameKey]
+            : null);
+    phoneNameController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.numberKey]
+            : null);
+    // addressNameController = TextEditingController( text: widget.mode == Strings.editMode
+    //     ? widget.doc![ModelPersonalLoginInfo.locationKey]
+    //     : null);
+    businessNameController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.businessKey]
+            : null);
+    categoryNameController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.categoryKey]
+            : null);
+    locationController = TextEditingController(
+        text: widget.mode == Strings.editMode
+            ? widget.doc![ModelPersonalLoginInfo.locationKey]
+            : null);
 
     locationController.addListener(() {
       if (getLocation.sessionToken == null) {
@@ -90,7 +116,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     firstNameController.dispose();
     lastNameController.dispose();
     phoneNameController.dispose();
-    addressNameController.dispose();
+    // addressNameController.dispose();
     businessNameController.dispose();
     categoryNameController.dispose();
     locationController.dispose();
@@ -272,8 +298,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           20)),
-                                              title: Text(Categories
-                                                  .categoryList[index]),
+                                              title: Text(
+                                                Categories.categoryList[index],
+                                                maxLines: 2,
+                                              ),
                                               tileColor: Colors.white70,
                                               onTap: () {
                                                 setState(() {
@@ -460,7 +488,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                                 spreadRadius: 3,
                                                 blurRadius: 1),
                                           ]),
-                                      child: Text('Continue',
+                                      child: Text(
+                                          widget.mode == Strings.editMode
+                                              ? 'Update'
+                                              : 'Continue',
                                           style: ButtonsStyle.buttonTextStyle(
                                               mainContext))),
                                 ],

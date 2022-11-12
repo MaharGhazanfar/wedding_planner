@@ -12,9 +12,9 @@ import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
 import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
+import 'package:wedding_planner/service_provider_interface/employee_section/employees_list_page.dart';
+import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 import 'package:wedding_planner/service_provider_interface/provider_peckages.dart';
-
-import '../user_interface/profile_page.dart';
 
 class ServiceProviderDashBoard extends StatefulWidget {
   final String status;
@@ -30,6 +30,7 @@ class ServiceProviderDashBoard extends StatefulWidget {
 class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   late final CollectionReference providerCollectionReference;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late Map<String, dynamic> doc;
 
   @override
   void initState() {
@@ -125,26 +126,32 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 // ),
 
                 InkWell(
-                  onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) => const MyWishList(),
-                    //     ));
-                  },
+                  onTap: () {},
                   child: Text(
                     'Bookings',
                     style: TextStyle(),
                   ),
                 ),
-                Text('Employee Details'),
+                InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmployeesList(),
+                          ));
+                    },
+                    child: Text('Employee Details')),
 
                 InkWell(
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfilePage(),
+                          builder: (context) => PersonalInfoPage(
+                            status: widget.status,
+                            mode: Strings.editMode,
+                            doc: doc,
+                          ),
                         ));
                   },
                   child: Text('Update Profile'),
@@ -156,7 +163,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                   child: Text('LogOut'),
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(left: 12.0, right: 12),
+                  padding: EdgeInsets.only(right: 12),
                   child: Divider(
                     thickness: 2,
                   ),
@@ -203,8 +210,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      Map<String, dynamic> doc =
-                          snapshot.data!.data() as Map<String, dynamic>;
+                      doc = snapshot.data!.data() as Map<String, dynamic>;
                       print(
                           '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()};;;;;;;;;;;');
                       return Column(
