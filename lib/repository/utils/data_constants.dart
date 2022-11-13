@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
+
 
 class CustomColors {
   static const Color textFontColor = Colors.black54;
@@ -19,9 +18,9 @@ class CustomColors {
   static const Color appBarColor = Colors.transparent;
   static const Color blackText = Colors.black;
   static const Color outLineBorderColor2 = Colors.black;
-  // static const Color clipperColor = Color(0xFFFD00D4);
-  //static const Color frameColor = Colors.black12;
-  //static const Color personIconColor = Colors.black26;
+// static const Color clipperColor = Color(0xFFFD00D4);
+//static const Color frameColor = Colors.black12;
+//static const Color personIconColor = Colors.black26;
 
 ////////////////////////////////////////////////////////////////
 
@@ -70,6 +69,10 @@ class Strings {
   static const String serviceProvider = 'ServiceProvider';
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
+  static const String UIDPref = 'UID';
+  static const String EIDPref = 'EID';
+  static const String servicePref = 'service';
+
 }
 
 class ScreenPading {
@@ -78,5 +81,3 @@ class ScreenPading {
   static const double rightPading = 16;
   static const double bottomPading = 16;
 }
-
-

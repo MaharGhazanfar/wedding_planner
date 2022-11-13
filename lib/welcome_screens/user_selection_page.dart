@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
+import '../authentication/screens/login_page.dart';
 import '../modelClasses/model_personal_login_info.dart';
 
 class UserSelectionPage extends StatefulWidget {
@@ -59,21 +59,8 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled1,
                             onTap: () {
-                              ModelPersonalLoginInfo.prefs!.setString(
-                                  'service', Strings.serviceProvider);
-                              setState(() {
-                                borderEnabled1 = true;
-                                borderEnabled2 = false;
-                                borderEnabled3 = false;
-                              });
-                              print('${Strings.serviceProvider}');
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignUpPage(
-                                      status: Strings.serviceProvider,
-                                    ),
-                                  ));
+                              showSheet(context: context);
+
                             }),
                       ),
                       Padding(
@@ -91,7 +78,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             borderEnabled: borderEnabled2,
                             onTap: () {
                               ModelPersonalLoginInfo.prefs!
-                                  .setString('service', Strings.serviceUser);
+                                  .setString(Strings.servicePref, Strings.serviceUser);
                               setState(() {
                                 borderEnabled1 = false;
                                 borderEnabled2 = true;
@@ -106,33 +93,6 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                                   ));
                             }),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                      //   child: CustomWidget.customContainer(
-                      //       child: Text(
-                      //         'Employee',
-                      //         style: TextStyle(
-                      //             color: borderEnabled3
-                      //                 ? CustomColors.yellowIconsColor
-                      //                 : CustomColors.backGroundColor,
-                      //             fontSize: 18),
-                      //       ),
-                      //       height: 50,
-                      //       borderEnabled: borderEnabled3,
-                      //       onTap: () {
-                      //         setState(() {
-                      //           borderEnabled1 = false;
-                      //           borderEnabled2 = false;
-                      //           borderEnabled3 = true;
-                      //         });
-                      //         // Navigator.push(
-                      //         //     context,
-                      //         //     MaterialPageRoute(
-                      //         //       builder: (context) =>
-                      //         //           LoginPage(status: Strings.employee),
-                      //         //     ));
-                      //       }),
-                      // ),
                     ],
                   ),
                 ),
@@ -143,4 +103,70 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
       ),
     );
   }
+}
+
+void showSheet({required BuildContext context}) {
+  showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (context) => SizedBox(
+      height: 160,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+          ),
+        ),
+        child: Padding(
+          padding:  const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
+                    onPressed: () {
+                      ModelPersonalLoginInfo.prefs!.setString(
+                          Strings.servicePref, Strings.serviceProvider);
+                      print('${Strings.serviceProvider}');
+                       Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPage(
+                              status: Strings.serviceProvider,
+                            ),
+                          ));
+
+                    }, child: Text('Continue As Service Provider')),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                LoginPage(status: Strings.employee),
+                          ));
+                    }, child: Text('Continue As Employee')),
+              ),
+              SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
+                      onPressed: () {
+                    Navigator.pop(context);
+                  }, child: Text('Cancel'))),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
+import 'package:wedding_planner/modelClasses/employee_info.dart';
 import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -13,6 +14,7 @@ import 'package:wedding_planner/service_provider_interface/add_images.dart';
 import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 import 'package:wedding_planner/service_provider_interface/provider_peckages.dart';
+import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
 
 class ServiceProviderDashBoard extends StatefulWidget {
   const ServiceProviderDashBoard({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class ServiceProviderDashBoard extends StatefulWidget {
 
 class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   late final CollectionReference providerCollectionReference;
+  String SPBusiness = '';
 
   @override
   void initState() {
@@ -55,9 +58,15 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50))),
                 child: StreamBuilder<DocumentSnapshot>(
-                  stream: providerCollectionReference
-                      .doc(DBHandler.user!.uid.toString())
-                      .snapshots(),
+                  stream: ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null
+                      ? providerCollectionReference
+                          .doc(DBHandler.user!.uid.toString())
+                          .snapshots()
+                      : providerCollectionReference
+                          .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+                          .collection(Strings.employee)
+                          .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.EIDPref,))
+                          .snapshots(),
                   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return Center(child: const Text('Something went wrong'));
@@ -68,8 +77,12 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     } else {
                       Map<String, dynamic> doc =
                           snapshot.data!.data() as Map<String, dynamic>;
-                      print(
-                          '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()};;;;;;;;;;;');
+
+                      SPBusiness =
+                          ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null
+                              ? doc[ModelPersonalLoginInfo.businessKey]
+                                  .toString()
+                              : doc[ModelEmployeeInfo.businessKey].toString();
                       return Column(
                         children: [
                           Padding(
@@ -87,7 +100,14 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20.0),
                                   child: Text(
-                                    doc[ModelPersonalLoginInfo.businessKey],
+                                    ModelPersonalLoginInfo.prefs!
+                                                .getString(Strings.UIDPref,) ==
+                                            null
+                                        ? doc[ModelPersonalLoginInfo
+                                                .businessKey]
+                                            .toString()
+                                        : doc[ModelEmployeeInfo.businessKey]
+                                            .toString(),
                                     style: TextStyle(
                                         color: CustomColors.backGroundColor,
                                         fontWeight: FontWeight.bold,
@@ -128,8 +148,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                     backgroundColor: Colors.white,
                                     radius: 25,
                                     child: Text(
-                                      '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
-                                      '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}',
+                                      ModelPersonalLoginInfo.prefs!
+                                                  .getString(Strings.UIDPref,) ==
+                                              null
+                                          ? '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
+                                              '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}'
+                                          : '${doc[ModelEmployeeInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
+                                              '${doc[ModelEmployeeInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: CustomColors
@@ -141,7 +166,11 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
                                 child: Text(
-                                  '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}',
+                                  ModelPersonalLoginInfo.prefs!
+                                              .getString(Strings.UIDPref,) ==
+                                          null
+                                      ? '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'
+                                      : '${doc[ModelEmployeeInfo.firstNameKey]} ${doc[ModelEmployeeInfo.lastNameKey]}',
                                   style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
@@ -164,9 +193,16 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                     const SizedBox(
                                       width: 20,
                                     ),
-                                    Text(DBHandler.user!.email!,
+                                    Text(
+                                        ModelPersonalLoginInfo.prefs!
+                                                    .getString(Strings.UIDPref,) ==
+                                                null
+                                            ? DBHandler.user!.email == null
+                                                ? ''
+                                                : ''
+                                            : doc[ModelEmployeeInfo.emailKey]
+                                                .toString(),
                                         style: TextStyle(
-                                            //fontSize: 17,
                                             fontWeight: FontWeight.bold,
                                             color:
                                                 CustomColors.backGroundColor)),
@@ -174,7 +210,23 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    FirebaseAuth.instance.signOut();
+                                    if (ModelPersonalLoginInfo.prefs!
+                                            .getString(Strings.UIDPref,) ==
+                                        null) {
+                                      FirebaseAuth.instance.signOut();
+                                    } else {
+                                      ModelPersonalLoginInfo.prefs!
+                                          .remove(Strings.UIDPref,);
+                                      ModelPersonalLoginInfo.prefs!
+                                          .remove(Strings.EIDPref,);
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserSelectionPage(),
+                                          ),
+                                          (route) => false);
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 16.0),
@@ -212,7 +264,12 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                Text(doc[ModelPersonalLoginInfo.numberKey],
+                                Text(
+                                    ModelPersonalLoginInfo.prefs!
+                                                .getString(Strings.UIDPref,) ==
+                                            null
+                                        ? doc[ModelPersonalLoginInfo.numberKey]
+                                        : doc[ModelEmployeeInfo.numberKey],
                                     style: TextStyle(
                                         //fontSize: 17,
                                         fontWeight: FontWeight.bold,
@@ -232,7 +289,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 SizedBox(
                                   width: 20,
                                 ),
-                                Text(doc[ModelPersonalLoginInfo.locationKey],
+                                Text(
+                                    ModelPersonalLoginInfo.prefs!
+                                                .getString(Strings.UIDPref,) ==
+                                            null
+                                        ? doc[
+                                            ModelPersonalLoginInfo.locationKey]
+                                        : doc[ModelEmployeeInfo.addressKey],
                                     style: TextStyle(
                                         //fontSize: 17,
                                         fontWeight: FontWeight.bold,
@@ -254,7 +317,6 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    // textAlign: TextAlign.start,
                     'My DashBoard',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -344,7 +406,8 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const EmployeeInfoPage(),
+                              builder: (context) =>
+                                  EmployeeInfoPage(SPBusiness: SPBusiness),
                             ));
                       }),
                   CustomWidget.customCardButton(

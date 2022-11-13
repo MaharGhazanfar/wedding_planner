@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
+import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -386,7 +387,7 @@ class _PackageDetailsState extends State<PackageDetails> {
 
                           await FirebaseFirestore.instance
                               .collection(Strings.serviceProvider)
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null ? FirebaseAuth.instance.currentUser!.uid : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
                               .collection('Packages')
                               .doc()
                               .set(packagesInfo.toMap());

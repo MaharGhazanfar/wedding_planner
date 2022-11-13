@@ -8,7 +8,8 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import '../../modelClasses/employee_info.dart';
 
 class EmployeeInfoPage extends StatefulWidget {
-  const EmployeeInfoPage({Key? key}) : super(key: key);
+  final  String SPBusiness;
+  const EmployeeInfoPage({required this.SPBusiness ,Key? key}) : super(key: key);
   @override
   State<EmployeeInfoPage> createState() => _EmployeeInfoPageState();
 }
@@ -225,6 +226,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                             .length !=
                                         0) {
                                   var employeeInfo = ModelEmployeeInfo(
+                                    business: widget.SPBusiness,
                                       firstName:
                                           firstNameController.text.toString(),
                                       address:

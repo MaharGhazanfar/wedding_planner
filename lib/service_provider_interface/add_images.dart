@@ -137,9 +137,7 @@ class _AddImagesState extends State<AddImages> {
                                     child: CircularProgressIndicator());
                               } else {
                                 return GridView.builder(
-                                  itemCount: snapshot.data!.docs.isNotEmpty
-                                      ? snapshot.data!.docs.length
-                                      : 4,
+                                  itemCount: snapshot.data!.docs.length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 2,

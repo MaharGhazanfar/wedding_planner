@@ -4,6 +4,7 @@ class ModelEmployeeInfo {
   late String _number;
   late String _email;
   late String _address;
+  late String _business;
   late String _password;
   late String _UID;
 
@@ -12,6 +13,7 @@ class ModelEmployeeInfo {
   static const numberKey = 'numberKey';
   static const emailKey = 'emailKey';
   static const addressKey = 'addressKey';
+  static const businessKey = 'businessKey';
   static const passwordKey = 'passwordKey';
   static const UIDKey = 'UIDKey';
 
@@ -21,6 +23,7 @@ class ModelEmployeeInfo {
     required String number,
     required String email,
     required String address,
+    required String business,
     required String password,
     required String UID,
   })  : _firstName = firstName,
@@ -28,6 +31,7 @@ class ModelEmployeeInfo {
         _number = number,
         _email = email,
         _address = address,
+  _business = business,
         _UID = UID,
         _password = password;
 
@@ -38,9 +42,17 @@ class ModelEmployeeInfo {
       emailKey: email,
       numberKey: number,
       addressKey: address,
+      businessKey : business,
       passwordKey: password,
       UIDKey: UID
     };
+  }
+
+
+  String get business => _business;
+
+  set business(String value) {
+    _business = value;
   }
 
   String get UID => _UID;

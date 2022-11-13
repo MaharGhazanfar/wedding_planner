@@ -6,6 +6,7 @@ import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/my_custom_card.dart';
 import 'package:wedding_planner/service_provider_interface/package_details.dart';
+import '../modelClasses/model_personal_login_info.dart';
 
 class ProviderPackages extends StatefulWidget {
   const ProviderPackages({Key? key}) : super(key: key);
@@ -87,7 +88,10 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection(Strings.serviceProvider)
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) ==
+                                null
+                            ? FirebaseAuth.instance.currentUser!.uid
+                            : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
                         .collection('Packages')
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -176,77 +180,63 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                     MainAxisAlignment
                                                         .spaceEvenly,
                                                 children: [
-
-                                                  snapshot
-                                                      .data!
-                                                      .docs[index][
-                                                  ModelServicePackages
-                                                      .discountKey] != 0 ?
-                                                  RichText(
-                                                    text:  TextSpan(children: [
-                                                      TextSpan(
-
-                                                          text:'${snapshot
+                                                  snapshot.data!.docs[index][
+                                                              ModelServicePackages
+                                                                  .discountKey] !=
+                                                          0
+                                                      ? RichText(
+                                                          text: TextSpan(
+                                                              children: [
+                                                                TextSpan(
+                                                                    text:
+                                                                        '${snapshot.data!.docs[index][ModelServicePackages.priceKey].toString()}',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .lineThrough,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                                TextSpan(
+                                                                    text:
+                                                                        '  ${(snapshot.data!.docs[index][ModelServicePackages.discountKey] / 100) * snapshot.data!.docs[index][ModelServicePackages.priceKey]}',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight.bold)),
+                                                              ]),
+                                                        )
+                                                      : Text(
+                                                          snapshot
                                                               .data!
                                                               .docs[index][
-                                                          ModelServicePackages
-                                                              .priceKey]
-                                                              .toString()}' ,
+                                                                  ModelServicePackages
+                                                                      .priceKey]
+                                                              .toString(),
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .lineThrough,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold)),
-                                                      TextSpan(
-                                                          text:'  ${(snapshot
-                                                              .data!
-                                                              .docs[index][
-                                                          ModelServicePackages
-                                                              .discountKey] / 100) * snapshot
-                                                              .data!
-                                                              .docs[index][
-                                                          ModelServicePackages
-                                                              .priceKey]
-                                                              }',
+                                                                      .bold,
+                                                              color: CustomColors
+                                                                  .textFontColor),
+                                                        ),
+                                                  snapshot.data!.docs[index][
+                                                              ModelServicePackages
+                                                                  .discountKey] !=
+                                                          0
+                                                      ? Text(
+                                                          '${snapshot.data!.docs[index][ModelServicePackages.discountKey].toString()}%',
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              // fontSize: 20,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold)),
-                                                    ]),
-                                                  ) :
-                                                  Text(
-                                                    snapshot.data!.docs[index][ModelServicePackages.priceKey].toString(),
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight
-                                                            .bold,
-                                                        color: CustomColors
-                                                            .textFontColor),
-                                                  ),
-                                                  snapshot
-                                                      .data!
-                                                      .docs[index][
-                                                  ModelServicePackages
-                                                      .discountKey] != 0 ?
-                                                  Text(
-                                                    '${snapshot
-                                                        .data!
-                                                        .docs[index][
-                                                            ModelServicePackages
-                                                                .discountKey]
-                                                        .toString()}%',
-                                                    style: TextStyle(
-                                                        // fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: CustomColors
-                                                            .textFontColor),
-                                                  ) : const SizedBox()
+                                                                      .bold,
+                                                              color: CustomColors
+                                                                  .textFontColor),
+                                                        )
+                                                      : const SizedBox()
                                                 ],
                                               ),
                                             ),

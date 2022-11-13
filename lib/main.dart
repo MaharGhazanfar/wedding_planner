@@ -59,11 +59,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute: StreamBuilder(
+      navigateRoute:   ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) == null  ?StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (ModelPersonalLoginInfo.prefs!.getString('service') ==
+            if (ModelPersonalLoginInfo.prefs!.getString(Strings.servicePref,) ==
                 Strings.serviceProvider) {
               return ServiceProviderDashBoard();
             } else {
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
             return UserSelectionPage();
           }
         },
-      ),
+      ) : ServiceProviderDashBoard(),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,
