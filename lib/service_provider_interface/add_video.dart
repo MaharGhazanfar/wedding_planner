@@ -201,7 +201,7 @@ class VideoPlayerScreen extends StatelessWidget {
     var random = Random();
     var upload = firebaseStorageRef
         .child('ServicesVideos/${random.nextInt(900000) + 10000000}.MayaRing');
-
+    print('hello');
     await upload.putFile(imageFile);
     return upload.getDownloadURL();
   }

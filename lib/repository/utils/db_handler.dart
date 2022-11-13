@@ -28,4 +28,8 @@ class DBHandler {
         .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null  ? user!.uid : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
         .collection('Videos');
   }
+
+  static CollectionReference blogsPost() {
+    return FirebaseFirestore.instance.collection(Strings.blogPost);
+  }
 }

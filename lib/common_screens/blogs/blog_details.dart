@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
+import '../../modelClasses/model_blog_post.dart';
+
 class BlogDetails extends StatefulWidget {
-  const BlogDetails({Key? key}) : super(key: key);
+  final Map<String, dynamic> map;
+
+  const BlogDetails({required this.map, Key? key}) : super(key: key);
 
   @override
   State<BlogDetails> createState() => _BlogDetailsState();
@@ -30,40 +35,58 @@ class _BlogDetailsState extends State<BlogDetails> {
                         Container(
                           color: Colors.white,
                           width: MediaQuery.of(context).size.width,
-                          child: const Image(
-                            image: AssetImage(
-                              'assets/images/forth.jpg',
-                            ),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.map[ModelBlogPost.keyBlogImageUrl],
+                            //width: 70,
+
+                            colorBlendMode: BlendMode.colorDodge,
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                             fit: BoxFit.fill,
                           ),
                         ),
-                        const Positioned(
-                            bottom: 10,
-                            left: 20,
-                            child: Text(
-                              'Title of Blog',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-                            ))
+                        // Positioned(
+                        //     bottom: 10,
+                        //     left: 20,
+                        //     child: Text(
+                        //       widget.map[ModelBlogPost.keyBlogTitle],
+                        //       style: TextStyle(
+                        //           color: CustomColors.buttonBackgroundColor,
+                        //           fontWeight: FontWeight.bold,
+                        //           fontSize: 25),
+                        //     ))
                       ],
                     )),
-                const Expanded(
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0, top: 12),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      widget.map[ModelBlogPost.keyBlogTitle],
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: CustomColors.buttonBackgroundColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
+                    ),
+                  ),
+                ),
+                Expanded(
                     flex: 3,
                     child: SizedBox(
                       child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'This is a Blog app made in flutter, with basic features. '
-                          'The backend was handle in Firebase, routing with go_router,'
-                          ' and state management with Provider.'
-                          'This is a Blog app made in flutter, with basic features. '
-                          'The backend was handle in Firebase, routing with go_router,'
-                          ' and state management with Provider.'
-                          'This is a Blog app made in flutter, with basic features. '
-                          'The backend was handle in Firebase, routing with go_router,'
-                          ' and state management with Provider.',
-                          style: TextStyle(),
-                          textAlign: TextAlign.start,
+                        padding:
+                            EdgeInsets.only(left: 32.0, top: 12, right: 10),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            widget.map[ModelBlogPost.keyBlogBody],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ),
                     ))

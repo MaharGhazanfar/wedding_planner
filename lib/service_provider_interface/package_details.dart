@@ -220,7 +220,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                           });
                         },
                         titleName: 'Categories',
-                        inputType: TextInputType.none,
+                        textInputType: TextInputType.none,
                         controller: categoryNameController,
                         context: context),
                   ),
@@ -245,7 +245,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                               //     getLocation.getCurrentPosition(context),
                               titleName: 'Location',
                               maxLines: 2,
-                              inputType: TextInputType.multiline,
+                              textInputType: TextInputType.multiline,
                               // onTap: () {
                               //
                               //
@@ -298,7 +298,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
-                                inputType: TextInputType.number,
+                                textInputType: TextInputType.number,
                                 controller: priceController,
                                 context: context,
                                 titleName: 'Price')),
@@ -306,7 +306,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
-                                inputType: TextInputType.number,
+                                textInputType: TextInputType.number,
                                 suffix: Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: Text(
@@ -387,7 +387,7 @@ class _PackageDetailsState extends State<PackageDetails> {
 
                           await FirebaseFirestore.instance
                               .collection(Strings.serviceProvider)
-                              .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null ? FirebaseAuth.instance.currentUser!.uid : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
                               .collection('Packages')
                               .doc()
                               .set(packagesInfo.toMap());

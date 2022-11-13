@@ -51,7 +51,7 @@ class _BottomNavigationBarForUserState
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
-          MarketPlaceView(),
+          MarketPlaceView(status: widget.status!,),
           UserDashboard(
             status: widget.status,
           ),

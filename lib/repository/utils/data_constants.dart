@@ -18,9 +18,9 @@ class CustomColors {
   static const Color appBarColor = Colors.transparent;
   static const Color blackText = Colors.black;
   static const Color outLineBorderColor2 = Colors.black;
-// static const Color clipperColor = Color(0xFFFD00D4);
-//static const Color frameColor = Colors.black12;
-//static const Color personIconColor = Colors.black26;
+  // static const Color clipperColor = Color(0xFFFD00D4);
+  //static const Color frameColor = Colors.black12;
+  //static const Color personIconColor = Colors.black26;
 
 ////////////////////////////////////////////////////////////////
 
@@ -56,12 +56,33 @@ class Categories {
   ];
 
   static var categoryList = [
-    'accessories',
-    'Beauty',
-    'ceremony',
-    'accessories',
-    'Beauty',
-    'ceremony'
+    'Wedding venues',
+    'Bridal salons',
+    'Groom salons',
+    ' Groom wears',
+    'Groom shoes',
+    'Bridal wears',
+    'Bridal shoes',
+    'Wedding planners',
+    'Video and photographers',
+    'Music',
+    'Huts ',
+    'lights',
+    'chairs',
+    'tables',
+    'Dancing',
+    'Ashtaka and Jayamangala gatha',
+    'Florists',
+    'Flower bouquets',
+    'Gifts',
+    'Cake makers',
+    'Wedding cake',
+    'Wedding cards',
+    'Transport',
+    'Car renting',
+    'Jewelleries',
+    'Hotel/Honeymoon packages'
+        'Poruwa and other decorations',
   ];
 }
 
@@ -73,6 +94,9 @@ class Strings {
   static const String EIDPref = 'EID';
   static const String servicePref = 'service';
 
+  static const String blogPost = 'BlogPost';
+  static const String editMode = 'EditMode';
+  static const String normalMode = 'normalMode';
 }
 
 class ScreenPading {
@@ -81,3 +105,5 @@ class ScreenPading {
   static const double rightPading = 16;
   static const double bottomPading = 16;
 }
+
+
