@@ -67,9 +67,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.numberKey]
             : null);
-    // addressNameController = TextEditingController( text: widget.mode == Strings.editMode
-    //     ? widget.doc![ModelPersonalLoginInfo.locationKey]
-    //     : null);
     businessNameController = TextEditingController(
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.businessKey]

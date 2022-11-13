@@ -161,7 +161,26 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 ),
                 InkWell(
                   onTap: () {
-                    FirebaseAuth.instance.signOut();
+                    if (ModelPersonalLoginInfo.prefs!.getString(
+                      Strings.UIDPref,
+                    ) ==
+                        null) {
+                      FirebaseAuth.instance.signOut();
+                    } else {
+                      ModelPersonalLoginInfo.prefs!.remove(
+                        Strings.UIDPref,
+                      );
+                      ModelPersonalLoginInfo.prefs!.remove(
+                        Strings.EIDPref,
+                      );
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UserSelectionPage(),
+                          ),
+                              (route) => false);
+                    }
                   },
                   child: Text('LogOut'),
                 ),
@@ -202,31 +221,39 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50))),
                 child: StreamBuilder<DocumentSnapshot>(
-                  stream: ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null
+                  stream: ModelPersonalLoginInfo.prefs!.getString(
+                            Strings.UIDPref,
+                          ) ==
+                          null
                       ? providerCollectionReference
                           .doc(DBHandler.user!.uid.toString())
                           .snapshots()
                       : providerCollectionReference
-                          .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+                          .doc(ModelPersonalLoginInfo.prefs!.getString(
+                            Strings.UIDPref,
+                          ))
                           .collection(Strings.employee)
-                          .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.EIDPref,))
+                          .doc(ModelPersonalLoginInfo.prefs!.getString(
+                            Strings.EIDPref,
+                          ))
                           .snapshots(),
                   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return Center(child: const Text('Something went wrong'));
                     }
-                    ;
+
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      Map<String, dynamic> doc =
+                      doc =
                           snapshot.data!.data() as Map<String, dynamic>;
 
-                      SPBusiness =
-                          ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null
-                              ? doc[ModelPersonalLoginInfo.businessKey]
-                                  .toString()
-                              : doc[ModelEmployeeInfo.businessKey].toString();
+                      SPBusiness = ModelPersonalLoginInfo.prefs!.getString(
+                                Strings.UIDPref,
+                              ) ==
+                              null
+                          ? doc[ModelPersonalLoginInfo.businessKey].toString()
+                          : doc[ModelEmployeeInfo.businessKey].toString();
                       return Column(
                         children: [
                           Padding(
@@ -244,8 +271,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20.0),
                                   child: Text(
-                                    ModelPersonalLoginInfo.prefs!
-                                                .getString(Strings.UIDPref,) ==
+                                    ModelPersonalLoginInfo.prefs!.getString(
+                                              Strings.UIDPref,
+                                            ) ==
                                             null
                                         ? doc[ModelPersonalLoginInfo
                                                 .businessKey]
@@ -292,8 +320,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                     backgroundColor: Colors.white,
                                     radius: 25,
                                     child: Text(
-                                      ModelPersonalLoginInfo.prefs!
-                                                  .getString(Strings.UIDPref,) ==
+                                      ModelPersonalLoginInfo.prefs!.getString(
+                                                Strings.UIDPref,
+                                              ) ==
                                               null
                                           ? '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
                                               '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}'
@@ -310,8 +339,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 16.0),
                                 child: Text(
-                                  ModelPersonalLoginInfo.prefs!
-                                              .getString(Strings.UIDPref,) ==
+                                  ModelPersonalLoginInfo.prefs!.getString(
+                                            Strings.UIDPref,
+                                          ) ==
                                           null
                                       ? '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'
                                       : '${doc[ModelEmployeeInfo.firstNameKey]} ${doc[ModelEmployeeInfo.lastNameKey]}',
@@ -338,8 +368,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                       width: 20,
                                     ),
                                     Text(
-                                        ModelPersonalLoginInfo.prefs!
-                                                    .getString(Strings.UIDPref,) ==
+                                        ModelPersonalLoginInfo.prefs!.getString(
+                                                  Strings.UIDPref,
+                                                ) ==
                                                 null
                                             ? DBHandler.user!.email == null
                                                 ? ''
@@ -355,23 +386,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (ModelPersonalLoginInfo.prefs!
-                                            .getString(Strings.UIDPref,) ==
-                                        null) {
-                                      FirebaseAuth.instance.signOut();
-                                    } else {
-                                      ModelPersonalLoginInfo.prefs!
-                                          .remove(Strings.UIDPref,);
-                                      ModelPersonalLoginInfo.prefs!
-                                          .remove(Strings.EIDPref,);
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                UserSelectionPage(),
-                                          ),
-                                          (route) => false);
-                                    }
+
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 16.0),
@@ -410,8 +425,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                   width: 20,
                                 ),
                                 Text(
-                                    ModelPersonalLoginInfo.prefs!
-                                                .getString(Strings.UIDPref,) ==
+                                    ModelPersonalLoginInfo.prefs!.getString(
+                                              Strings.UIDPref,
+                                            ) ==
                                             null
                                         ? doc[ModelPersonalLoginInfo.numberKey]
                                         : doc[ModelEmployeeInfo.numberKey],
@@ -435,8 +451,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                   width: 20,
                                 ),
                                 Text(
-                                    ModelPersonalLoginInfo.prefs!
-                                                .getString(Strings.UIDPref,) ==
+                                    ModelPersonalLoginInfo.prefs!.getString(
+                                              Strings.UIDPref,
+                                            ) ==
                                             null
                                         ? doc[
                                             ModelPersonalLoginInfo.locationKey]

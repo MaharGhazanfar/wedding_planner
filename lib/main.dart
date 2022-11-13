@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
             return UserSelectionPage();
           }
         },
-      ) : ServiceProviderDashBoard(),
+      ) : ServiceProviderDashBoard(status: Strings.employee),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
@@ -137,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ServiceProviderDashBoard(),
+                                                        ServiceProviderDashBoard(status: widget.status),
                                                   ),
                                                   (route) => false);
                                             } else if (widget.status ==
@@ -285,7 +286,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ServiceProviderDashBoard(),
+                                                            ServiceProviderDashBoard(status: widget.status,),
                                                       ),
                                                       (route) => false);
                                                 }
