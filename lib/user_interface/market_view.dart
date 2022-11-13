@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:wedding_planner/user_interface/view_detaails.dart';
 
 class MarketPlaceView extends StatefulWidget {
   final String status;
+
   const MarketPlaceView({Key? key, required this.status}) : super(key: key);
 
   @override
@@ -16,162 +16,10 @@ class MarketPlaceView extends StatefulWidget {
 
 class _MarketPlaceViewState extends State<MarketPlaceView> {
   TextEditingController searchController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
-      // drawer: CustomWidget.myCustomDrawer(
-      //     context: context,
-      //     width: MediaQuery.of(context).size.width * 0.55,
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //       children: [
-      //         SizedBox(
-      //           height: MediaQuery.of(context).size.height * 0.2,
-      //           width: MediaQuery.of(context).size.width * 0.45,
-      //           child: const Image(
-      //             image: AssetImage('assets/images/Mayaring_app_logo.png'),
-      //           ),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             CategoryBottomSheetBar.categoryBottomSheet(
-      //                 context: context,
-      //                 child: ListView.builder(
-      //                   itemCount: Categories.categoryList.length,
-      //                   dragStartBehavior: DragStartBehavior.start,
-      //                   physics: const BouncingScrollPhysics(),
-      //                   itemExtent: 50.0,
-      //                   itemBuilder: (context, index) {
-      //                     return Padding(
-      //                       padding: const EdgeInsets.only(
-      //                           left: 8, right: 8, bottom: 2, top: 2),
-      //                       child: ListTile(
-      //                         shape: RoundedRectangleBorder(
-      //                             borderRadius: BorderRadius.circular(20)),
-      //                         title: Text(Categories.categoryList[index]),
-      //                         tileColor: Colors.white70,
-      //                         onTap: () {
-      //                           if (widget.status == Strings.serviceUser) {
-      //                             Navigator.push(
-      //                                 context,
-      //                                 MaterialPageRoute(
-      //                                   builder: (context) =>
-      //                                       CategoriesDetails(),
-      //                                 ));
-      //                           } else {
-      //                             SizedBox();
-      //                           }
-      //                         },
-      //                       ),
-      //                     );
-      //                   },
-      //                 ),
-      //                 status: widget.status);
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.category,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Categories')
-      //             ],
-      //           ),
-      //         ),
-      //         Padding(
-      //           padding: const EdgeInsets.only(left: 16.0),
-      //           child: InkWell(
-      //             onTap: () {
-      //               Navigator.push(
-      //                   context,
-      //                   MaterialPageRoute(
-      //                     builder: (context) => const Appointments(),
-      //                   ));
-      //             },
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //               children: const [
-      //                 Icon(Icons.meeting_room_outlined,
-      //                     color: CustomColors.buttonBackgroundColor),
-      //                 Text('Appointments')
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const MyWishList(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.menu_book_sharp,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Wishlist')
-      //             ],
-      //           ),
-      //         ),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //           children: const [
-      //             Icon(Icons.add_shopping_cart_sharp,
-      //                 color: CustomColors.buttonBackgroundColor),
-      //             Text('Bookings')
-      //           ],
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const BlogsPage(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.book, color: CustomColors.buttonBackgroundColor),
-      //               Text('Blog/post')
-      //             ],
-      //           ),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const ProfilePage(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.person,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Profile')
-      //             ],
-      //           ),
-      //         ),
-      //         const Padding(
-      //           padding: EdgeInsets.only(left: 12.0, right: 12),
-      //           child: Divider(
-      //             thickness: 2,
-      //           ),
-      //         ),
-      //         const Text(
-      //           'RATE ON PLAY STORE',
-      //         ),
-      //         const Text('SEND US FEEDBACK'),
-      //         const Text('SHARE THIS APP'),
-      //         const Text('PRIVACY POLICY'),
-      //       ],
-      //     )),
       body: SafeArea(
         child: Stack(
           fit: StackFit.expand,
@@ -190,12 +38,15 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                            onPressed: () {},
-                            color: CustomColors.backGroundColor,
-                            icon: Icon(
-                              Icons.menu,
-                            )),
+                        PopupMenuButton(
+                          color: CustomColors.backGroundColor,
+                          position: PopupMenuPosition.under,
+                          itemBuilder: (context) => [
+                            PopupMenuItem(onTap: () {}, child: Text('Filters')),
+                            PopupMenuItem(
+                                onTap: () {}, child: Text('Category')),
+                          ],
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 12.0),
                           child: Row(
@@ -214,9 +65,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  FirebaseAuth.instance.signOut();
-                                },
+                                onPressed: () {},
                                 color: CustomColors.backGroundColor,
                                 icon: Icon(CupertinoIcons.color_filter),
                               ),
