@@ -6,6 +6,9 @@ class ModelServicePackages {
   late String _location;
   late String _imageURL;
   late String _description;
+  late bool favourite = false;
+  late double rating = 0.0;
+  late String _uid;
 
   static const offerNameKey = 'offerNameKey';
   static const priceKey = 'priceKey';
@@ -14,29 +17,35 @@ class ModelServicePackages {
   static const categoryKey = 'categoryKey';
   static const locationKey = 'locationKey';
   static const imageURLKey = 'imageURLKey';
+  static const favouriteKey = 'favouriteKey';
+  static const ratingKey = 'ratingKey';
+  static const uidKey = 'uidKey';
 
-  ModelServicePackages({
-    required String offerName,
-    required double price,
-    required double discount,
-    required String category,
-    required String description,
-    required String imageURL,
-    required String location,
-  })  : _offerName = offerName,
+  ModelServicePackages(
+      {required String offerName,
+      required double price,
+      required double discount,
+      required String category,
+      required String description,
+      required String imageURL,
+      required String location,
+      bool? favourite,
+      double? rating,
+      required String uid})
+      : _offerName = offerName,
         _price = price,
         _discount = discount,
-        _description =description,
+        _description = description,
         _categories = category,
         _imageURL = imageURL,
-        _location = location;
+        _location = location,
+        _uid = uid;
 
   String get imageURL => _imageURL;
 
   set imageURL(String value) {
     _imageURL = value;
   }
-
 
   String get description => _description;
 
@@ -82,7 +91,16 @@ class ModelServicePackages {
       imageURLKey: imageURL,
       categoryKey: categories,
       locationKey: location,
-      descriptionKey: description
+      descriptionKey: description,
+      favouriteKey: favourite,
+      ratingKey: rating,
+      uidKey: uid
     };
+  }
+
+  String get uid => _uid;
+
+  set uid(String value) {
+    _uid = value;
   }
 }

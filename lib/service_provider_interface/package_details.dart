@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,8 +11,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-import '../modelClasses/model_personal_login_info.dart';
+
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -34,6 +36,7 @@ class _PackageDetailsState extends State<PackageDetails> {
   File? ImagesFile;
   bool isSearching = false;
   final firebaseStorage = FirebaseStorage.instance.ref();
+  late final CollectionReference generalPackagesCollection;
 
   Future<String> uploadImage() async {
     var upload = firebaseStorage.child('Package/${DateTime.now().millisecond}');
@@ -47,6 +50,8 @@ class _PackageDetailsState extends State<PackageDetails> {
     super.initState();
     getLocation = Provider.of<LocationPicker>(context, listen: false);
     getLocation.getCurrentPosition(context);
+
+    generalPackagesCollection = DBHandler.generalPackagesCollection();
 
     categoryNameController = TextEditingController();
     discountController = TextEditingController();
@@ -371,24 +376,30 @@ class _PackageDetailsState extends State<PackageDetails> {
                           var imageURL = await uploadImage();
 
                           var packagesInfo = ModelServicePackages(
-                              offerName: offerNameController.text.toString(),
-                              description:
-                                  descriptionController.text.toString(),
-                              price:
-                                  double.parse(priceController.text.toString()),
-                              discount:
-                                  discountController.text.toString().length == 0
-                                      ? 0
-                                      : double.parse(
-                                          discountController.text.toString()),
-                              category: categoryNameController.text.toString(),
-                              imageURL: imageURL,
-                              location: locationController.text.toString());
-
+                            offerName: offerNameController.text.toString(),
+                            description: descriptionController.text.toString(),
+                            price:
+                                double.parse(priceController.text.toString()),
+                            discount:
+                                discountController.text.toString().length == 0
+                                    ? 0
+                                    : double.parse(
+                                        discountController.text.toString()),
+                            category: categoryNameController.text.toString(),
+                            imageURL: imageURL,
+                            location: locationController.text.toString(),
+                            uid: FirebaseAuth.instance.currentUser!.uid,
+                          );
+                          print(
+                              '${FirebaseAuth.instance.currentUser!.uid}////////////////');
                           await FirebaseFirestore.instance
                               .collection(Strings.serviceProvider)
                               .doc(FirebaseAuth.instance.currentUser!.uid)
                               .collection('Packages')
+                              .doc()
+                              .set(packagesInfo.toMap());
+
+                          await generalPackagesCollection
                               .doc()
                               .set(packagesInfo.toMap());
 

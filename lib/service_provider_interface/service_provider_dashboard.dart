@@ -162,8 +162,8 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 InkWell(
                   onTap: () {
                     if (ModelPersonalLoginInfo.prefs!.getString(
-                      Strings.UIDPref,
-                    ) ==
+                          Strings.UIDPref,
+                        ) ==
                         null) {
                       FirebaseAuth.instance.signOut();
                     } else {
@@ -176,10 +176,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                UserSelectionPage(),
+                            builder: (context) => UserSelectionPage(),
                           ),
-                              (route) => false);
+                          (route) => false);
                     }
                   },
                   child: Text('LogOut'),
@@ -245,8 +244,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      doc =
-                          snapshot.data!.data() as Map<String, dynamic>;
+                      doc = snapshot.data!.data() as Map<String, dynamic>;
 
                       SPBusiness = ModelPersonalLoginInfo.prefs!.getString(
                                 Strings.UIDPref,
@@ -356,60 +354,28 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 8),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.mail,
-                                      color: CustomColors.backGroundColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                        ModelPersonalLoginInfo.prefs!.getString(
-                                                  Strings.UIDPref,
-                                                ) ==
-                                                null
-                                            ? DBHandler.user!.email == null
-                                                ? ''
-                                                : ''
-                                            : doc[ModelEmployeeInfo.emailKey]
-                                                .toString(),
-                                        style: TextStyle(
-                                            //fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                CustomColors.backGroundColor)),
-                                  ],
+                                Icon(
+                                  Icons.mail,
+                                  color: CustomColors.backGroundColor,
                                 ),
-                                InkWell(
-                                  onTap: () {
-
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Column(
-                                      children: [
-                                        Icon(
-                                          Icons.edit,
-                                          size: 20,
-                                          color: CustomColors.backGroundColor,
-                                        ),
-                                        const Align(
-                                          alignment: Alignment.topRight,
-                                          child: Text(
-                                            'Edit',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                    ModelPersonalLoginInfo.prefs!.getString(
+                                              Strings.UIDPref,
+                                            ) ==
+                                            null
+                                        ? DBHandler.user!.email != null
+                                            ? DBHandler.user!.email!
+                                            : ''
+                                        : doc[ModelEmployeeInfo.emailKey]
+                                            .toString(),
+                                    style: TextStyle(
+                                        //fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: CustomColors.backGroundColor)),
                               ],
                             ),
                           ),

@@ -6,6 +6,7 @@ import 'package:wedding_planner/modelClasses/employee_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
+
 import '../../modelClasses/model_personal_login_info.dart';
 import '../../user_interface/bottom_navigationBar_screen.dart';
 
@@ -124,12 +125,14 @@ class _LoginPageState extends State<LoginPage> {
                                               0) {
                                         if (_emailController.text
                                             .toString()
+                                            .trim()
                                             .contains('@gmail.com')) {
                                           String status = await signInWithEmail(
                                               password: _passwordController.text
                                                   .toString(),
                                               email: _emailController.text
-                                                  .toString());
+                                                  .toString()
+                                                  .trim());
                                           if (status == 'Login Successful') {
                                             ShowCustomToast(msg: status);
                                             if (widget.status ==
@@ -138,7 +141,9 @@ class _LoginPageState extends State<LoginPage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        ServiceProviderDashBoard(status: widget.status),
+                                                        ServiceProviderDashBoard(
+                                                            status:
+                                                                widget.status),
                                                   ),
                                                   (route) => false);
                                             } else if (widget.status ==
@@ -248,10 +253,9 @@ class _LoginPageState extends State<LoginPage> {
                                                               .id);
 
                                                   var employeeInfo = ModelEmployeeInfo(
-                                                    business: snapshot
-                                                        .data!.docs[0][
-                                                    ModelEmployeeInfo
-                                                        .businessKey].toString(),
+                                                      business:
+                                                          snapshot.data!.docs[0][ModelEmployeeInfo.businessKey]
+                                                              .toString(),
                                                       firstName: snapshot
                                                               .data!.docs[0][
                                                           ModelEmployeeInfo
@@ -260,8 +264,7 @@ class _LoginPageState extends State<LoginPage> {
                                                           snapshot.data!.docs[0]
                                                               [ModelEmployeeInfo
                                                                   .lastNameKey],
-                                                      number: snapshot
-                                                              .data!.docs[0]
+                                                      number: snapshot.data!.docs[0]
                                                           [ModelEmployeeInfo.numberKey],
                                                       email: snapshot.data!.docs[0][ModelEmployeeInfo.emailKey],
                                                       address: snapshot.data!.docs[0][ModelEmployeeInfo.addressKey],
@@ -280,13 +283,16 @@ class _LoginPageState extends State<LoginPage> {
                                                       .doc(snapshot
                                                           .data!.docs[0].id
                                                           .toString())
-                                                      .set(employeeInfo.toMap());
+                                                      .set(
+                                                          employeeInfo.toMap());
 
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ServiceProviderDashBoard(status: widget.status,),
+                                                            ServiceProviderDashBoard(
+                                                          status: widget.status,
+                                                        ),
                                                       ),
                                                       (route) => false);
                                                 }

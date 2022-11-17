@@ -4,8 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/my_custom_card.dart';
 import 'package:wedding_planner/service_provider_interface/package_details.dart';
+
 import '../modelClasses/model_personal_login_info.dart';
 
 class ProviderPackages extends StatefulWidget {
@@ -16,6 +18,14 @@ class ProviderPackages extends StatefulWidget {
 }
 
 class _ProviderPackagesState extends State<ProviderPackages> {
+  late final CollectionReference providerPackages;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    providerPackages = DBHandler.providerPackages();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +98,14 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection(Strings.serviceProvider)
-                        .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) ==
+                        .doc(ModelPersonalLoginInfo.prefs!.getString(
+                                  Strings.UIDPref,
+                                ) ==
                                 null
                             ? FirebaseAuth.instance.currentUser!.uid
-                            : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+                            : ModelPersonalLoginInfo.prefs!.getString(
+                                Strings.UIDPref,
+                              ))
                         .collection('Packages')
                         .snapshots(),
                     builder: (context, snapshot) {

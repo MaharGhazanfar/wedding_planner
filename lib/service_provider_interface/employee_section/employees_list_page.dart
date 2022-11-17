@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wedding_planner/service_provider_interface/employee_section/employee_profile_details.dart';
 
 import '../../repository/utils/data_constants.dart';
 
@@ -65,12 +64,12 @@ class _EmployeesListState extends State<EmployeesList> {
                         subtitle: Text('Phone'),
                         //trailing: Text('Phone'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const EmployeeProfilePage(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const EmployeeProfilePage(),
+                          //     ));
                         },
                       ),
                     ),

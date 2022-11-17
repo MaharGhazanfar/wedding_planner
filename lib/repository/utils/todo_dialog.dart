@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
 
 class TOdoDialog extends StatefulWidget {
   const TOdoDialog({Key? key}) : super(key: key);
@@ -11,10 +12,8 @@ class TOdoDialog extends StatefulWidget {
 class _TOdoDialogState extends State<TOdoDialog> {
   late TextEditingController _todoController;
   late TextEditingController _notesController;
-
-  var list = ['Item 1', '2', '3', '4'];
-
-  String? selectedItem;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  String selectedItem = 'select';
 
   @override
   void initState() {
@@ -35,7 +34,9 @@ class _TOdoDialogState extends State<TOdoDialog> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    print('${selectedItem}////////////build///////////////');
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white70,
       body: Padding(
         padding: const EdgeInsets.only(top: 40.0, left: 16, right: 16),
@@ -170,61 +171,51 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                          child: Text(
-                        'Category',
-                        style: TextStyle(color: CustomColors.blackText),
-                      )),
-                      Expanded(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(Icons.favorite_border),
-                          Text(
-                            'Flowers',
-                            style: TextStyle(color: CustomColors.blackText),
-                          ),
-                        ],
-                      )),
+                  child: InkWell(
+                    onTap: () {
+                      // scaffoldKey.currentState!.showBottomSheet((context) {
+                      CategoryBottomSheetBar.categoryBottomSheet(
+                        context: context,
+                        child: ListView.builder(
+                          itemCount: Categories.categoryList.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              onTap: () {
+                                setState(() {
+                                  selectedItem = Categories.categoryList[index];
+                                  Navigator.pop(context);
+                                  print(
+                                      '${selectedItem}///////////////////////////');
+                                });
+                              },
+                              title: Text(
+                                Categories.categoryList[index],
+                                style: TextStyle(color: CustomColors.blackText),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                      setState(() {});
 
-                      // Container(
-                      //   child: DropdownButton2(
-                      //     // barrierColor: Colors.transparent,
-                      //     // barrierDismissible: false,
-                      //     underline: SizedBox(),
-                      //     hint: Text(
-                      //       'Select Item',
-                      //       style: TextStyle(
-                      //         fontSize: 14,
-                      //         color: Theme.of(context).hintColor,
-                      //       ),
-                      //     ),
-                      //     items: list
-                      //         .map((item) => DropdownMenuItem<String>(
-                      //               value: item,
-                      //               child: Text(
-                      //                 item,
-                      //                 style: const TextStyle(
-                      //                   fontSize: 14,
-                      //                 ),
-                      //               ),
-                      //             ))
-                      //         .toList(),
-                      //     value: selectedItem,
-                      //     onChanged: (value) {
-                      //       setState(() {
-                      //         selectedItem = value as String;
-                      //       });
-                      //     },
-                      //     buttonHeight: 40,
-                      //     buttonWidth: 140,
-                      //     itemHeight: 40,
-                      //   ),
-                      // )
-                    ],
+                      //});
+                    },
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Category',
+                            style: TextStyle(
+                                color: CustomColors.blackText,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            selectedItem,
+                            style: TextStyle(
+                              color: CustomColors.blackText,
+                            ),
+                          ),
+                        ]),
                   ),
                 ),
                 const Padding(
@@ -290,18 +281,4 @@ class _TOdoDialogState extends State<TOdoDialog> {
       ),
     );
   }
-
-//   Widget customDialog({
-//   required BuildContext context,
-//     double? height,
-//   double? width,
-//     Widget? child
-// }){
-//     return SizedBox(
-//       height: height,
-//       width: width,
-//       child: ,
-//     );
-//
-//   }
 }

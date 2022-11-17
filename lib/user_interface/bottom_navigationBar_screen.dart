@@ -2,7 +2,7 @@ import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
-import 'package:wedding_planner/user_interface/market_view.dart';
+import 'package:wedding_planner/user_interface/market_view_place_for_user.dart';
 import 'package:wedding_planner/user_interface/profile_page.dart';
 import 'package:wedding_planner/user_interface/user_dashboard.dart';
 
@@ -51,7 +51,9 @@ class _BottomNavigationBarForUserState
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
-          MarketPlaceView(status: widget.status!,),
+          MarketPlaceView(
+            status: widget.status!,
+          ),
           UserDashboard(
             status: widget.status,
           ),

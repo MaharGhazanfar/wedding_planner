@@ -18,18 +18,44 @@ class DBHandler {
   static CollectionReference photosCollection() {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
-        .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null  ? user!.uid : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+        .doc(ModelPersonalLoginInfo.prefs!.getString(
+                  Strings.UIDPref,
+                ) ==
+                null
+            ? user!.uid
+            : ModelPersonalLoginInfo.prefs!.getString(
+                Strings.UIDPref,
+              ))
         .collection('Photos');
   }
 
   static CollectionReference videosCollection() {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
-        .doc(ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,) == null  ? user!.uid : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref,))
+        .doc(ModelPersonalLoginInfo.prefs!.getString(
+                  Strings.UIDPref,
+                ) ==
+                null
+            ? user!.uid
+            : ModelPersonalLoginInfo.prefs!.getString(
+                Strings.UIDPref,
+              ))
         .collection('Videos');
   }
 
   static CollectionReference blogsPost() {
     return FirebaseFirestore.instance.collection(Strings.blogPost);
+  }
+
+  static CollectionReference generalPackagesCollection() {
+    return FirebaseFirestore.instance
+        .collection(Strings.generalPackageCollection);
+  }
+
+  static CollectionReference providerPackages() {
+    return FirebaseFirestore.instance
+        .collection(Strings.serviceProvider)
+        .doc()
+        .collection(Strings.providerPackages);
   }
 }
