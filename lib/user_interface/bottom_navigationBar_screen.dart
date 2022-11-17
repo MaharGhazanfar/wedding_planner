@@ -58,7 +58,9 @@ class _BottomNavigationBarForUserState
             status: widget.status,
           ),
           Appointments(),
-          ProfilePage(),
+          ProfilePage(
+            status: widget.status!,
+          ),
         ],
       ),
       bottomNavigationBar: _buildTitle(),
