@@ -15,6 +15,13 @@ class DBHandler {
     return FirebaseFirestore.instance.collection(Strings.serviceUser);
   }
 
+  static CollectionReference usersTasksCollection() {
+    return FirebaseFirestore.instance
+        .collection(Strings.serviceUser)
+        .doc(user!.uid)
+        .collection(Strings.userPersonalTasks);
+  }
+
   static CollectionReference photosCollection() {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)

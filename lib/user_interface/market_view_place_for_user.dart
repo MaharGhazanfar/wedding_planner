@@ -53,12 +53,15 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                            onPressed: () {},
-                            color: CustomColors.backGroundColor,
-                            icon: Icon(
-                              Icons.menu,
-                            )),
+                        PopupMenuButton(
+                          color: Colors.white,
+                          position: PopupMenuPosition.under,
+                          itemBuilder: (context) => [
+                            PopupMenuItem(onTap: () {}, child: Text('Filters')),
+                            PopupMenuItem(
+                                onTap: () {}, child: Text('Category')),
+                          ],
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 12.0),
                           child: Row(

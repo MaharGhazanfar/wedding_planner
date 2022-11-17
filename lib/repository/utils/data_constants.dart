@@ -96,6 +96,7 @@ class Strings {
   static const String blogPost = 'BlogPost';
   static const String editMode = 'EditMode';
   static const String normalMode = 'normalMode';
+  static const String userPersonalTasks = 'userPersonalTasks';
 }
 
 class ScreenPading {

@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
+
+import '../../modelClasses/model_tasks_handler.dart';
 
 class TOdoDialog extends StatefulWidget {
   const TOdoDialog({Key? key}) : super(key: key);
@@ -14,11 +19,16 @@ class _TOdoDialogState extends State<TOdoDialog> {
   late TextEditingController _notesController;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String selectedItem = 'select';
+  String pickedDate = 'Select Date';
+
+  //String pickedTime = 'null';
+  late final CollectionReference userTasksCollection;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    userTasksCollection = DBHandler.usersTasksCollection();
     _todoController = TextEditingController();
     _notesController = TextEditingController();
   }
@@ -86,6 +96,16 @@ class _TOdoDialogState extends State<TOdoDialog> {
                           color: Colors.white,
                         ),
                         onPressed: () {
+                          var userTasks = ModelTasksHandler(
+                            toDO: _todoController.text,
+                            dateTime: pickedDate,
+                            category: selectedItem,
+                            notes: _notesController.text,
+                          );
+                          print(
+                              '${userTasks.toMap()}//////////////////////////');
+                          userTasksCollection.doc().set(userTasks.toMap());
+
                           Navigator.of(context).pop();
                         },
                       ),
@@ -125,20 +145,27 @@ class _TOdoDialogState extends State<TOdoDialog> {
                     thickness: 1.5,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'DUE DATE',
-                        style: TextStyle(color: CustomColors.blackText),
-                      ),
-                      Text(
-                        '11/30/22, 8.00 am',
-                        style: TextStyle(color: CustomColors.blackText),
-                      ),
-                    ],
+                InkWell(
+                  splashColor: CustomColors.greenish,
+                  onTap: () async {
+                    pickedDate = await CustomWidget.showDateTimePicker(context);
+                    setState(() {});
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'DUE DATE',
+                          style: TextStyle(color: CustomColors.blackText),
+                        ),
+                        Text(
+                          pickedDate,
+                          style: TextStyle(color: CustomColors.blackText),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Padding(
@@ -149,18 +176,21 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Reminder',
-                        style: TextStyle(color: CustomColors.blackText),
-                      ),
-                      Text(
-                        'Off',
-                        style: TextStyle(color: CustomColors.blackText),
-                      )
-                    ],
+                  child: InkWell(
+                    onTap: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Reminder',
+                          style: TextStyle(color: CustomColors.blackText),
+                        ),
+                        Text(
+                          'Off',
+                          style: TextStyle(color: CustomColors.blackText),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const Padding(

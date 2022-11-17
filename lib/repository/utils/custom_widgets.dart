@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 
 import 'data_constants.dart';
@@ -266,6 +267,28 @@ class CustomWidget {
         ],
       ),
     );
+  }
+
+  //Date picker method
+  static Future<String> showDateTimePicker(BuildContext context) async {
+    TimeOfDay? timePicked;
+    DateTime? datePicked;
+    datePicked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+
+    if (datePicked != null) {
+      timePicked = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay(
+              hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute));
+      if (timePicked != null) {
+        print("${DateFormat("yyyy-MM-dd").format(datePicked)}  ");
+      }
+    }
+    return '${datePicked.toString().substring(0, datePicked.toString().length - 12)} ${timePicked!.format(context)}';
   }
 }
 
