@@ -78,6 +78,7 @@ dependencies:
   firebase_storage:
   cached_network_image:
   permission_handler:
+  badges:
 
 
 

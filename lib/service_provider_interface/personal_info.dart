@@ -30,11 +30,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
   late TextEditingController phoneNameController;
-  // late TextEditingController addressNameController;
   late TextEditingController businessNameController;
   late TextEditingController categoryNameController;
   late TextEditingController locationController;
   late CollectionReference collectionInfo;
+  late String countryCode;
+  late String imgUrl;
+  bool isLoading = false;
 
   var globalKey = GlobalKey<FormState>();
   late LocationPicker getLocation;
@@ -43,7 +45,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     if (widget.status == Strings.serviceProvider) {
@@ -79,6 +80,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.locationKey]
             : null);
+    imgUrl = widget.mode == Strings.editMode
+        ? widget.doc![ModelPersonalLoginInfo.imgUrlKey]
+        : '';
 
     locationController.addListener(() {
       if (getLocation.sessionToken == null) {
@@ -118,7 +122,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     categoryNameController.dispose();
     locationController.dispose();
 
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -126,6 +129,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Widget build(BuildContext mainContext) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+    print('This is a dummy comment');
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -239,13 +243,14 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (phone) {
-                                    print(phone.completeNumber);
+                                    print('//////$phone');
                                   },
                                   style: const TextStyle(
                                       fontSize: 14, color: Colors.black54),
                                   onCountryChanged: (country) {
-                                    print(
-                                        'Country changed to: ' + country.name);
+                                    countryCode = country.code;
+                                    print('//////Country changed to: ' +
+                                        country.name);
                                   },
                                   autovalidateMode: AutovalidateMode.disabled,
                                   dropdownTextStyle:
@@ -257,6 +262,77 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               ),
                             ),
                           ),
+                          widget.status == Strings.serviceProvider
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12.0,
+                                  ),
+                                  child: CustomWidget.customTextField3(
+                                      titleName: 'Business',
+                                      controller: businessNameController,
+                                      context: mainContext),
+                                )
+                              : SizedBox(),
+                          widget.status == Strings.serviceProvider
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 12.0,
+                                  ),
+                                  child: CustomWidget.customTextField3(
+                                      onTap: () {
+                                        setState(() {
+                                          CategoryBottomSheetBar
+                                              .categoryBottomSheet(
+                                            status: widget.status,
+                                            context: mainContext,
+                                            child: ListView.builder(
+                                              itemCount: Categories
+                                                  .categoryList.length,
+                                              dragStartBehavior:
+                                                  DragStartBehavior.start,
+                                              physics:
+                                                  const BouncingScrollPhysics(),
+                                              itemExtent: 50.0,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8,
+                                                          right: 8,
+                                                          bottom: 2,
+                                                          top: 2),
+                                                  child: ListTile(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    title: Text(Categories
+                                                        .categoryList[index]),
+                                                    tileColor: Colors.white70,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        categoryNameController
+                                                            .text = Categories
+                                                                .categoryList[
+                                                            index];
+                                                        Navigator.pop(context);
+                                                      });
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        });
+                                      },
+                                      titleName: 'Categories',
+                                      textInputType: TextInputType.none,
+                                      controller: categoryNameController,
+                                      context: mainContext),
+                                )
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.only(
                               top: 12.0,
@@ -380,15 +456,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                         setState(() {
                                           getLocation.isSearching = true;
                                         });
-
-                                        // if (value.toString().length == 1) {
-                                        //   await Future.delayed(
-                                        //       const Duration(seconds: 1));
-                                        //   scrollController.jumpTo(scrollController
-                                        //           .position.maxScrollExtent -
-                                        //       (MediaQuery.of(mainContext).size.height *
-                                        //           .2));
-                                        // }
                                       },
                                       onTap: () => getLocation
                                           .getCurrentPosition(context),
@@ -402,55 +469,86 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           GestureDetector(
                             onTap: () async {
                               print(phoneNameController.text.toString());
-                              if (firstNameController.text.toString().length != 0 &&
-                                  lastNameController.text.toString().length !=
-                                      0 &&
-                                  phoneNameController.text.toString().length !=
-                                      0 &&
-                                  businessNameController.text
+                              if (firstNameController.text.toString().length !=
+                                          0 &&
+                                      lastNameController.text
+                                              .toString()
+                                              .length !=
+                                          0 &&
+                                      phoneNameController.text
+                                              .toString()
+                                              .length !=
+                                          0 &&
+                                      widget.status == Strings.serviceProvider
+                                  ? businessNameController.text
                                           .toString()
                                           .length !=
-                                      0 &&
-                                  categoryNameController.text
-                                          .toString()
-                                          .length !=
-                                      0 &&
-                                  locationController.text.toString().length !=
-                                      0) {
+                                      0
+                                  : true &&
+                                          widget.status ==
+                                              Strings.serviceProvider
+                                      ? categoryNameController.text
+                                              .toString()
+                                              .length !=
+                                          0
+                                      : true &&
+                                          locationController.text
+                                                  .toString()
+                                                  .length !=
+                                              0) {
                                 var personalInfo = ModelPersonalLoginInfo(
                                     firstName:
                                         firstNameController.text.toString(),
                                     lastName:
                                         lastNameController.text.toString(),
-                                    number: phoneNameController.text.toString(),
-                                    business:
-                                        businessNameController.text.toString(),
-                                    category:
-                                        categoryNameController.text.toString(),
+                                    number: countryCode +
+                                        phoneNameController.text.toString(),
+                                    business: widget.status ==
+                                            Strings.serviceProvider
+                                        ? businessNameController.text.toString()
+                                        : '',
+                                    category: widget.status ==
+                                            Strings.serviceProvider
+                                        ? categoryNameController.text.toString()
+                                        : '',
                                     location:
-                                        locationController.text.toString());
-                                collectionInfo
-                                    .doc(DBHandler.user!.uid)
-                                    .set(personalInfo.toMap());
-                                if (widget.status == Strings.serviceProvider) {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ServiceProviderDashBoard(
-                                          status: widget.status,
-                                        ),
-                                      ),
-                                      (route) => false);
+                                        locationController.text.toString(),
+                                    imgUrl: imgUrl);
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                collectionInfo.doc(DBHandler.user!.uid).set(
+                                    widget.status == Strings.serviceProvider
+                                        ? personalInfo.toMapForProvider()
+                                        : personalInfo.toMapForUser());
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                if (widget.mode == Strings.editMode) {
+                                  Navigator.pop(context);
                                 } else {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BottomNavigationBarForUser(
-                                                status: widget.status),
-                                      ),
-                                      (route) => false);
+                                  if (widget.status ==
+                                      Strings.serviceProvider) {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ServiceProviderDashBoard(
+                                            status: widget.status,
+                                          ),
+                                        ),
+                                        (route) => false);
+                                  } else {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BottomNavigationBarForUser(
+                                                  status: widget.status),
+                                        ),
+                                        (route) => false);
+                                  }
                                 }
                               } else {
                                 ShowCustomToast(
@@ -485,12 +583,15 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                                 spreadRadius: 3,
                                                 blurRadius: 1),
                                           ]),
-                                      child: Text(
-                                          widget.mode == Strings.editMode
-                                              ? 'Update'
-                                              : 'Continue',
-                                          style: ButtonsStyle.buttonTextStyle(
-                                              mainContext))),
+                                      child: isLoading
+                                          ? Text(
+                                              widget.mode == Strings.editMode
+                                                  ? 'Update'
+                                                  : 'Continue',
+                                              style:
+                                                  ButtonsStyle.buttonTextStyle(
+                                                      mainContext))
+                                          : Text('Loading...')),
                                 ],
                               ),
                             ),

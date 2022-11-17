@@ -4,8 +4,9 @@ import 'package:wedding_planner/repository/utils/todo_dialog.dart';
 import '../repository/utils/data_constants.dart';
 
 class UserDashboard extends StatefulWidget {
-  String? status;
-  UserDashboard({Key? key, required this.status}) : super(key: key);
+  final String? status;
+
+  const UserDashboard({Key? key, required this.status}) : super(key: key);
 
   @override
   State<UserDashboard> createState() => _UserDashboardState();

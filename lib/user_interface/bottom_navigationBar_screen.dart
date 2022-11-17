@@ -51,12 +51,16 @@ class _BottomNavigationBarForUserState
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
-          MarketPlaceView(status: widget.status!,),
+          MarketPlaceView(
+            status: widget.status!,
+          ),
           UserDashboard(
             status: widget.status,
           ),
           Appointments(),
-          ProfilePage(),
+          ProfilePage(
+            status: widget.status!,
+          ),
         ],
       ),
       bottomNavigationBar: _buildTitle(),
