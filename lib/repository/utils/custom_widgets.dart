@@ -267,6 +267,29 @@ class CustomWidget {
       ),
     );
   }
+
+  static Widget CustomCardForProfileData(
+      {required String title, required String value}) {
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                flex: 1,
+                child: Text(title,
+                    style: TextStyle(color: CustomColors.textFontColor))),
+            Expanded(
+                flex: 2,
+                child: Text(value,
+                    style: TextStyle(color: CustomColors.textFontColor)))
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 ShowCustomToast({required String msg}) {
