@@ -186,7 +186,9 @@ class _AddImagesState extends State<AddImages> {
                                                       ModelServicesPhotosAndVideos
                                                           .urlKey],
                                                   placeholder: (context, url) =>
-                                                      CircularProgressIndicator(),
+                                                      Center(
+                                                          child:
+                                                              CircularProgressIndicator()),
                                                   errorWidget:
                                                       (context, url, error) =>
                                                           Icon(Icons.error),

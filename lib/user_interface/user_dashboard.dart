@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:wedding_planner/modelClasses/model_tasks_handler.dart';
 import 'package:wedding_planner/repository/utils/todo_dialog.dart';
 
 import '../repository/utils/data_constants.dart';
+import '../repository/utils/db_handler.dart';
 
 class UserDashboard extends StatefulWidget {
   final String? status;
@@ -19,10 +23,15 @@ class _UserDashboardState extends State<UserDashboard> {
   double? height;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool size = true;
+  late final CollectionReference userTasksCollection;
+  var selectedItems = 0;
+  var taskPercentage = '0';
+  late double percentValue;
 
   @override
   void initState() {
     super.initState();
+    userTasksCollection = DBHandler.usersTasksCollection();
   }
 
   @override
@@ -34,152 +43,6 @@ class _UserDashboardState extends State<UserDashboard> {
     return Scaffold(
       backgroundColor: Colors.black26,
       key: _scaffoldKey,
-      // drawer: CustomWidget.myCustomDrawer(
-      //     context: context,
-      //     width: width! * 0.55,
-      //     child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //       children: [
-      //         const Image(
-      //           image: AssetImage('assets/images/logo.png'),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             CategoryBottomSheetBar.categoryBottomSheet(
-      //                 context: context,
-      //                 child: ListView.builder(
-      //                   itemCount: Categories.categoryList.length,
-      //                   dragStartBehavior: DragStartBehavior.start,
-      //                   physics: const BouncingScrollPhysics(),
-      //                   itemExtent: 50.0,
-      //                   itemBuilder: (context, index) {
-      //                     return Padding(
-      //                       padding: const EdgeInsets.only(
-      //                           left: 8, right: 8, bottom: 2, top: 2),
-      //                       child: ListTile(
-      //                         shape: RoundedRectangleBorder(
-      //                             borderRadius: BorderRadius.circular(20)),
-      //                         title: Text(Categories.categoryList[index]),
-      //                         tileColor: Colors.white70,
-      //                         onTap: () {
-      //                           if (widget.status == Strings.serviceUser) {
-      //                             Navigator.push(
-      //                                 context,
-      //                                 MaterialPageRoute(
-      //                                   builder: (context) =>
-      //                                       CategoriesDetails(),
-      //                                 ));
-      //                           } else {
-      //                             SizedBox();
-      //                           }
-      //                         },
-      //                       ),
-      //                     );
-      //                   },
-      //                 ),
-      //                 status: widget.status);
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.category,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Categories')
-      //             ],
-      //           ),
-      //         ),
-      //         Padding(
-      //           padding: const EdgeInsets.only(left: 16.0),
-      //           child: InkWell(
-      //             onTap: () {
-      //               Navigator.push(
-      //                   context,
-      //                   MaterialPageRoute(
-      //                     builder: (context) => const Appointments(),
-      //                   ));
-      //             },
-      //             child: Row(
-      //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //               children: const [
-      //                 Icon(Icons.meeting_room_outlined,
-      //                     color: CustomColors.buttonBackgroundColor),
-      //                 Text('Appointments')
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const MyWishList(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.menu_book_sharp,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Wishlist')
-      //             ],
-      //           ),
-      //         ),
-      //         Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //           children: const [
-      //             Icon(Icons.add_shopping_cart_sharp,
-      //                 color: CustomColors.buttonBackgroundColor),
-      //             Text('Bookings')
-      //           ],
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const BlogsPage(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.book, color: CustomColors.buttonBackgroundColor),
-      //               Text('Blog/post')
-      //             ],
-      //           ),
-      //         ),
-      //         InkWell(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => const ProfilePage(),
-      //                 ));
-      //           },
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: const [
-      //               Icon(Icons.person,
-      //                   color: CustomColors.buttonBackgroundColor),
-      //               Text('Profile')
-      //             ],
-      //           ),
-      //         ),
-      //         const Padding(
-      //           padding: EdgeInsets.only(left: 12.0, right: 12),
-      //           child: Divider(
-      //             thickness: 2,
-      //           ),
-      //         ),
-      //         const Text(
-      //           'RATE ON PLAY STORE',
-      //         ),
-      //         const Text('SEND US FEEDBACK'),
-      //         const Text('SHARE THIS APP'),
-      //         const Text('PRIVACY POLICY'),
-      //       ],
-      //     )),
       body: Center(
         child: Stack(
           children: [
@@ -189,216 +52,172 @@ class _UserDashboardState extends State<UserDashboard> {
               child: Image.asset("assets/images/white_background.png",
                   alignment: Alignment.center, fit: BoxFit.fill),
             ),
-            // Transform.rotate(
-            //   origin: const Offset(50, -550),
-            //   angle: -0.2,
-            //   child: Transform.scale(
-            //     scale: 1.15,
-            //     child: Container(
-            //       color: Colors.teal,
-            //       width: width! * 0.6,
-            //       child: ListView.builder(
-            //         itemCount: 5,
-            //         itemBuilder: (context, index) {
-            //           return Padding(
-            //             padding: const EdgeInsets.all(8.0),
-            //             child: GestureDetector(
-            //               onTap: () {
-            //                 setState(() {
-            //                   taskContainer = height!;
-            //                   isTrue = false;
-            //                 });
-            //               },
-            //               child: Container(
-            //                 color: Colors.white,
-            //                 width: width! * 0.4,
-            //                 height: height! * 0.5,
-            //                 child: const Icon(
-            //                   Icons.image,
-            //                   size: 100,
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // isTrue
-            //     ?
-            Positioned(
-              top: 20,
-              child: IconButton(
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: const Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                    size: 30,
-                  )),
-            ),
-            // : Positioned(
-            //     top: 20,
-            //     left: 10,
-            //     right: 10,
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         CircleAvatar(
-            //           backgroundColor: Colors.black12,
-            //           child: IconButton(
-            //               onPressed: () {
-            //                 setState(() {
-            //                   taskContainer = height! * 0.25;
-            //                   isTrue = true;
-            //                 });
-            //               },
-            //               icon: const Padding(
-            //                 padding: EdgeInsets.only(left: 4),
-            //                 child: Icon(
-            //                   Icons.arrow_back_ios,
-            //                   size: 20,
-            //                   color: Colors.white,
-            //                 ),
-            //               )),
-            //         ),
-            //         CircleAvatar(
-            //           backgroundColor: Colors.black12,
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(),
-            //             child: IconButton(
-            //               onPressed: () {},
-            //               alignment: Alignment.center,
-            //               icon: const Icon(
-            //                 Icons.add,
-            //                 color: Colors.white,
-            //                 size: 25,
-            //               ),
-            //             ),
-            //           ),
-            //         )
-            //       ],
-            //     ),
-            //   ),
-            AnimatedPositioned(
-              top: taskContainer,
-              duration: const Duration(milliseconds: 200),
-              child: Container(
-                width: width!,
-                height: height! * 0.75,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
+            StreamBuilder<QuerySnapshot>(
+                stream: userTasksCollection
+                    .orderBy(ModelTasksHandler.selectedKey, descending: false)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('SomeThing Went Wrong'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    selectedItems = snapshot.data!.docs
+                        .where((element) =>
+                            element[ModelTasksHandler.selectedKey] == true)
+                        .length;
+                    percentValue = (selectedItems / snapshot.data!.size);
+                    taskPercentage =
+                        '${(percentValue * 100).toStringAsFixed(0)}';
+                    return AnimatedPositioned(
+                      top: taskContainer,
+                      duration: const Duration(milliseconds: 200),
                       child: Container(
+                        width: width!,
+                        height: height! * 0.75,
                         decoration: const BoxDecoration(
-                            color: CustomColors.greenish,
+                            color: Colors.transparent,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10))),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0, right: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
                                 decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Container(
-                                  height: 38,
-                                  width: 38,
-                                  alignment: Alignment.center,
-                                  decoration: const BoxDecoration(
                                     color: CustomColors.greenish,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    '85%',
-                                    style: TextStyle(
-                                        color: CustomColors.backGroundColor),
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10))),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12.0, right: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 16.0),
+                                        child: CircularPercentIndicator(
+                                          radius: width! * 0.06,
+                                          animateFromLastPercent: true,
+                                          lineWidth: 5.0,
+                                          circularStrokeCap:
+                                              CircularStrokeCap.round,
+                                          animation: true,
+                                          animationDuration: 700,
+                                          curve: Curves.decelerate,
+                                          percent: percentValue,
+                                          backgroundColor: Colors.white,
+                                          center:
+                                              new Text(taskPercentage + '%'),
+                                          progressColor: CustomColors
+                                              .buttonBackgroundColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Your Tasks',
+                                        style: TextStyle(
+                                            color: CustomColors.backGroundColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    TOdoDialog(),
+                                              ));
+                                        },
+                                        alignment: Alignment.center,
+                                        icon: const Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Text(
-                                'Your Tasks',
-                                style: TextStyle(
-                                    color: CustomColors.backGroundColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TOdoDialog(),
-                                      ));
-                                },
-                                alignment: Alignment.center,
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                  size: 35,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 7,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: SizedBox(
-                              width: 100,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Transform.scale(
-                                    scale: 1.5,
-                                    child: Checkbox(
-                                      activeColor: CustomColors.greenish,
-                                      value: true,
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
-                                  const Icon(
-                                    Icons.favorite_outline_sharp,
-                                    size: 20,
-                                    color: Colors.green,
-                                  )
-                                ],
                               ),
                             ),
-                            title: const Text('Details of what to do',
-                                textAlign: TextAlign.start),
-                            // tileColor: Colors.green,
-                          );
-                        },
+                            Expanded(
+                                flex: 7,
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.docs.length,
+                                  separatorBuilder: (context, index) =>
+                                      const Divider(),
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> doc =
+                                        snapshot.data!.docs[index].data()
+                                            as Map<String, dynamic>;
+
+                                    return ListTile(
+                                      leading: SizedBox(
+                                        width: 100,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Transform.scale(
+                                              scale: 2,
+                                              child: Checkbox(
+                                                fillColor:
+                                                    MaterialStateProperty.all(
+                                                        CustomColors.greenish),
+                                                activeColor:
+                                                    CustomColors.greenish,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                value: doc[ModelTasksHandler
+                                                    .selectedKey],
+                                                onChanged: (value) {
+                                                  userTasksCollection
+                                                      .doc(snapshot
+                                                          .data!.docs[index].id)
+                                                      .update({
+                                                    ModelTasksHandler
+                                                        .selectedKey: value
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            Icon(Icons.account_balance_sharp)
+                                          ],
+                                        ),
+                                      ),
+
+                                      title: Text(
+                                        doc[ModelTasksHandler.toDOKey],
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors.textFontColor,
+                                            decoration: doc[ModelTasksHandler
+                                                    .selectedKey]
+                                                ? TextDecoration.lineThrough
+                                                : TextDecoration.none,
+                                            fontSize: 16),
+                                      ),
+
+                                      // tileColor: Colors.green,
+                                    );
+                                  },
+                                ))
+                          ],
+                        ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-            )
+                    );
+                  }
+                })
           ],
         ),
       ),
