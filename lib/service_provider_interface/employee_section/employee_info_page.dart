@@ -5,14 +5,19 @@ import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+
 import '../../modelClasses/employee_info.dart';
 
 class EmployeeInfoPage extends StatefulWidget {
-  final  String SPBusiness;
-  const EmployeeInfoPage({required this.SPBusiness ,Key? key}) : super(key: key);
+  final String SPBusiness;
+
+  const EmployeeInfoPage({required this.SPBusiness, Key? key})
+      : super(key: key);
+
   @override
   State<EmployeeInfoPage> createState() => _EmployeeInfoPageState();
 }
+
 class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
@@ -20,12 +25,13 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController addressNameController;
   late TextEditingController emailNameController;
   late TextEditingController passwordNameController;
-  String completeNumber = '';
+  String countryCode = '+94';
+
+  //String completeNumber = '';
   var globalKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     firstNameController = TextEditingController();
     lastNameController = TextEditingController();
@@ -41,7 +47,6 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
     lastNameController.dispose();
     phoneNameController.dispose();
     addressNameController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -147,6 +152,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                     dropdownIconPosition: IconPosition.trailing,
                                     flagsButtonPadding:
                                         EdgeInsets.only(left: 5, top: 5),
+                                    initialValue: countryCode,
                                     decoration: const InputDecoration(
                                         prefixStyle:
                                             TextStyle(color: Colors.black54),
@@ -161,13 +167,15 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                         filled: true,
                                         border: InputBorder.none),
                                     onChanged: (phone) {
-                                      print(phone.completeNumber);
-                                      completeNumber = phone.completeNumber;
+                                      print(phone.countryCode);
+                                      // completeNumber = phone.completeNumber;
+                                      countryCode = phone.countryCode;
                                     },
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black54),
                                     controller: phoneNameController,
                                     onCountryChanged: (country) {
+                                      countryCode = '+${country.dialCode}';
                                       print('Country changed to: ' +
                                           country.name);
                                     },
@@ -226,7 +234,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                             .length !=
                                         0) {
                                   var employeeInfo = ModelEmployeeInfo(
-                                    business: widget.SPBusiness,
+                                      business: widget.SPBusiness,
                                       firstName:
                                           firstNameController.text.toString(),
                                       address:
@@ -236,15 +244,18 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                       lastName:
                                           lastNameController.text.toString(),
                                       number:
-                                      completeNumber,
+                                          phoneNameController.text.toString(),
                                       password: passwordNameController.text
                                           .toString(),
                                       UID: FirebaseAuth
-                                          .instance.currentUser!.uid);
-                                  FirebaseFirestore.instance.collection('Employee').doc().set(employeeInfo.toMap());
+                                          .instance.currentUser!.uid,
+                                      countryCode: countryCode);
+                                  FirebaseFirestore.instance
+                                      .collection('Employee')
+                                      .doc()
+                                      .set(employeeInfo.toMap());
 
-                                  ShowCustomToast(
-                                      msg: 'Successful Added');
+                                  ShowCustomToast(msg: 'Successful Added');
                                   Navigator.pop(context);
                                 } else {
                                   ShowCustomToast(

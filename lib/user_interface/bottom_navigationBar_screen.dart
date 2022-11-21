@@ -5,7 +5,6 @@ import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/user_interface/market_view_place_for_user.dart';
 import 'package:wedding_planner/user_interface/profile_page.dart';
 import 'package:wedding_planner/user_interface/user_dashboard.dart';
-
 import '../repository/utils/data_constants.dart';
 
 class BottomNavigationBarForUser extends StatefulWidget {
@@ -57,7 +56,7 @@ class _BottomNavigationBarForUserState
           UserDashboard(
             status: widget.status,
           ),
-          Appointments(),
+          Appointments(senderNumber: ''),
           ProfilePage(
             status: widget.status!,
           ),

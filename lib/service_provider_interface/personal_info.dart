@@ -34,6 +34,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController categoryNameController;
   late TextEditingController locationController;
   late CollectionReference collectionInfo;
+  late String countryCode;
   late String imgUrl;
   bool isLoading = false;
 
@@ -82,6 +83,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     imgUrl = widget.mode == Strings.editMode
         ? widget.doc![ModelPersonalLoginInfo.imgUrlKey]
         : '';
+    countryCode = widget.mode == Strings.editMode
+        ? widget.doc![ModelPersonalLoginInfo.countryCodeKey]
+        : '+94';
 
     locationController.addListener(() {
       if (getLocation.sessionToken == null) {
@@ -116,7 +120,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     firstNameController.dispose();
     lastNameController.dispose();
     phoneNumberController.dispose();
-    // addressNameController.dispose();
     businessNameController.dispose();
     categoryNameController.dispose();
     locationController.dispose();
@@ -215,6 +218,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: IntlPhoneField(
+                              initialValue: countryCode,
                               controller: phoneNumberController,
                               dropdownIconPosition: IconPosition.trailing,
                               flagsButtonPadding:
@@ -226,7 +230,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                     leadingDistribution:
                                         TextLeadingDistribution.even),
                                 contentPadding:
-                                    EdgeInsets.only(top: 17, bottom: 0),
+                                EdgeInsets.only(top: 17, bottom: 0),
                                 hintText: 'Phone Number',
                                 fillColor: Colors.white,
                                 filled: true,
@@ -234,19 +238,25 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               ),
                               onChanged: (phone) {
                                 print('//////$phone');
+                                countryCode = phone.countryCode;
                               },
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.black54),
                               onCountryChanged: (country) {
                                 print('//////Country changed to: ' +
-                                    country.name);
+                                    country.name +
+                                    ' ' +
+                                    country.dialCode +
+                                    " " +
+                                    country.code);
+                                countryCode = '+${country.dialCode}';
                               },
                               autovalidateMode: AutovalidateMode.disabled,
                               dropdownTextStyle:
-                                  TextStyle(color: Colors.black54),
+                              TextStyle(color: Colors.black54),
                               pickerDialogStyle: PickerDialogStyle(
                                   countryCodeStyle:
-                                      TextStyle(color: Colors.black54)),
+                                  TextStyle(color: Colors.black54)),
                             ),
                           ),
                         ),
@@ -418,6 +428,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                 firstName: firstNameController.text.toString(),
                                 lastName: lastNameController.text.toString(),
                                 number: phoneNumberController.text.toString(),
+                                countryCode: countryCode,
                                 business:
                                     widget.status == Strings.serviceProvider
                                         ? businessNameController.text.toString()

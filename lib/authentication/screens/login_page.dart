@@ -252,24 +252,46 @@ class _LoginPageState extends State<LoginPage> {
                                                           snapshot.data!.docs[0]
                                                               .id);
 
-                                                  var employeeInfo = ModelEmployeeInfo(
-                                                      business:
-                                                          snapshot.data!.docs[0][ModelEmployeeInfo.businessKey]
-                                                              .toString(),
-                                                      firstName: snapshot
-                                                              .data!.docs[0][
-                                                          ModelEmployeeInfo
-                                                              .firstNameKey],
-                                                      lastName:
-                                                          snapshot.data!.docs[0]
-                                                              [ModelEmployeeInfo
-                                                                  .lastNameKey],
-                                                      number: snapshot.data!.docs[0]
-                                                          [ModelEmployeeInfo.numberKey],
-                                                      email: snapshot.data!.docs[0][ModelEmployeeInfo.emailKey],
-                                                      address: snapshot.data!.docs[0][ModelEmployeeInfo.addressKey],
-                                                      password: snapshot.data!.docs[0][ModelEmployeeInfo.passwordKey],
-                                                      UID: snapshot.data!.docs[0][ModelEmployeeInfo.UIDKey]);
+                                                  var employeeInfo =
+                                                      ModelEmployeeInfo(
+                                                    business: snapshot
+                                                        .data!
+                                                        .docs[0][
+                                                            ModelEmployeeInfo
+                                                                .businessKey]
+                                                        .toString(),
+                                                    firstName:
+                                                        snapshot.data!.docs[0][
+                                                            ModelEmployeeInfo
+                                                                .firstNameKey],
+                                                    lastName:
+                                                        snapshot.data!.docs[0]
+                                                            [ModelEmployeeInfo
+                                                                .lastNameKey],
+                                                    number:
+                                                        snapshot.data!.docs[0][
+                                                            ModelEmployeeInfo
+                                                                .numberKey],
+                                                    email:
+                                                        snapshot.data!.docs[0][
+                                                            ModelEmployeeInfo
+                                                                .emailKey],
+                                                    address:
+                                                        snapshot.data!.docs[0][
+                                                            ModelEmployeeInfo
+                                                                .addressKey],
+                                                    password:
+                                                        snapshot.data!.docs[0]
+                                                            [ModelEmployeeInfo
+                                                                .passwordKey],
+                                                    UID: snapshot.data!.docs[0][
+                                                        ModelEmployeeInfo
+                                                            .UIDKey],
+                                                    countryCode: snapshot
+                                                            .data!.docs[0][
+                                                        ModelEmployeeInfo
+                                                            .countryCodeKey],
+                                                  );
 
                                                   FirebaseFirestore.instance
                                                       .collection(Strings
