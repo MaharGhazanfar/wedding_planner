@@ -29,12 +29,11 @@ class PersonalInfoPage extends StatefulWidget {
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
-  late TextEditingController phoneNameController;
+  late TextEditingController phoneNumberController;
   late TextEditingController businessNameController;
   late TextEditingController categoryNameController;
   late TextEditingController locationController;
   late CollectionReference collectionInfo;
-  late String countryCode;
   late String imgUrl;
   bool isLoading = false;
 
@@ -64,7 +63,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.lastNameKey]
             : null);
-    phoneNameController = TextEditingController(
+    phoneNumberController = TextEditingController(
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.numberKey]
             : null);
@@ -116,7 +115,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   void dispose() {
     firstNameController.dispose();
     lastNameController.dispose();
-    phoneNameController.dispose();
+    phoneNumberController.dispose();
     // addressNameController.dispose();
     businessNameController.dispose();
     categoryNameController.dispose();
@@ -129,7 +128,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Widget build(BuildContext mainContext) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    print('This is a dummy comment');
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -144,462 +142,369 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 right: ScreenPading.rightPading,
               ),
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * .3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 32.0),
-                            child: IconButton(
-                                padding: EdgeInsets.only(top: 8),
-                                alignment: Alignment.topLeft,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: CustomColors.backGroundColor,
-                                )),
-                          ),
-                          const Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 32),
-                              child: Text(
-                                'A few more details\nabout you...',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        ],
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 32.0),
+                          child: IconButton(
+                              padding: EdgeInsets.only(top: 8),
+                              alignment: Alignment.topLeft,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: CustomColors.backGroundColor,
+                              )),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * .7,
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          CustomWidget.customTextField3(
-                              titleName: 'First Name',
-                              controller: firstNameController,
-                              context: mainContext),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: CustomWidget.customTextField3(
-                                titleName: 'Last Name',
-                                controller: lastNameController,
-                                context: mainContext),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 2, bottom: 20),
+                          child: Text(
+                            'A few more details\nabout you...',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width * .07,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.09),
-                                      offset: const Offset(
-                                        0.1,
-                                        1.5,
-                                      ),
-                                      spreadRadius: 1,
-                                    ),
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.09),
-                                      offset: const Offset(
-                                        -0.1,
-                                        -0.001,
-                                      ),
-                                      spreadRadius: -1,
-                                    ),
-                                  ]),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: IntlPhoneField(
-                                  controller: phoneNameController,
-                                  dropdownIconPosition: IconPosition.trailing,
-                                  flagsButtonPadding:
-                                      const EdgeInsets.only(left: 5, top: 5),
-                                  decoration: const InputDecoration(
-                                    prefixStyle:
-                                        TextStyle(color: Colors.black54),
-                                    errorStyle: TextStyle(
-                                        color:
-                                            CustomColors.buttonBackgroundColor,
-                                        leadingDistribution:
-                                            TextLeadingDistribution.even),
-                                    contentPadding:
-                                        EdgeInsets.only(top: 17, bottom: 0),
-                                    hintText: 'Phone Number',
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: InputBorder.none,
+                        ),
+                      ),
+                      CustomWidget.customTextField3(
+                          titleName: 'First Name',
+                          controller: firstNameController,
+                          context: mainContext),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: CustomWidget.customTextField3(
+                            titleName: 'Last Name',
+                            controller: lastNameController,
+                            context: mainContext),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  offset: const Offset(
+                                    0.1,
+                                    1.5,
                                   ),
-                                  onChanged: (phone) {
-                                    print('//////$phone');
-                                  },
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black54),
-                                  onCountryChanged: (country) {
-                                    countryCode = country.code;
-                                    print('//////Country changed to: ' +
-                                        country.name);
-                                  },
-                                  autovalidateMode: AutovalidateMode.disabled,
-                                  dropdownTextStyle:
-                                      TextStyle(color: Colors.black54),
-                                  pickerDialogStyle: PickerDialogStyle(
-                                      countryCodeStyle:
-                                          TextStyle(color: Colors.black54)),
+                                  spreadRadius: 1,
                                 ),
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.09),
+                                  offset: const Offset(
+                                    -0.1,
+                                    -0.001,
+                                  ),
+                                  spreadRadius: -1,
+                                ),
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: IntlPhoneField(
+                              controller: phoneNumberController,
+                              dropdownIconPosition: IconPosition.trailing,
+                              flagsButtonPadding:
+                                  const EdgeInsets.only(left: 5, top: 5),
+                              decoration: const InputDecoration(
+                                prefixStyle: TextStyle(color: Colors.black54),
+                                errorStyle: TextStyle(
+                                    color: CustomColors.buttonBackgroundColor,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even),
+                                contentPadding:
+                                    EdgeInsets.only(top: 17, bottom: 0),
+                                hintText: 'Phone Number',
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: InputBorder.none,
                               ),
+                              onChanged: (phone) {
+                                print('//////$phone');
+                              },
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black54),
+                              onCountryChanged: (country) {
+                                print('//////Country changed to: ' +
+                                    country.name);
+                              },
+                              autovalidateMode: AutovalidateMode.disabled,
+                              dropdownTextStyle:
+                                  TextStyle(color: Colors.black54),
+                              pickerDialogStyle: PickerDialogStyle(
+                                  countryCodeStyle:
+                                      TextStyle(color: Colors.black54)),
                             ),
                           ),
-                          widget.status == Strings.serviceProvider
-                              ? Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12.0,
-                                  ),
-                                  child: CustomWidget.customTextField3(
-                                      titleName: 'Business',
-                                      controller: businessNameController,
-                                      context: mainContext),
-                                )
-                              : SizedBox(),
-                          widget.status == Strings.serviceProvider
-                              ? Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 12.0,
-                                  ),
-                                  child: CustomWidget.customTextField3(
-                                      onTap: () {
-                                        setState(() {
-                                          CategoryBottomSheetBar
-                                              .categoryBottomSheet(
-                                            status: widget.status,
-                                            context: mainContext,
-                                            child: ListView.builder(
-                                              itemCount: Categories
-                                                  .categoryList.length,
-                                              dragStartBehavior:
-                                                  DragStartBehavior.start,
+                        ),
+                      ),
+                      widget.status == Strings.serviceProvider
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12.0,
+                              ),
+                              child: CustomWidget.customTextField3(
+                                  titleName: 'Business',
+                                  controller: businessNameController,
+                                  context: mainContext),
+                            )
+                          : SizedBox(),
+                      widget.status == Strings.serviceProvider
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                top: 12.0,
+                              ),
+                              child: CustomWidget.customTextField3(
+                                  onTap: () {
+                                    setState(() {
+                                      CategoryBottomSheetBar
+                                          .categoryBottomSheet(
+                                        status: widget.status,
+                                        context: mainContext,
+                                        child: ListView.builder(
+                                          itemCount:
+                                              Categories.categoryList.length,
+                                          dragStartBehavior:
+                                              DragStartBehavior.start,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemExtent: 50.0,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8,
+                                                  right: 8,
+                                                  bottom: 2,
+                                                  top: 2),
+                                              child: ListTile(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                title: Text(Categories
+                                                    .categoryList[index]),
+                                                tileColor: Colors.white70,
+                                                onTap: () {
+                                                  setState(() {
+                                                    categoryNameController
+                                                            .text =
+                                                        Categories.categoryList[
+                                                            index];
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  titleName: 'Categories',
+                                  textInputType: TextInputType.none,
+                                  controller: categoryNameController,
+                                  context: mainContext),
+                            )
+                          : SizedBox(),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                            top: 12.0,
+                          ),
+                          child: Column(
+                            children: [
+                              getLocation.isSearching
+                                  ? Consumer<LocationPicker>(
+                                      builder: (context, value, child) =>
+                                          ListView.builder(
+                                              itemCount:
+                                                  value.placesList.length,
+                                              shrinkWrap: true,
                                               physics:
-                                                  const BouncingScrollPhysics(),
-                                              itemExtent: 50.0,
+                                                  const NeverScrollableScrollPhysics(),
                                               itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8,
-                                                          right: 8,
-                                                          bottom: 2,
-                                                          top: 2),
-                                                  child: ListTile(
+                                                return ListTile(
+                                                    title: Text(
+                                                      value.placesList[index]
+                                                          ['description'],
+                                                    ),
+                                                    //     tileColor: Colors.white70,
                                                     shape:
                                                         RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        20)),
-                                                    title: Text(Categories
-                                                        .categoryList[index]),
-                                                    tileColor: Colors.white70,
-                                                    onTap: () {
-                                                      setState(() {
-                                                        categoryNameController
-                                                            .text = Categories
-                                                                .categoryList[
-                                                            index];
-                                                        Navigator.pop(context);
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        });
-                                      },
-                                      titleName: 'Categories',
-                                      textInputType: TextInputType.none,
-                                      controller: categoryNameController,
-                                      context: mainContext),
-                                )
-                              : SizedBox(),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 12.0,
-                            ),
-                            child: CustomWidget.customTextField3(
-                                titleName: 'Business',
-                                controller: businessNameController,
-                                context: mainContext),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 12.0,
-                            ),
-                            child: CustomWidget.customTextField3(
-                                onTap: () {
-                                  setState(() {
-                                    CategoryBottomSheetBar.categoryBottomSheet(
-                                      status: widget.status,
-                                      context: mainContext,
-                                      child: ListView.builder(
-                                        itemCount:
-                                            Categories.categoryList.length,
-                                        dragStartBehavior:
-                                            DragStartBehavior.start,
-                                        physics: const BouncingScrollPhysics(),
-                                        itemExtent: 50.0,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8,
-                                                right: 8,
-                                                bottom: 2,
-                                                top: 2),
-                                            child: ListTile(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              title: Text(
-                                                Categories.categoryList[index],
-                                                maxLines: 2,
-                                              ),
-                                              tileColor: Colors.white70,
-                                              onTap: () {
-                                                setState(() {
-                                                  categoryNameController.text =
-                                                      Categories
-                                                          .categoryList[index];
-                                                  Navigator.pop(context);
-                                                });
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  });
-                                },
-                                titleName: 'Categories',
-                                textInputType: TextInputType.none,
-                                controller: categoryNameController,
-                                context: mainContext),
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                top: 12.0,
-                              ),
-                              child: Column(
-                                children: [
-                                  getLocation.isSearching
-                                      ? Consumer<LocationPicker>(
-                                          builder: (context, value, child) =>
-                                              ListView.builder(
-                                                  itemCount:
-                                                      value.placesList.length,
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                        title: Text(
-                                                          value.placesList[
-                                                                  index]
-                                                              ['description'],
-                                                        ),
-                                                        //     tileColor: Colors.white70,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
                                                                         15)),
-                                                        onTap: () async {
-                                                          locationController
-                                                                  .text =
-                                                              value.placesList[
-                                                                      index][
-                                                                  'description'];
+                                                    onTap: () async {
+                                                      locationController
+                                                          .text = value
+                                                              .placesList[index]
+                                                          ['description'];
 
-                                                          value.isSearching =
-                                                              false;
-                                                          value.placesList = [];
-                                                          FocusScopeNode
-                                                              currentFocus =
-                                                              FocusScope.of(
-                                                                  context);
+                                                      value.isSearching = false;
+                                                      value.placesList = [];
+                                                      FocusScopeNode
+                                                          currentFocus =
+                                                          FocusScope.of(
+                                                              context);
 
-                                                          if (!currentFocus
-                                                              .hasPrimaryFocus) {
-                                                            currentFocus
-                                                                .unfocus();
-                                                          }
-                                                          print(
-                                                              '_searchController.text ==${locationController.text}/////////');
-                                                        });
-                                                  }),
-                                        )
-                                      : const SizedBox(),
-                                  CustomWidget.customTextField3(
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          getLocation.isSearching = true;
-                                        });
-                                      },
-                                      onTap: () => getLocation
-                                          .getCurrentPosition(context),
-                                      titleName: 'Location',
-                                      maxLines: 2,
-                                      textInputType: TextInputType.multiline,
-                                      controller: locationController,
-                                      context: mainContext),
-                                ],
-                              )),
-                          GestureDetector(
-                            onTap: () async {
-                              print(phoneNameController.text.toString());
-                              if (firstNameController.text.toString().length !=
-                                          0 &&
-                                      lastNameController.text
-                                              .toString()
-                                              .length !=
-                                          0 &&
-                                      phoneNameController.text
-                                              .toString()
-                                              .length !=
-                                          0 &&
-                                      widget.status == Strings.serviceProvider
-                                  ? businessNameController.text
+                                                      if (!currentFocus
+                                                          .hasPrimaryFocus) {
+                                                        currentFocus.unfocus();
+                                                      }
+                                                      print(
+                                                          '_searchController.text == ${locationController.text}/////////');
+                                                    });
+                                              }),
+                                    )
+                                  : const SizedBox(),
+                              CustomWidget.customTextField3(
+                                  contentPadding: EdgeInsets.all(10),
+                                  onChanged: (value) async {
+                                    setState(() {
+                                      getLocation.isSearching = true;
+                                    });
+                                  },
+                                  onTap: () {
+                                    if (locationController.text.isNotEmpty) {
+                                      getLocation.getCurrentPosition(context);
+                                    }
+                                  },
+                                  titleName: 'Location',
+                                  maxLines: 5,
+                                  minLines: 1,
+                                  textInputType: TextInputType.multiline,
+                                  controller: locationController,
+                                  context: mainContext),
+                            ],
+                          )),
+                      InkWell(
+                        splashColor: Colors.white70,
+                        onTap: () async {
+                          print(phoneNumberController.text.toString());
+                          if (firstNameController.text.toString().length != 0 &&
+                                  lastNameController.text.toString().length !=
+                                      0 &&
+                                  phoneNumberController.text
+                                          .toString()
+                                          .length !=
+                                      0 &&
+                                  widget.status == Strings.serviceProvider
+                              ? businessNameController.text.toString().length !=
+                                  0
+                              : true && widget.status == Strings.serviceProvider
+                                  ? categoryNameController.text
                                           .toString()
                                           .length !=
                                       0
                                   : true &&
-                                          widget.status ==
-                                              Strings.serviceProvider
-                                      ? categoryNameController.text
+                                      locationController.text
                                               .toString()
                                               .length !=
-                                          0
-                                      : true &&
-                                          locationController.text
-                                                  .toString()
-                                                  .length !=
-                                              0) {
-                                var personalInfo = ModelPersonalLoginInfo(
-                                    firstName:
-                                        firstNameController.text.toString(),
-                                    lastName:
-                                        lastNameController.text.toString(),
-                                    number: countryCode +
-                                        phoneNameController.text.toString(),
-                                    business: widget.status ==
-                                            Strings.serviceProvider
+                                          0) {
+                            var personalInfo = ModelPersonalLoginInfo(
+                                firstName: firstNameController.text.toString(),
+                                lastName: lastNameController.text.toString(),
+                                number: phoneNumberController.text.toString(),
+                                business:
+                                    widget.status == Strings.serviceProvider
                                         ? businessNameController.text.toString()
                                         : '',
-                                    category: widget.status ==
-                                            Strings.serviceProvider
+                                category:
+                                    widget.status == Strings.serviceProvider
                                         ? categoryNameController.text.toString()
                                         : '',
-                                    location:
-                                        locationController.text.toString(),
-                                    imgUrl: imgUrl);
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                collectionInfo.doc(DBHandler.user!.uid).set(
-                                    widget.status == Strings.serviceProvider
-                                        ? personalInfo.toMapForProvider()
-                                        : personalInfo.toMapForUser());
-                                setState(() {
-                                  isLoading = true;
-                                });
+                                location: locationController.text.toString(),
+                                imgUrl: imgUrl);
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await collectionInfo.doc(DBHandler.user!.uid).set(
+                                widget.status == Strings.serviceProvider
+                                    ? personalInfo.toMapForProvider()
+                                    : personalInfo.toMapForUser());
+                            setState(() {
+                              isLoading = false;
+                            });
 
-                                if (widget.mode == Strings.editMode) {
-                                  Navigator.pop(context);
-                                } else {
-                                  if (widget.status ==
-                                      Strings.serviceProvider) {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ServiceProviderDashBoard(
-                                            status: widget.status,
-                                          ),
-                                        ),
-                                        (route) => false);
-                                  } else {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BottomNavigationBarForUser(
-                                                  status: widget.status),
-                                        ),
-                                        (route) => false);
-                                  }
-                                }
+                            if (widget.mode == Strings.editMode) {
+                              Navigator.pop(context);
+                            } else {
+                              if (widget.status == Strings.serviceProvider) {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ServiceProviderDashBoard(
+                                        status: widget.status,
+                                      ),
+                                    ),
+                                    (route) => false);
                               } else {
-                                ShowCustomToast(
-                                    msg: "All Field Must Be Filled");
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BottomNavigationBarForUser(
+                                              status: widget.status),
+                                    ),
+                                    (route) => false);
                               }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 24.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      alignment: Alignment.center,
-                                      height: 50,
-                                      width: MediaQuery.of(mainContext)
-                                              .size
-                                              .width *
-                                          0.5,
-                                      decoration: BoxDecoration(
-                                          color: CustomColors
-                                              .buttonBackgroundColor,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.06),
-                                                offset: const Offset(
-                                                  0,
-                                                  2,
-                                                ),
-                                                spreadRadius: 3,
-                                                blurRadius: 1),
-                                          ]),
-                                      child: isLoading
-                                          ? Text(
-                                              widget.mode == Strings.editMode
-                                                  ? 'Update'
-                                                  : 'Continue',
-                                              style:
-                                                  ButtonsStyle.buttonTextStyle(
-                                                      mainContext))
-                                          : Text('Loading...')),
-                                ],
-                              ),
-                            ),
+                            }
+                          } else {
+                            ShowCustomToast(msg: "All Field Must Be Filled");
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 24.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                  alignment: Alignment.center,
+                                  height: 50,
+                                  width: MediaQuery.of(mainContext).size.width *
+                                      0.5,
+                                  decoration: BoxDecoration(
+                                      color: CustomColors.buttonBackgroundColor,
+                                      borderRadius: BorderRadius.circular(50),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.06),
+                                            offset: const Offset(
+                                              0,
+                                              2,
+                                            ),
+                                            spreadRadius: 3,
+                                            blurRadius: 1),
+                                      ]),
+                                  child: isLoading
+                                      ? Text('Loading...')
+                                      : Text(
+                                          widget.mode == Strings.editMode
+                                              ? 'Update'
+                                              : 'Continue',
+                                          style: ButtonsStyle.buttonTextStyle(
+                                              mainContext))),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
