@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 class CustomColors {
   static const Color textFontColor = Colors.black54;
   static const Color headingTextFontColor = Colors.white;
@@ -86,6 +88,8 @@ class Categories {
 
 class Strings {
   static const String serviceProvider = 'ServiceProvider';
+
+
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
   static const String UIDPref = 'UID';
@@ -96,6 +100,16 @@ class Strings {
   static const String blogPost = 'BlogPost';
   static const String editMode = 'EditMode';
   static const String normalMode = 'normalMode';
+
+
+  ///  for chats.........................................
+  static const String chats = 'chats';
+  static const String messages = 'Messages';
+  static const String imageSource = 'imageSource';
+  static const String msgSource = 'msgSource';
+  static const String personalChat = 'personalChat';
+  static const String online = 'true';
+  static const String offline = 'false';
   static const String userPersonalTasks = 'userPersonalTasks';
 }
 
@@ -105,3 +119,5 @@ class ScreenPading {
   static const double rightPading = 16;
   static const double bottomPading = 16;
 }
+
+

@@ -9,7 +9,6 @@ import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
 import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
-
 import 'firebase_options.dart';
 import 'modelClasses/model_personal_login_info.dart';
 

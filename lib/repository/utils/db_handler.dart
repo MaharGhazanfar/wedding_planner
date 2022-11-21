@@ -11,6 +11,10 @@ class DBHandler {
     return FirebaseFirestore.instance.collection(Strings.serviceProvider);
   }
 
+  static CollectionReference chatsUserList() {
+    return FirebaseFirestore.instance.collection(Strings.chats);
+  }
+
   static CollectionReference personalInfoCollectionForServiceUser() {
     return FirebaseFirestore.instance.collection(Strings.serviceUser);
   }

@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rive/rive.dart';
-
 import '../../repository/utils/data_constants.dart';
 import '../../service_provider_interface/personal_info.dart';
 import '../../service_provider_interface/service_provider_dashboard.dart';

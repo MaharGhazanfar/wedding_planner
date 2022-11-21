@@ -34,6 +34,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late Map<String, dynamic> doc;
   String SPBusiness = '';
+  String senderNumber = '';
 
   @override
   void initState() {
@@ -252,6 +253,14 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               null
                           ? doc[ModelPersonalLoginInfo.businessKey].toString()
                           : doc[ModelEmployeeInfo.businessKey].toString();
+
+                      senderNumber = ModelPersonalLoginInfo.prefs!.getString(
+                        Strings.UIDPref,
+                      ) ==
+                          null
+                          ? doc[ModelPersonalLoginInfo.numberKey].toString()
+                          : doc[ModelEmployeeInfo.numberKey].toString();
+
                       return Column(
                         children: [
                           Padding(
@@ -354,7 +363,33 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 8),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mail,
+                                      color: CustomColors.backGroundColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                        ModelPersonalLoginInfo.prefs!.getString(
+                                                  Strings.UIDPref,
+                                                ) ==
+                                                null
+                                            ? DBHandler.user!.email != null
+                                                ? DBHandler.user!.email!
+                                                : ''
+                                            : doc[ModelEmployeeInfo.emailKey]
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                CustomColors.backGroundColor)),
+                                  ],
+                                ),
                                 Icon(
                                   Icons.mail,
                                   color: CustomColors.backGroundColor,
@@ -514,7 +549,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Appointments(),
+                              builder: (context) => const Appointments(senderNumber: '',),
                             ));
                       }),
                 ],

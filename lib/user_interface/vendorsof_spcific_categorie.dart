@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:wedding_planner/common_screens/chat_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class VendorsOfSpecificCategories extends StatefulWidget {
@@ -83,11 +82,11 @@ class _VendorsOfSpecificCategoriesStates
                         tileColor: Colors.white70,
                         trailing: Text('Location'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => ChatPage(name: '',senderNumber: '',receiverNumber: ''),
+                          //     ));
                         },
                       ),
                     );
