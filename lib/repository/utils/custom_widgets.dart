@@ -2,7 +2,6 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 
 import 'data_constants.dart';
@@ -265,6 +264,29 @@ class CustomWidget {
             style: TextStyle(fontSize: 18, color: CustomColors.backGroundColor),
           )
         ],
+      ),
+    );
+  }
+
+  static Widget CustomCardForProfileData(
+      {required String title, required String value}) {
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                flex: 1,
+                child: Text(title,
+                    style: TextStyle(color: CustomColors.textFontColor))),
+            Expanded(
+                flex: 2,
+                child: Text(value,
+                    style: TextStyle(color: CustomColors.textFontColor)))
+          ],
+        ),
       ),
     );
   }
