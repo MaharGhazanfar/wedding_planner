@@ -8,7 +8,10 @@ import 'package:wedding_planner/service_provider_interface/category_dialogue.dar
 import '../../modelClasses/model_tasks_handler.dart';
 
 class TOdoDialog extends StatefulWidget {
-  const TOdoDialog({Key? key}) : super(key: key);
+  final Map<String, dynamic>? doc;
+  final String? id;
+
+  const TOdoDialog({Key? key, this.doc, this.id}) : super(key: key);
 
   @override
   State<TOdoDialog> createState() => _TOdoDialogState();
@@ -17,11 +20,9 @@ class TOdoDialog extends StatefulWidget {
 class _TOdoDialogState extends State<TOdoDialog> {
   late TextEditingController _todoController;
   late TextEditingController _notesController;
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  String selectedItem = 'select';
-  String pickedDate = 'Select Date';
-
-  //String pickedTime = 'null';
+  late String selectedItem;
+  late String pickedDate;
+  late bool reminder;
   late final CollectionReference userTasksCollection;
 
   @override
@@ -29,8 +30,19 @@ class _TOdoDialogState extends State<TOdoDialog> {
     // TODO: implement initState
     super.initState();
     userTasksCollection = DBHandler.usersTasksCollection();
-    _todoController = TextEditingController();
-    _notesController = TextEditingController();
+    _todoController = TextEditingController(
+        text: widget.doc != null ? widget.doc![ModelTasksHandler.toDOKey] : '');
+    _notesController = TextEditingController(
+        text:
+            widget.doc != null ? widget.doc![ModelTasksHandler.notesKey] : '');
+    selectedItem = widget.doc != null
+        ? widget.doc![ModelTasksHandler.categoryKey]
+        : 'Select';
+    pickedDate = widget.doc != null
+        ? widget.doc![ModelTasksHandler.dateTimeKey]
+        : 'Select Date';
+    reminder =
+        widget.doc != null ? widget.doc![ModelTasksHandler.reminderKey] : false;
   }
 
   @override
@@ -44,9 +56,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    print('${selectedItem}////////////build///////////////');
     return Scaffold(
-      key: scaffoldKey,
       backgroundColor: Colors.white70,
       body: Padding(
         padding: const EdgeInsets.only(top: 40.0, left: 16, right: 16),
@@ -63,7 +73,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 Container(
                   height: 60,
                   width: width,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
@@ -101,10 +111,13 @@ class _TOdoDialogState extends State<TOdoDialog> {
                             dateTime: pickedDate,
                             category: selectedItem,
                             notes: _notesController.text,
+                            //reminder: false
                           );
-                          print(
-                              '${userTasks.toMap()}//////////////////////////');
-                          userTasksCollection.doc().set(userTasks.toMap());
+                          userTasksCollection
+                              .doc(widget.id.toString().isNotEmpty
+                                  ? widget.id
+                                  : null)
+                              .set(userTasks.toMap());
 
                           Navigator.of(context).pop();
                         },
@@ -113,11 +126,11 @@ class _TOdoDialogState extends State<TOdoDialog> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 16.0, right: 16, top: 5),
+                  padding: const EdgeInsets.only(left: 16.0, right: 16, top: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      const Expanded(
                           flex: 1,
                           child: Text(
                             'TO_DO',
@@ -130,7 +143,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
                             border: InputBorder.none,
                           ),
                           textDirection: TextDirection.rtl,
-                          style: TextStyle(color: CustomColors.blackText),
+                          style: const TextStyle(color: CustomColors.blackText),
                           controller: _todoController,
                           maxLines: 3,
                           minLines: 1,
@@ -156,13 +169,13 @@ class _TOdoDialogState extends State<TOdoDialog> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'DUE DATE',
                           style: TextStyle(color: CustomColors.blackText),
                         ),
                         Text(
                           pickedDate,
-                          style: TextStyle(color: CustomColors.blackText),
+                          style: const TextStyle(color: CustomColors.blackText),
                         ),
                       ],
                     ),
@@ -181,13 +194,13 @@ class _TOdoDialogState extends State<TOdoDialog> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Reminder',
                           style: TextStyle(color: CustomColors.blackText),
                         ),
                         Text(
-                          'Off',
-                          style: TextStyle(color: CustomColors.blackText),
+                          reminder ? 'On' : 'Off',
+                          style: const TextStyle(color: CustomColors.blackText),
                         )
                       ],
                     ),
@@ -202,38 +215,16 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: InkWell(
-                    onTap: () {
-                      // scaffoldKey.currentState!.showBottomSheet((context) {
-                      CategoryBottomSheetBar.categoryBottomSheet(
-                        context: context,
-                        child: ListView.builder(
-                          itemCount: Categories.categoryList.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              onTap: () {
-                                setState(() {
-                                  selectedItem = Categories.categoryList[index];
-                                  Navigator.pop(context);
-                                  print(
-                                      '${selectedItem}///////////////////////////');
-                                });
-                              },
-                              title: Text(
-                                Categories.categoryList[index],
-                                style: TextStyle(color: CustomColors.blackText),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                    onTap: () async {
+                      selectedItem =
+                          await CategoryBottomSheetBar.categoryBottomSheet(
+                              context: context);
                       setState(() {});
-
-                      //});
                     },
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Category',
                             style: TextStyle(
                                 color: CustomColors.blackText,
@@ -241,7 +232,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
                           ),
                           Text(
                             selectedItem,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: CustomColors.blackText,
                             ),
                           ),
@@ -276,15 +267,16 @@ class _TOdoDialogState extends State<TOdoDialog> {
                           minLines: null,
                           expands: true,
                           maxLines: null,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               border: InputBorder.none,
-                              constraints: BoxConstraints(maxHeight: 300)),
+                              constraints:
+                                  BoxConstraints(maxHeight: height * 0.4)),
                         ),
                       )
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 const Divider(
                   thickness: 1.5,
                 ),

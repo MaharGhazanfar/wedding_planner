@@ -262,13 +262,6 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           ? doc[ModelPersonalLoginInfo.numberKey].toString()
                           : doc[ModelEmployeeInfo.numberKey].toString();
 
-                      senderName = ModelPersonalLoginInfo.prefs!.getString(
-                        Strings.UIDPref,
-                      ) ==
-                          null
-                          ? '${doc[ModelPersonalLoginInfo.firstNameKey].toString()} ${doc[ModelPersonalLoginInfo.lastNameKey].toString()}'
-                          : '${doc[ModelEmployeeInfo.firstNameKey].toString()} ${doc[ModelEmployeeInfo.lastNameKey].toString()}';
-
                       return Column(
                         children: [
                           Padding(
@@ -371,20 +364,41 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 8),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: Icon(
-                                    Icons.mail,
-                                    color: CustomColors.backGroundColor,
-                                  ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mail,
+                                      color: CustomColors.backGroundColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                        ModelPersonalLoginInfo.prefs!.getString(
+                                                  Strings.UIDPref,
+                                                ) ==
+                                                null
+                                            ? DBHandler.user!.email != null
+                                                ? DBHandler.user!.email!
+                                                : ''
+                                            : doc[ModelEmployeeInfo.emailKey]
+                                                .toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                CustomColors.backGroundColor)),
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.mail,
+                                  color: CustomColors.backGroundColor,
                                 ),
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                Flexible(
-                                  flex: 8,
-                                  child: Text(
+                                Text(
                                     ModelPersonalLoginInfo.prefs!.getString(
                                               Strings.UIDPref,
                                             ) ==
@@ -395,11 +409,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                         : doc[ModelEmployeeInfo.emailKey]
                                             .toString(),
                                     style: TextStyle(
+                                        //fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: CustomColors.backGroundColor),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+                                        color: CustomColors.backGroundColor)),
                               ],
                             ),
                           ),
@@ -437,7 +449,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                   Icons.location_on,
                                   color: CustomColors.backGroundColor,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 ),
                                 Text(

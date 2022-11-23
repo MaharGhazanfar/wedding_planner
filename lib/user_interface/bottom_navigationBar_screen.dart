@@ -5,13 +5,14 @@ import 'package:wedding_planner/common_screens/chat/chat_user_list.dart';
 import 'package:wedding_planner/user_interface/market_view_place_for_user.dart';
 import 'package:wedding_planner/user_interface/profile_page.dart';
 import 'package:wedding_planner/user_interface/user_dashboard.dart';
+
 import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/data_constants.dart';
 import '../repository/utils/db_handler.dart';
 
 class BottomNavigationBarForUser extends StatefulWidget {
   int currentIndex = 0;
-  String? status;
+  final String? status;
 
   BottomNavigationBarForUser({Key? key, currentIndex, required this.status})
       : super(
@@ -64,7 +65,7 @@ class _BottomNavigationBarForUserState
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  print(snapshot.data![ModelPersonalLoginInfo.numberKey]);
+                  //print(snapshot.data![ModelPersonalLoginInfo.numberKey]);
                   return ChatUserList(
                       senderStatus: Strings.serviceUser,
                       senderName:

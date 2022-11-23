@@ -49,7 +49,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                     ),
                     Text(
                       widget.doc[ModelServicePackages.offerNameKey],
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: CustomColors.blackText,
                           fontWeight: FontWeight.normal),
                     ),
@@ -68,7 +68,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                     ),
                     Text(
                       widget.doc[ModelServicePackages.categoryKey],
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: CustomColors.blackText,
                           fontWeight: FontWeight.normal),
                     ),
@@ -91,9 +91,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                             ? RichText(
                                 text: TextSpan(children: [
                                   TextSpan(
-                                      text:
-                                          '${widget.doc[ModelServicePackages.priceKey].toString()}',
-                                      style: TextStyle(
+                                      text: widget
+                                          .doc[ModelServicePackages.priceKey]
+                                          .toString(),
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           decoration:
                                               TextDecoration.lineThrough,
@@ -101,7 +102,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                   TextSpan(
                                       text:
                                           '  ${widget.doc[ModelServicePackages.priceKey] - (widget.doc[ModelServicePackages.discountKey] / 100) * widget.doc[ModelServicePackages.priceKey]}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
                                 ]),
@@ -109,7 +110,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                             : Text(
                                 widget.doc[ModelServicePackages.priceKey]
                                     .toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: CustomColors.textFontColor),
                               ),
@@ -118,7 +119,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   '${widget.doc[ModelServicePackages.discountKey].toString()}%',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       // fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: CustomColors.textFontColor),
@@ -135,14 +136,14 @@ class _ViewDetailsState extends State<ViewDetails> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'Description :',
                       style: TextStyle(
                           color: CustomColors.blackText, fontSize: 16),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0, left: 4),
+                      padding: EdgeInsets.only(top: 8.0, left: 4),
                       child: Text(
                         '''The RatingBar widget is used to show a rating or collect ratings from users (this is an interactive RatingBar). For example, you can use the RatingBar widget inside an e-commerce app to show ratings for a product.
                         ''',
@@ -167,13 +168,13 @@ class _ViewDetailsState extends State<ViewDetails> {
                     ),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.star,
                           color: CustomColors.yellowIconsColor,
                         ),
                         Text(
                           widget.doc[ModelServicePackages.ratingKey].toString(),
-                          style: TextStyle(color: CustomColors.greenish),
+                          style: const TextStyle(color: CustomColors.greenish),
                         ),
                       ],
                     ),
@@ -218,7 +219,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                                             .uidKey],
                                                   )));
                                     },
-                                    child: Text('Image'))
+                                    child: const Text('Image'))
                               ],
                             ),
                           ),
@@ -245,7 +246,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                                             .uidKey],
                                                   )));
                                     },
-                                    child: Text('Video'))
+                                    child: const Text('Video'))
                               ],
                             ),
                           ),
@@ -272,7 +273,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                                             .uidKey],
                                                   )));
                                     },
-                                    child: Text('Packages'))
+                                    child: const Text('Packages'))
                               ],
                             ),
                           ),
@@ -317,7 +318,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                               ),
                                             );
                                           },
-                                          child: Text('Appointment'))
+                                          child: const Text('Appointment'))
                                     ],
                                   ),
                                 );
@@ -344,7 +345,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 ),
                                 Text(
                                   '${snapshot.data![ModelPersonalLoginInfo.firstNameKey]} ${snapshot.data![ModelPersonalLoginInfo.lastNameKey]}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: CustomColors.blackText,
                                       fontWeight: FontWeight.normal),
                                 ),
@@ -364,7 +365,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 ),
                                 Text(
                                   '${snapshot.data![ModelPersonalLoginInfo.numberKey]}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: CustomColors.blackText,
                                       fontWeight: FontWeight.normal),
                                 ),
@@ -375,8 +376,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                             padding: const EdgeInsets.only(top: 6, right: 6),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
+                              children: const [
+                                Text(
                                   'Email',
                                   style: TextStyle(
                                       color: CustomColors.blackText,

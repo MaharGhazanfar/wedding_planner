@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/user_interface/view_detaails.dart';
+import 'package:wedding_planner/user_interface/wish_list/my_wish_list.dart';
 
 import '../modelClasses/service_packages.dart';
 import '../repository/utils/db_handler.dart';
@@ -57,9 +58,13 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                           color: Colors.white,
                           position: PopupMenuPosition.under,
                           itemBuilder: (context) => [
-                            PopupMenuItem(onTap: () {}, child: Text('Filters')),
                             PopupMenuItem(
-                                onTap: () {}, child: Text('Category')),
+                                onTap: () {
+                                  FirebaseAuth.instance.signOut();
+                                },
+                                child: const Text('Filters')),
+                            PopupMenuItem(
+                                onTap: () {}, child: const Text('Category')),
                           ],
                         ),
                         Padding(
@@ -71,25 +76,30 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => BlogsPage(),
+                                        builder: (context) =>
+                                            const MyWishList(),
                                       ));
                                 },
                                 color: CustomColors.backGroundColor,
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.favorite,
                                 ),
                               ),
                               IconButton(
                                 onPressed: () {
-                                  FirebaseAuth.instance.signOut();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const BlogsPage(),
+                                      ));
                                 },
                                 color: CustomColors.backGroundColor,
-                                icon: Icon(CupertinoIcons.color_filter),
+                                icon: const Icon(CupertinoIcons.color_filter),
                               ),
                               IconButton(
                                 onPressed: () {},
                                 color: CustomColors.backGroundColor,
-                                icon: Icon(Icons.notifications_sharp),
+                                icon: const Icon(Icons.notifications_sharp),
                               ),
                             ],
                           ),
@@ -174,9 +184,8 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                           .snapshots(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasError) {
-                                          return Center(
-                                            child: const Text(
-                                                'Something went wrong'),
+                                          return const Center(
+                                            child: Text('Something went wrong'),
                                           );
                                         }
                                         if (snapshot.connectionState ==
@@ -254,7 +263,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                           MainAxisAlignment
                                                                               .center,
                                                                       children: [
-                                                                        Icon(
+                                                                        const Icon(
                                                                             Icons
                                                                                 .star,
                                                                             color:
@@ -269,6 +278,23 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                     ),
                                                                   ),
                                                                 ),
+                                                              ),
+                                                              Align(
+                                                                alignment: Alignment
+                                                                    .bottomRight,
+                                                                child:
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {},
+                                                                        icon:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .favorite_border_outlined,
+                                                                          color:
+                                                                              CustomColors.buttonBackgroundColor,
+                                                                          size:
+                                                                              30,
+                                                                        )),
                                                               )
                                                             ],
                                                           ),
@@ -284,7 +310,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                               Text(
                                                                 doc[ModelServicePackages
                                                                     .offerNameKey],
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Colors
                                                                         .black),
                                                               ),
@@ -307,7 +333,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                 doc[ModelServicePackages
                                                                         .priceKey]
                                                                     .toString(),
-                                                                style: TextStyle(
+                                                                style: const TextStyle(
                                                                     color: Colors
                                                                         .black),
                                                               ),
@@ -318,10 +344,14 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                       MaterialPageRoute(
                                                                         builder:
                                                                             (context) =>
-                                                                                ViewDetails(doc: doc),
+                                                                                ViewDetails(
+                                                                          doc:
+                                                                              doc,
+                                                                        ),
                                                                       ));
                                                                 },
-                                                                child: Text(
+                                                                child:
+                                                                    const Text(
                                                                   'Details',
                                                                   style: TextStyle(
                                                                       color: Colors
@@ -372,9 +402,8 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                           generalPackagesCollection.snapshots(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasError) {
-                                          return Center(
-                                            child: const Text(
-                                                'Something went wrong'),
+                                          return const Center(
+                                            child: Text('Something went wrong'),
                                           );
                                         }
                                         if (snapshot.connectionState ==
@@ -401,131 +430,155 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                     left: 8,
                                                     right: 8,
                                                   ),
-                                                  child: Container(
-                                                    height: 70,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                              color: Colors
-                                                                  .black26,
-                                                              offset:
-                                                                  Offset(2, 2),
-                                                              blurRadius: 3),
-                                                        ]),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: 70,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          12),
-                                                              image: DecorationImage(
-                                                                  image: NetworkImage(doc[
-                                                                      ModelServicePackages
-                                                                          .imageURLKey]),
-                                                                  fit: BoxFit
-                                                                      .fill)),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                doc[ModelServicePackages
-                                                                    .offerNameKey],
-                                                                style: TextStyle(
-                                                                    color: CustomColors
-                                                                        .blackText),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        top:
-                                                                            6.0),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .star,
-                                                                      color: CustomColors
-                                                                          .yellowIconsColor,
-                                                                    ),
-                                                                    Text(
-                                                                      doc[ModelServicePackages
-                                                                              .ratingKey]
-                                                                          .toString(),
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              CustomColors.greenish),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              )
-                                                            ],
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    ViewDetails(
+                                                              doc: doc,
+                                                            ),
+                                                          ));
+                                                    },
+                                                    child: Container(
+                                                      height: 80,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          boxShadow: const [
+                                                            BoxShadow(
+                                                                color: Colors
+                                                                    .black26,
+                                                                offset: Offset(
+                                                                    2, 2),
+                                                                blurRadius: 3),
+                                                          ]),
+                                                      child: Row(
+                                                        children: [
+                                                          Container(
+                                                            width: 70,
+                                                            alignment: Alignment
+                                                                .center,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12),
+                                                                image: DecorationImage(
+                                                                    image: NetworkImage(doc[
+                                                                        ModelServicePackages
+                                                                            .imageURLKey]),
+                                                                    fit: BoxFit
+                                                                        .fill)),
                                                           ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        right:
-                                                                            20.0,
-                                                                        top: 6),
-                                                                child: Text(
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
                                                                   doc[ModelServicePackages
-                                                                          .priceKey]
-                                                                      .toString(),
-                                                                  style: TextStyle(
+                                                                      .offerNameKey],
+                                                                  style: const TextStyle(
                                                                       color: CustomColors
                                                                           .blackText),
                                                                 ),
-                                                              ),
-                                                              TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              ViewDetails(doc: doc),
-                                                                        ));
-                                                                  },
-                                                                  child:
-                                                                      const Text(
-                                                                    'Details',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .teal),
-                                                                  ))
-                                                            ],
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      top: 6.0),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      const Icon(
+                                                                        Icons
+                                                                            .star,
+                                                                        color: CustomColors
+                                                                            .yellowIconsColor,
+                                                                      ),
+                                                                      Text(
+                                                                        doc[ModelServicePackages.ratingKey]
+                                                                            .toString(),
+                                                                        style: const TextStyle(
+                                                                            color:
+                                                                                CustomColors.greenish),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
-                                                        )
-                                                      ],
+                                                          Expanded(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          20.0,
+                                                                      top: 6),
+                                                                  child: Text(
+                                                                    doc[ModelServicePackages
+                                                                            .priceKey]
+                                                                        .toString(),
+                                                                    style: const TextStyle(
+                                                                        color: CustomColors
+                                                                            .blackText),
+                                                                  ),
+                                                                ),
+                                                                // TextButton(
+                                                                //     onPressed:
+                                                                //         () {
+                                                                //       Navigator.push(
+                                                                //           context,
+                                                                //           MaterialPageRoute(
+                                                                //             builder: (context) =>
+                                                                //                 const ViewDetails(),
+                                                                //           ));
+                                                                //     },
+                                                                //     child:
+                                                                //         const Text(
+                                                                //       'Details',
+                                                                //       style: TextStyle(
+                                                                //           color: Colors
+                                                                //               .teal),
+                                                                //     ))
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          8.0),
+                                                                  child: IconButton(
+                                                                      onPressed: () {},
+                                                                      icon: const Icon(
+                                                                        Icons
+                                                                            .favorite_border,
+                                                                        color: CustomColors
+                                                                            .buttonBackgroundColor,
+                                                                      )),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   )
 
@@ -592,7 +645,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

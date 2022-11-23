@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
+
 import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/custom_widgets.dart';
 import '../service_provider_interface/personal_info.dart';
@@ -179,20 +181,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Name',
                                 value:
                                     '${doc[ModelPersonalLoginInfo.firstNameKey] + ' ' + doc[ModelPersonalLoginInfo.lastNameKey]}',
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Phone Number',
                                 value: doc[ModelPersonalLoginInfo.numberKey],
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Email',
                                 value: DBHandler.user!.email.toString(),
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Location',
                                 value: doc[ModelPersonalLoginInfo.locationKey],
                               ),
@@ -202,12 +204,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onTap: () {
                                     FirebaseAuth.instance.signOut();
                                   },
-                                  contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 24),
-                                  title: Text(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 24.0, right: 24),
+                                  title: const Text(
                                     'Log Out',
                                   ),
-                                  trailing: Icon(
+                                  trailing: const Icon(
                                     Icons.logout,
                                     color: CustomColors.textFontColor,
                                   ),
@@ -217,10 +219,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               Card(
                                 elevation: 5,
                                 child: ListTile(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 24),
-                                  title: Text(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 24.0, right: 24),
+                                  title: const Text(
                                     'Edit Your Profile',
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.edit,
+                                    color: CustomColors.textFontColor,
                                   ),
                                   onTap: () {
                                     print('${widget.status}///////');

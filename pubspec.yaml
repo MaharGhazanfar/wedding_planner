@@ -80,6 +80,7 @@ dependencies:
   permission_handler:
   badges:
   percent_indicator:
+  flutter_timer_countdown:
 
 
 

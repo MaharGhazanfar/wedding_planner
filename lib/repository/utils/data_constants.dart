@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class CustomColors {
   static const Color textFontColor = Colors.black54;
   static const Color headingTextFontColor = Colors.white;
@@ -40,7 +38,7 @@ class ButtonsStyle {
   static TextStyle buttonTextStyle(
     BuildContext context,
   ) {
-    return TextStyle(
+    return const TextStyle(
         fontSize: 20,
         color: CustomColors.buttonTextFontColor,
         fontWeight: FontWeight.bold);
@@ -48,13 +46,6 @@ class ButtonsStyle {
 }
 
 class Categories {
-  static final categoriesList = [
-    'cooker',
-    'Flower',
-    'beautification',
-    'jeweler'
-  ];
-
   static var categoryList = [
     'Wedding venues',
     'Bridal salons',
@@ -88,17 +79,17 @@ class Categories {
 
 class Strings {
   static const String serviceProvider = 'ServiceProvider';
+
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
   static const String UIDPref = 'UID';
   static const String EIDPref = 'EID';
   static const String servicePref = 'service';
-  static const String providerPackages = 'Packages';
+  static const String providerPackages = 'ProviderPackages';
   static const String generalPackageCollection = 'generalPackageCollection';
   static const String blogPost = 'BlogPost';
   static const String editMode = 'EditMode';
   static const String normalMode = 'normalMode';
-
 
   ///  for chats.........................................
   static const String chats = 'chats';
@@ -117,5 +108,3 @@ class ScreenPading {
   static const double rightPading = 16;
   static const double bottomPading = 16;
 }
-
-
