@@ -318,7 +318,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                       MaterialPageRoute(
                                                                         builder:
                                                                             (context) =>
-                                                                                ViewDetails(),
+                                                                                ViewDetails(doc: doc),
                                                                       ));
                                                                 },
                                                                 child: Text(
@@ -512,7 +512,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                         context,
                                                                         MaterialPageRoute(
                                                                           builder: (context) =>
-                                                                              const ViewDetails(),
+                                                                              ViewDetails(doc: doc),
                                                                         ));
                                                                   },
                                                                   child:

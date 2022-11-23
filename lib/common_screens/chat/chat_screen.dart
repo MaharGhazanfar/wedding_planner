@@ -8,13 +8,19 @@ import '../../repository/utils/db_handler.dart';
 import 'chat_util.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String name;
+  final String receiverName;
+  final String senderName;
   final String senderNumber;
   final String receiverNumber;
+  final String senderStatus;
+  final String receiverStatus;
 
   const ChatScreen(
       {Key? key,
-      required this.name,
+      required this.senderName,
+      required this.receiverName,
+      required this.senderStatus,
+      required this.receiverStatus,
       required this.senderNumber,
       required this.receiverNumber})
       : super(key: key);
@@ -99,7 +105,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               SizedBox(
                 width: 15,
               ),
-              Text(widget.name)
+              Text(widget.receiverName)
             ],
           ),
           actions: const [
@@ -177,7 +183,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                               children: [
                                 InkWell(
                                     onTap: () {
-                                      showSheet(buildContext: context,receiverNumber: widget.receiverNumber, name: widget.name,senderNumber: widget.senderNumber,source: Strings.imageSource);
+                                      showSheet(
+                                          buildContext: context,
+                                          senderName: widget.senderName,
+                                          senderStatus: widget.senderStatus,
+                                          receiverStatus: widget.receiverStatus,
+                                          receiverNumber: widget.receiverNumber,
+                                          receiverName: widget.receiverName,
+                                          senderNumber: widget.senderNumber,
+                                          source: Strings.imageSource);
                                     },
                                     child: const Icon(
                                       Icons.attach_file,
@@ -201,9 +215,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           onTap: () async {
                             if (msgController.text.isNotEmpty) {
                               sendDataTOServer(
+                                  senderName: widget.senderName,
+                                  receiverStatus: widget.receiverStatus,
+                                  senderStatus: widget.senderStatus,
                                   senderNumber: widget.senderNumber,
                                   receiverNumber: widget.receiverNumber,
-                                  name: widget.name,
+                                  receiverName: widget.receiverName,
                                   source: Strings.msgSource,
                                   messageURL: msgController.text.toString());
 

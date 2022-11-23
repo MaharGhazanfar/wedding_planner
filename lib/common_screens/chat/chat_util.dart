@@ -10,8 +10,11 @@ import '../../repository/utils/db_handler.dart';
 void showSheet({
   required BuildContext buildContext,
   required String senderNumber,
+  required String senderName,
+  required String senderStatus,
+  required String receiverStatus,
   required String receiverNumber,
-  required String name,
+  required String receiverName,
   required String source,
 }) {
   showModalBottomSheet(
@@ -41,9 +44,12 @@ void showSheet({
                     onPressed: () {
                       Navigator.pop(context);
                       mediaImageUploading(
+                          senderName: senderName,
                           senderNumber: senderNumber,
+                          receiverStatus: receiverStatus,
+                          senderStatus: senderStatus,
                           receiverNumber: receiverNumber,
-                          name: name,
+                          receiverName: receiverName,
                           source: source,
                           mediaImageSource: ImageSource.gallery,
                           context: buildContext);
@@ -71,8 +77,11 @@ void showSheet({
 Future<void> mediaImageUploading({
   required String senderNumber,
   required String receiverNumber,
-  required String name,
+  required String receiverName,
+  required String senderName,
   required String source,
+  required String senderStatus,
+  required String receiverStatus,
   required ImageSource mediaImageSource,
   required BuildContext context,
 }) async {
@@ -87,10 +96,13 @@ Future<void> mediaImageUploading({
     LoadingForUpload.hideDialog(context);
   }();
   sendDataTOServer(
+      senderName: senderName,
+      senderStatus: senderStatus,
+      receiverStatus: receiverStatus,
       senderNumber: senderNumber,
       source: Strings.imageSource,
       messageURL: imageUrl,
-      name: name,
+      receiverName: receiverName,
       receiverNumber: receiverNumber);
 }
 
@@ -134,8 +146,11 @@ Future<File> pickImageFromMedia(
 
 Future<void> sendDataTOServer({
   required String senderNumber,
+  required String senderStatus,
+  required String receiverStatus,
   required String receiverNumber,
-  required String name,
+  required String receiverName,
+  required String senderName,
   required String source,
   required String messageURL,
 }) async {
@@ -146,10 +161,7 @@ Future<void> sendDataTOServer({
     deliveryTime: DateTime.now().toString(),
     isSendByMe: Strings.online,
     sendingTime: DateTime.now().toString(),
-    receiverName: name,
     sendingNumber: senderNumber,
-    receiverStatus: '',
-    senderStatus: '',
   );
   DBHandler.chatsUserList()
       .doc(senderNumber)
@@ -157,6 +169,15 @@ Future<void> sendDataTOServer({
       .doc(receiverNumber)
       .collection(Strings.messages)
       .add(msgSendByMe.toMap());
+
+  DBHandler.chatsUserList()
+      .doc(senderNumber)
+      .collection(Strings.personalChat)
+      .doc(receiverNumber)
+      .set({
+    ModelChat.receiverStatusKey: receiverStatus,
+    ModelChat.receiverNameKey: receiverName,
+  });
   var msgSendForYou = ModelChat(
     receiverNumber: receiverNumber,
     msg: source == Strings.msgSource ? messageURL : '',
@@ -164,18 +185,23 @@ Future<void> sendDataTOServer({
     isSendByMe: Strings.offline,
     deliveryTime: DateTime.now().toString(),
     sendingTime: DateTime.now().toString(),
-    receiverName: name,
     sendingNumber: senderNumber,
-    receiverStatus: '',
-    senderStatus: '',
   );
-
   DBHandler.chatsUserList()
       .doc(receiverNumber)
       .collection(Strings.personalChat)
       .doc(senderNumber)
       .collection(Strings.messages)
       .add(msgSendForYou.toMap());
+
+  DBHandler.chatsUserList()
+      .doc(receiverNumber)
+      .collection(Strings.personalChat)
+      .doc(senderNumber)
+      .set({
+    ModelChat.receiverStatusKey: senderStatus,
+    ModelChat.receiverNameKey: senderName // sp
+  });
 }
 
 class LoadingForUpload {

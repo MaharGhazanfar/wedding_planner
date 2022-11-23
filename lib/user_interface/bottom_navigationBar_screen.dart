@@ -1,11 +1,13 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wedding_planner/common_screens/appointments_page.dart';
+import 'package:wedding_planner/common_screens/chat/chat_user_list.dart';
 import 'package:wedding_planner/user_interface/market_view_place_for_user.dart';
 import 'package:wedding_planner/user_interface/profile_page.dart';
 import 'package:wedding_planner/user_interface/user_dashboard.dart';
+import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/data_constants.dart';
+import '../repository/utils/db_handler.dart';
 
 class BottomNavigationBarForUser extends StatefulWidget {
   int currentIndex = 0;
@@ -56,7 +58,23 @@ class _BottomNavigationBarForUserState
           UserDashboard(
             status: widget.status,
           ),
-          Appointments(senderNumber: ''),
+          StreamBuilder(
+              stream: DBHandler.personalInfoCollectionForServiceUser()
+                  .doc(DBHandler.user!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data![ModelPersonalLoginInfo.numberKey]);
+                  return ChatUserList(
+                      senderStatus: Strings.serviceUser,
+                      senderName:
+                          '${snapshot.data![ModelPersonalLoginInfo.firstNameKey]} ${snapshot.data![ModelPersonalLoginInfo.lastNameKey]}',
+                      senderNumber:
+                          snapshot.data![ModelPersonalLoginInfo.numberKey]);
+                } else {
+                  return const SizedBox();
+                }
+              }),
           ProfilePage(
             status: widget.status!,
           ),

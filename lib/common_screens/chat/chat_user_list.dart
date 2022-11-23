@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import '../../modelClasses/employee_info.dart';
+import 'package:wedding_planner/common_screens/chat/chat_screen.dart';
+import 'package:wedding_planner/modelClasses/model_chat.dart';
 import '../../repository/utils/data_constants.dart';
 import '../../repository/utils/db_handler.dart';
 
 class ChatUserList extends StatefulWidget {
   final String senderNumber;
+  final String senderName;
+  final String senderStatus;
 
-  const ChatUserList({Key? key, required this.senderNumber}) : super(key: key);
+  const ChatUserList(
+      {Key? key,
+      required this.senderNumber,
+      required this.senderStatus,
+      required this.senderName})
+      : super(key: key);
 
   @override
   State<ChatUserList> createState() => _ChatUserListState();
@@ -50,26 +58,57 @@ class _ChatUserListState extends State<ChatUserList> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: StreamBuilder(
-                          stream: DBHandler.chatsUserList()
-                              .doc(widget.senderNumber).collection(Strings.personalChat)
-                              .snapshots(),
+                          stream: Strings.serviceUser == widget.senderStatus
+                              ? DBHandler.chatsUserList()
+                                  .doc(widget.senderNumber)
+                                  .collection(Strings.personalChat)
+                                  .snapshots()
+                              : DBHandler.chatsUserList()
+                                  .doc(widget.senderNumber)
+                                  .collection(Strings.personalChat)
+                                  .where(Strings.serviceUser)
+                                  .snapshots(),
                           builder: (context, snapshot) {
+                            print(
+                                '${widget.senderNumber}..........................');
                             if (snapshot.hasData &&
                                 snapshot.data!.docs.length != 0) {
+                              print(
+                                  '...................................................');
                               return ListView.builder(
                                 itemCount: snapshot.data!.docs.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => Card(
                                   child: ListTile(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ChatScreen(
+                                                senderName: widget.senderName,
+                                                senderNumber:
+                                                    widget.senderNumber,
+                                                receiverStatus:
+                                                    snapshot.data!.docs[index][
+                                                        ModelChat
+                                                            .receiverStatusKey],
+                                                receiverName: snapshot
+                                                        .data!.docs[index]
+                                                    [ModelChat.receiverNameKey],
+                                                receiverNumber: snapshot
+                                                    .data!.docs[index].id,
+                                                senderStatus:
+                                                    widget.senderStatus),
+                                          ));
+                                    },
                                     leading: CircleAvatar(
                                       backgroundColor:
                                           CustomColors.buttonBackgroundColor,
                                       child: Icon(Icons.person),
                                     ),
-                                    title: Text(
-                                        '${snapshot.data!.docs[index][ModelEmployeeInfo.firstNameKey]} ${snapshot.data!.docs[index][ModelEmployeeInfo.lastNameKey]}'),
-                                    onTap: () {},
+                                    title: Text(snapshot.data!.docs[index]
+                                        [ModelChat.receiverNameKey]),
                                   ),
                                 ),
                               );

@@ -88,14 +88,12 @@ class Categories {
 
 class Strings {
   static const String serviceProvider = 'ServiceProvider';
-
-
   static const String serviceUser = 'ServiceUser';
   static const String employee = 'Employee';
   static const String UIDPref = 'UID';
   static const String EIDPref = 'EID';
   static const String servicePref = 'service';
-  static const String providerPackages = 'ProviderPackages';
+  static const String providerPackages = 'Packages';
   static const String generalPackageCollection = 'generalPackageCollection';
   static const String blogPost = 'BlogPost';
   static const String editMode = 'EditMode';

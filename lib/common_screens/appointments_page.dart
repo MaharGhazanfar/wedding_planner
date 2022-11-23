@@ -8,8 +8,15 @@ import 'chat/chat_user_list.dart';
 
 class Appointments extends StatefulWidget {
   final String senderNumber;
+  final String senderName;
+  final String UID;
 
-  const Appointments({Key? key, required this.senderNumber}) : super(key: key);
+  const Appointments(
+      {Key? key,
+      required this.senderNumber,
+      required this.senderName,
+      this.UID = ''})
+      : super(key: key);
 
   @override
   State<Appointments> createState() => _AppointmentsState();
@@ -19,7 +26,6 @@ class _AppointmentsState extends State<Appointments> {
   @override
   void initState() {
     super.initState();
-
     print(widget.senderNumber);
   }
 
@@ -72,14 +78,16 @@ class _AppointmentsState extends State<Appointments> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: StreamBuilder(
                           stream: DBHandler.personalInfoCollectionForProvider()
-                              .doc(ModelPersonalLoginInfo.prefs!.getString(
-                                        Strings.UIDPref,
-                                      ) ==
-                                      null
-                                  ? DBHandler.user!.uid
+                              .doc(widget.UID != ''
+                                  ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                      Strings.UIDPref,
-                                    ))
+                                            Strings.UIDPref,
+                                          ) ==
+                                          null
+                                      ? DBHandler.user!.uid
+                                      : ModelPersonalLoginInfo.prefs!.getString(
+                                          Strings.UIDPref,
+                                        ))
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -95,23 +103,45 @@ class _AppointmentsState extends State<Appointments> {
                                   ),
                                   trailing:
                                       ModelPersonalLoginInfo.prefs!.getString(
-                                                Strings.UIDPref,
-                                              ) ==
-                                              null
+                                                    Strings.UIDPref,
+                                                  ) ==
+                                                  null &&
+                                              widget.UID == ''
                                           ? const SizedBox()
                                           : InkWell(
                                               onTap: () {
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => ChatScreen(
-                                                          senderNumber: widget
-                                                              .senderNumber,
-                                                          receiverNumber: doc[
-                                                              ModelPersonalLoginInfo
-                                                                  .numberKey],
-                                                          name:
-                                                              '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
+                                                      builder: (context) =>
+                                                          ChatScreen(
+                                                              senderName: widget
+                                                                  .senderName,
+                                                              receiverStatus:
+                                                                  Strings
+                                                                      .serviceProvider,
+                                                              senderStatus: widget
+                                                                          .UID !=
+                                                                      ''
+                                                                  ? Strings
+                                                                      .serviceUser
+                                                                  : ModelPersonalLoginInfo
+                                                                              .prefs!
+                                                                              .getString(
+                                                                            Strings.UIDPref,
+                                                                          ) ==
+                                                                          null
+                                                                      ? Strings
+                                                                          .serviceProvider
+                                                                      : Strings
+                                                                          .employee,
+                                                              senderNumber: widget
+                                                                  .senderNumber,
+                                                              receiverNumber: doc[
+                                                                  ModelPersonalLoginInfo
+                                                                      .numberKey],
+                                                              receiverName:
+                                                                  '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
                                                     ));
                                               },
                                               child: Icon(
@@ -124,13 +154,29 @@ class _AppointmentsState extends State<Appointments> {
                                   title: Text(
                                       '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatUserList(
-                                                  senderNumber:
-                                                      widget.senderNumber,
-                                                )));
+                                    if (widget.UID == '') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatUserList(
+                                                    senderStatus:
+                                                        ModelPersonalLoginInfo
+                                                                    .prefs!
+                                                                    .getString(
+                                                                  Strings
+                                                                      .UIDPref,
+                                                                ) ==
+                                                                null
+                                                            ? Strings
+                                                                .serviceProvider
+                                                            : Strings.employee,
+                                                    senderName:
+                                                        widget.senderName,
+                                                    senderNumber:
+                                                        widget.senderNumber,
+                                                  )));
+                                    }
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(
@@ -167,14 +213,16 @@ class _AppointmentsState extends State<Appointments> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: StreamBuilder(
                           stream: DBHandler.personalInfoCollectionForProvider()
-                              .doc(ModelPersonalLoginInfo.prefs!.getString(
-                                        Strings.UIDPref,
-                                      ) ==
-                                      null
-                                  ? DBHandler.user!.uid
+                              .doc(widget.UID != ''
+                                  ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                      Strings.UIDPref,
-                                    ))
+                                            Strings.UIDPref,
+                                          ) ==
+                                          null
+                                      ? DBHandler.user!.uid
+                                      : ModelPersonalLoginInfo.prefs!.getString(
+                                          Strings.UIDPref,
+                                        ))
                               .collection(Strings.employee)
                               .snapshots(),
                           builder: (context, snapshot) {
@@ -199,16 +247,39 @@ class _AppointmentsState extends State<Appointments> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) => ChatScreen(
-                                                        senderNumber:
-                                                            widget.senderNumber,
-                                                        receiverNumber: snapshot
-                                                                .data!
-                                                                .docs[index][
-                                                            ModelEmployeeInfo
-                                                                .numberKey],
-                                                        name:
-                                                            '${snapshot.data!.docs[index][ModelEmployeeInfo.firstNameKey]} ${snapshot.data!.docs[index][ModelEmployeeInfo.lastNameKey]}'),
+                                                    builder: (context) =>
+                                                        ChatScreen(
+                                                            senderName: widget
+                                                                .senderName,
+                                                            receiverStatus:
+                                                                Strings
+                                                                    .employee,
+                                                            senderStatus: widget
+                                                                        .UID !=
+                                                                    ''
+                                                                ? Strings
+                                                                    .serviceUser
+                                                                : ModelPersonalLoginInfo
+                                                                            .prefs!
+                                                                            .getString(
+                                                                          Strings
+                                                                              .UIDPref,
+                                                                        ) ==
+                                                                        null
+                                                                    ? Strings
+                                                                        .serviceProvider
+                                                                    : Strings
+                                                                        .employee,
+                                                            senderNumber: widget
+                                                                .senderNumber,
+                                                            receiverNumber: snapshot
+                                                                    .data!
+                                                                    .docs[index]
+                                                                [
+                                                                ModelEmployeeInfo
+                                                                    .numberKey],
+                                                            receiverName:
+                                                                '${snapshot.data!.docs[index][ModelEmployeeInfo.firstNameKey]} ${snapshot.data!.docs[index][ModelEmployeeInfo.lastNameKey]}'),
                                                   ));
                                             },
                                             child: Icon(
@@ -222,15 +293,32 @@ class _AppointmentsState extends State<Appointments> {
                                     title: Text(
                                         '${snapshot.data!.docs[index][ModelEmployeeInfo.firstNameKey]} ${snapshot.data!.docs[index][ModelEmployeeInfo.lastNameKey]}'),
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChatUserList(
-                                                      senderNumber: snapshot
-                                                              .data!.docs[index]
-                                                          [ModelEmployeeInfo
-                                                              .numberKey])));
+                                      if (widget.UID == '') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChatUserList(
+                                                        senderStatus:
+                                                            ModelPersonalLoginInfo
+                                                                        .prefs!
+                                                                        .getString(
+                                                                      Strings
+                                                                          .UIDPref,
+                                                                    ) ==
+                                                                    null
+                                                                ? Strings
+                                                                    .serviceProvider
+                                                                : Strings
+                                                                    .employee,
+                                                        senderName:
+                                                            widget.senderName,
+                                                        senderNumber: snapshot
+                                                                .data!
+                                                                .docs[index][
+                                                            ModelEmployeeInfo
+                                                                .numberKey])));
+                                      }
                                     },
                                   ),
                                 ),

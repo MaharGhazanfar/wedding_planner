@@ -1,12 +1,9 @@
 class ModelChat {
   late String _msg;
-  late String _receiverName;
   late String _senderNumber;
   late String _receiverNumber;
   late String _url;
-  late String _senderStatus;
   late String _isSendByMe;
-  late String _receiverStatus;
   late String _sendingTime;
   late String _deliveryTime;
 
@@ -24,22 +21,15 @@ class ModelChat {
   ModelChat({
     required String msg,
     required String sendingNumber,
-    required String receiverName,
     required String isSendByMe,
-
-    required String senderStatus,
-    required String receiverStatus,
     required String receiverNumber,
     required String URL,
     required String sendingTime,
     required String deliveryTime,
   })  : _msg = msg,
         _senderNumber = sendingNumber,
-        _senderStatus = senderStatus,
         _isSendByMe = isSendByMe,
-        _receiverStatus = receiverStatus,
         _receiverNumber = receiverNumber,
-        _receiverName = receiverName,
         _url = URL,
         _sendingTime = sendingTime,
         _deliveryTime = deliveryTime;
@@ -48,10 +38,7 @@ class ModelChat {
     return {
       msgKey: msg,
       senderNumberKey: senderNumber,
-      senderStatusKey : senderStatus,
-      isSendByMeKey : isSendByMe,
-      receiverStatusKey : receiverStatus,
-      receiverNameKey: receiverName,
+      isSendByMeKey: isSendByMe,
       URLKey: URL,
       receiverNumberKey: receiverNumber,
       sendingTimeKey: sendingTime,
@@ -59,25 +46,10 @@ class ModelChat {
     };
   }
 
-
   String get isSendByMe => _isSendByMe;
 
   set isSendByMe(String value) {
     _isSendByMe = value;
-  }
-
-  String get senderStatus => _senderStatus;
-
-  set senderStatus(String value) {
-    _senderStatus = value;
-  }
-
-
-
-  String get receiverName => _receiverName;
-
-  set receiverName(String value) {
-    _receiverName = value;
   }
 
   String get deliveryTime => _deliveryTime;
@@ -114,11 +86,5 @@ class ModelChat {
 
   set msg(String value) {
     _msg = value;
-  }
-
-  String get receiverStatus => _receiverStatus;
-
-  set receiverStatus(String value) {
-    _receiverStatus = value;
   }
 }

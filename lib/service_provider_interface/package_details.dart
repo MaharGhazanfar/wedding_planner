@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +12,6 @@ import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -50,9 +48,7 @@ class _PackageDetailsState extends State<PackageDetails> {
     super.initState();
     getLocation = Provider.of<LocationPicker>(context, listen: false);
     getLocation.getCurrentPosition(context);
-
     generalPackagesCollection = DBHandler.generalPackagesCollection();
-
     categoryNameController = TextEditingController();
     discountController = TextEditingController();
     priceController = TextEditingController();

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
-
 import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/custom_widgets.dart';
 import '../service_provider_interface/personal_info.dart';
@@ -72,7 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('sdasjkhgkljbuild cALled');
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
