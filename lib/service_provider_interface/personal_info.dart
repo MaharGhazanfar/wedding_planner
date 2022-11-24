@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -9,13 +10,15 @@ import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-import 'package:wedding_planner/service_provider_interface/category_dialogue.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
+
+import 'category_dialogue.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   final String status;
   final String mode;
+
   final Map<String, dynamic>? doc;
 
   PersonalInfoPage(
@@ -37,14 +40,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late String countryCode;
   late String imgUrl;
   bool isLoading = false;
+  final int index = 0;
 
   var globalKey = GlobalKey<FormState>();
   late LocationPicker getLocation;
   double? width;
   double? height;
+  String queryValue = '';
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
 
     if (widget.status == Strings.serviceProvider) {
@@ -278,50 +284,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                 top: 12.0,
                               ),
                               child: CustomWidget.customTextField3(
-                                  onTap: () {
-                                    setState(() {
-                                      CategoryBottomSheetBar
-                                          .categoryBottomSheet(
-                                        status: widget.status,
-                                        context: mainContext,
-                                        child: ListView.builder(
-                                          itemCount:
-                                              Categories.categoryList.length,
-                                          dragStartBehavior:
-                                              DragStartBehavior.start,
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          itemExtent: 50.0,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  right: 8,
-                                                  bottom: 2,
-                                                  top: 2),
-                                              child: ListTile(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                title: Text(Categories
-                                                    .categoryList[index]),
-                                                tileColor: Colors.white70,
-                                                onTap: () {
-                                                  setState(() {
-                                                    categoryNameController
-                                                            .text =
-                                                        Categories.categoryList[
-                                                            index];
-                                                    Navigator.pop(context);
-                                                  });
-                                                },
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    });
+                                  onTap: () async {
+                                    categoryNameController.text =
+                                        await CategoryBottomSheetBar
+                                            .categoryBottomSheet(
+                                      context: mainContext,
+                                    );
                                   },
                                   titleName: 'Categories',
                                   textInputType: TextInputType.none,
@@ -404,26 +372,25 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         splashColor: Colors.white70,
                         onTap: () async {
                           print(phoneNumberController.text.toString());
-                          if (firstNameController.text.toString().length != 0 &&
-                                  lastNameController.text.toString().length !=
-                                      0 &&
+                          if (firstNameController.text.toString().isNotEmpty &&
+                                  lastNameController.text
+                                      .toString()
+                                      .isNotEmpty &&
                                   phoneNumberController.text
-                                          .toString()
-                                          .length !=
-                                      0 &&
+                                      .toString()
+                                      .isNotEmpty &&
                                   widget.status == Strings.serviceProvider
-                              ? businessNameController.text.toString().length !=
-                                  0
+                              ? businessNameController.text
+                                  .toString()
+                                  .isNotEmpty
                               : true && widget.status == Strings.serviceProvider
                                   ? categoryNameController.text
-                                          .toString()
-                                          .length !=
-                                      0
+                                      .toString()
+                                      .isNotEmpty
                                   : true &&
                                       locationController.text
-                                              .toString()
-                                              .length !=
-                                          0) {
+                                          .toString()
+                                          .isNotEmpty) {
                             var personalInfo = ModelPersonalLoginInfo(
                                 firstName: firstNameController.text.toString(),
                                 lastName: lastNameController.text.toString(),
@@ -503,7 +470,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                             blurRadius: 1),
                                       ]),
                                   child: isLoading
-                                      ? Text('Loading...')
+                                      ? const Text('Loading...')
                                       : Text(
                                           widget.mode == Strings.editMode
                                               ? 'Update'

@@ -35,6 +35,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   late Map<String, dynamic> doc;
   String SPBusiness = '';
   String senderNumber = '';
+  String senderName = '';
 
   @override
   void initState() {
@@ -255,9 +256,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           : doc[ModelEmployeeInfo.businessKey].toString();
 
                       senderNumber = ModelPersonalLoginInfo.prefs!.getString(
-                        Strings.UIDPref,
-                      ) ==
-                          null
+                                Strings.UIDPref,
+                              ) ==
+                              null
                           ? doc[ModelPersonalLoginInfo.numberKey].toString()
                           : doc[ModelEmployeeInfo.numberKey].toString();
 
@@ -448,7 +449,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                   Icons.location_on,
                                   color: CustomColors.backGroundColor,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 ),
                                 Text(
@@ -549,7 +550,10 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Appointments(senderNumber: '',),
+                              builder: (context) => Appointments(
+                                senderName: senderName,
+                                senderNumber: senderNumber,
+                              ),
                             ));
                       }),
                 ],

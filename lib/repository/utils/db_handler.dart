@@ -26,31 +26,35 @@ class DBHandler {
         .collection(Strings.userPersonalTasks);
   }
 
-  static CollectionReference photosCollection() {
+  static CollectionReference photosCollection({required String UID}) {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
-        .doc(ModelPersonalLoginInfo.prefs!.getString(
-                  Strings.UIDPref,
-                ) ==
-                null
-            ? user!.uid
+        .doc(UID != ''
+            ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                Strings.UIDPref,
-              ))
+                      Strings.UIDPref,
+                    ) ==
+                    null
+                ? user!.uid
+                : ModelPersonalLoginInfo.prefs!.getString(
+                    Strings.UIDPref,
+                  ))
         .collection('Photos');
   }
 
-  static CollectionReference videosCollection() {
+  static CollectionReference videosCollection({required String UID}) {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
-        .doc(ModelPersonalLoginInfo.prefs!.getString(
-                  Strings.UIDPref,
-                ) ==
-                null
-            ? user!.uid
+        .doc(UID != ''
+            ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                Strings.UIDPref,
-              ))
+                      Strings.UIDPref,
+                    ) ==
+                    null
+                ? user!.uid
+                : ModelPersonalLoginInfo.prefs!.getString(
+                    Strings.UIDPref,
+                  ))
         .collection('Videos');
   }
 
@@ -63,10 +67,19 @@ class DBHandler {
         .collection(Strings.generalPackageCollection);
   }
 
-  static CollectionReference providerPackages() {
+  static CollectionReference providerPackages({required String UID}) {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
-        .doc()
+        .doc(UID != ''
+            ? UID
+            : ModelPersonalLoginInfo.prefs!.getString(
+                      Strings.UIDPref,
+                    ) ==
+                    null
+                ? user!.uid
+                : ModelPersonalLoginInfo.prefs!.getString(
+                    Strings.UIDPref,
+                  ))
         .collection(Strings.providerPackages);
   }
 }

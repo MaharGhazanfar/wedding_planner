@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:wedding_planner/modelClasses/model_tasks_handler.dart';
 import 'package:wedding_planner/repository/utils/todo_dialog.dart';
@@ -21,12 +22,12 @@ class _UserDashboardState extends State<UserDashboard> {
   double? taskContainer;
   double? width;
   double? height;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool size = true;
   late final CollectionReference userTasksCollection;
   var selectedItems = 0;
-  var taskPercentage = '0';
+  String taskPercentage = '';
   late double percentValue;
+  DateTime? dateTime;
 
   @override
   void initState() {
@@ -38,42 +39,92 @@ class _UserDashboardState extends State<UserDashboard> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    size ? taskContainer = MediaQuery.of(context).size.height * 0.25 : null;
     size = false;
     return Scaffold(
       backgroundColor: Colors.black26,
-      key: _scaffoldKey,
-      body: Center(
-        child: Stack(
-          children: [
-            SizedBox(
-              height: height!,
-              width: width!,
-              child: Image.asset("assets/images/white_background.png",
-                  alignment: Alignment.center, fit: BoxFit.fill),
-            ),
-            StreamBuilder<QuerySnapshot>(
-                stream: userTasksCollection
-                    .orderBy(ModelTasksHandler.selectedKey, descending: false)
-                    .snapshots(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(child: Text('SomeThing Went Wrong'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+      body: Stack(
+        children: [
+          SizedBox(
+            height: height!,
+            width: width!,
+            child: Image.asset("assets/images/white_background.png",
+                alignment: Alignment.center, fit: BoxFit.fill),
+          ),
+          StreamBuilder<QuerySnapshot>(
+              stream: userTasksCollection
+                  .orderBy(ModelTasksHandler.selectedKey, descending: false)
+                  .orderBy(ModelTasksHandler.dateTimeKey, descending: false)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('SomeThing Went Wrong'));
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  Map<String, dynamic> doc = {};
+                  if (snapshot.data!.docs.isNotEmpty) {
+                    doc = snapshot.data!.docs[0].data() as Map<String, dynamic>;
+                    print('${doc[ModelTasksHandler.dateTimeKey]}/////////');
+                    dateTime = DateTime(
+                        int.parse(
+                            doc[ModelTasksHandler.dateTimeKey].substring(0, 4)),
+                        int.parse(
+                            doc[ModelTasksHandler.dateTimeKey].substring(5, 7)),
+                        int.parse(doc[ModelTasksHandler.dateTimeKey]
+                            .substring(8, 10)),
+                        int.parse(doc[ModelTasksHandler.dateTimeKey]
+                            .substring(11, 14)),
+                        int.parse(doc[ModelTasksHandler.dateTimeKey]
+                            .substring(15, 17)));
+                    print('$dateTime/////////');
                   } else {
-                    selectedItems = snapshot.data!.docs
-                        .where((element) =>
-                            element[ModelTasksHandler.selectedKey] == true)
-                        .length;
-                    percentValue = (selectedItems / snapshot.data!.size);
-                    taskPercentage =
-                        '${(percentValue * 100).toStringAsFixed(0)}';
-                    return AnimatedPositioned(
-                      top: taskContainer,
-                      duration: const Duration(milliseconds: 200),
-                      child: Container(
+                    dateTime = DateTime.now();
+                  }
+
+                  selectedItems = snapshot.data!.docs
+                      .where((element) =>
+                          element[ModelTasksHandler.selectedKey] == true)
+                      .length;
+                  percentValue = (selectedItems / snapshot.data!.size);
+                  taskPercentage = (percentValue * 100).toStringAsFixed(0);
+                  return Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.black54,
+                        child: Center(
+                          child: TimerCountdown(
+                              colonsTextStyle: const TextStyle(
+                                  fontSize: 25,
+                                  color: CustomColors.buttonBackgroundColor),
+                              timeTextStyle: const TextStyle(
+                                  fontSize: 25,
+                                  color: CustomColors.buttonBackgroundColor),
+                              format:
+                                  CountDownTimerFormat.daysHoursMinutesSeconds,
+                              endTime: dateTime!,
+                              // doc.isNotEmpty
+                              //     ? DateTime(
+                              //     int.parse(
+                              //         doc[ModelTasksHandler.dateTimeKey]
+                              //             .substring(0, 4)),
+                              //     int.parse(
+                              //         doc[ModelTasksHandler.dateTimeKey]
+                              //             ?.substring(5, 7)),
+                              //     int.parse(
+                              //         doc[ModelTasksHandler.dateTimeKey]
+                              //             .substring(8, 10)),
+                              //     int.parse(doc[ModelTasksHandler.dateTimeKey]
+                              //         .substring(11, 13)),
+                              //     int.parse(doc[ModelTasksHandler.dateTimeKey]
+                              //         .substring(14, 16)))
+                              //     : DateTime.now(),
+                              onEnd: () {}),
+                        ),
+                      ),
+                      Container(
                         width: width!,
                         height: height! * 0.75,
                         decoration: const BoxDecoration(
@@ -112,8 +163,9 @@ class _UserDashboardState extends State<UserDashboard> {
                                           curve: Curves.decelerate,
                                           percent: percentValue,
                                           backgroundColor: Colors.white,
-                                          center:
-                                              new Text(taskPercentage + '%'),
+                                          center: Text(taskPercentage.isNotEmpty
+                                              ? '$taskPercentage%'
+                                              : '0'),
                                           progressColor: CustomColors
                                               .buttonBackgroundColor,
                                         ),
@@ -131,7 +183,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    TOdoDialog(),
+                                                    const TOdoDialog(),
                                               ));
                                         },
                                         alignment: Alignment.center,
@@ -148,78 +200,104 @@ class _UserDashboardState extends State<UserDashboard> {
                             ),
                             Expanded(
                                 flex: 7,
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data!.docs.length,
-                                  separatorBuilder: (context, index) =>
-                                      const Divider(),
-                                  itemBuilder: (context, index) {
-                                    Map<String, dynamic> doc =
-                                        snapshot.data!.docs[index].data()
-                                            as Map<String, dynamic>;
+                                child: snapshot.data!.docs.isNotEmpty
+                                    ? ListView.separated(
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.data!.docs.length,
+                                        separatorBuilder: (context, index) =>
+                                            const Divider(),
+                                        itemBuilder: (context, index) {
+                                          var doc = snapshot.data!.docs[index]
+                                              .data() as Map<String, dynamic>;
 
-                                    return ListTile(
-                                      leading: SizedBox(
-                                        width: 100,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Transform.scale(
-                                              scale: 2,
-                                              child: Checkbox(
-                                                fillColor:
-                                                    MaterialStateProperty.all(
-                                                        CustomColors.greenish),
-                                                activeColor:
-                                                    CustomColors.greenish,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                value: doc[ModelTasksHandler
-                                                    .selectedKey],
-                                                onChanged: (value) {
-                                                  userTasksCollection
-                                                      .doc(snapshot
-                                                          .data!.docs[index].id)
-                                                      .update({
-                                                    ModelTasksHandler
-                                                        .selectedKey: value
-                                                  });
-                                                },
+                                          return ListTile(
+                                            leading: SizedBox(
+                                              width: 100,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Transform.scale(
+                                                    scale: 2,
+                                                    child: Checkbox(
+                                                      fillColor:
+                                                          MaterialStateProperty
+                                                              .all(CustomColors
+                                                                  .greenish),
+                                                      activeColor:
+                                                          CustomColors.greenish,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5)),
+                                                      value: doc[
+                                                          ModelTasksHandler
+                                                              .selectedKey],
+                                                      onChanged: (value) {
+                                                        userTasksCollection
+                                                            .doc(snapshot.data!
+                                                                .docs[index].id)
+                                                            .update({
+                                                          ModelTasksHandler
+                                                                  .selectedKey:
+                                                              value
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  const Icon(Icons
+                                                      .account_balance_sharp)
+                                                ],
                                               ),
                                             ),
-                                            Icon(Icons.account_balance_sharp)
-                                          ],
-                                        ),
-                                      ),
-
-                                      title: Text(
-                                        doc[ModelTasksHandler.toDOKey],
-                                        textAlign: TextAlign.start,
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                builder: (context) {
+                                                  return TOdoDialog(
+                                                      doc: doc,
+                                                      id: snapshot.data!
+                                                          .docs[index].id);
+                                                },
+                                              ));
+                                            },
+                                            title: Text(
+                                              doc[ModelTasksHandler.toDOKey],
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: CustomColors
+                                                      .textFontColor,
+                                                  decoration: doc[
+                                                          ModelTasksHandler
+                                                              .selectedKey]
+                                                      ? TextDecoration
+                                                          .lineThrough
+                                                      : TextDecoration.none,
+                                                  fontSize: 16),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text(
+                                        'No Task Added',
                                         style: TextStyle(
+                                            color: CustomColors.greenish,
                                             fontWeight: FontWeight.bold,
-                                            color: CustomColors.textFontColor,
-                                            decoration: doc[ModelTasksHandler
-                                                    .selectedKey]
-                                                ? TextDecoration.lineThrough
-                                                : TextDecoration.none,
-                                            fontSize: 16),
-                                      ),
-
-                                      // tileColor: Colors.green,
-                                    );
-                                  },
-                                ))
+                                            fontSize: width! * 0.05),
+                                      )))
                           ],
                         ),
                       ),
-                    );
-                  }
-                })
-          ],
-        ),
+                    ],
+                  );
+                }
+              })
+        ],
       ),
     );
   }

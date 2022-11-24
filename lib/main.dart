@@ -28,8 +28,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LocationPicker>(
-      create: (context) => LocationPicker(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LocationPicker>(
+          create: (context) => LocationPicker(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -49,6 +53,28 @@ class MyApp extends StatelessWidget {
         home: const HomePage(),
       ),
     );
+
+    // ChangeNotifierProvider<LocationPicker>(
+    //   create: (context) => LocationPicker(),
+    //   child: MaterialApp(
+    //     debugShowCheckedModeBanner: false,
+    //     title: 'Flutter Demo',
+    //     theme: ThemeData(
+    //       iconTheme: const IconThemeData(
+    //         color: Colors.black38,
+    //       ),
+    //       textTheme: (Theme.of(context).textTheme.copyWith(
+    //           bodyText2: TextStyle(
+    //               color: CustomColors.backGroundColor,
+    //               fontWeight: FontWeight.bold),
+    //           bodyText1: const TextStyle(
+    //             color: Colors.black38,
+    //           ))),
+    //     ),
+    //     themeMode: ThemeMode.dark,
+    //     home: const HomePage(),
+    //   ),
+    // );
   }
 }
 
@@ -58,23 +84,29 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreenView(
-      navigateRoute:   ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) == null  ?StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (ModelPersonalLoginInfo.prefs!.getString(Strings.servicePref,) ==
-                Strings.serviceProvider) {
-              return ServiceProviderDashBoard(
-                status: Strings.serviceProvider,
-              );
-            } else {
-              return BottomNavigationBarForUser(status: Strings.serviceUser);
-            }
-          } else {
-            return UserSelectionPage();
-          }
-        },
-      ) : ServiceProviderDashBoard(status: Strings.employee),
+      navigateRoute:
+          ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) == null
+              ? StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (ModelPersonalLoginInfo.prefs!.getString(
+                            Strings.servicePref,
+                          ) ==
+                          Strings.serviceProvider) {
+                        return ServiceProviderDashBoard(
+                          status: Strings.serviceProvider,
+                        );
+                      } else {
+                        return BottomNavigationBarForUser(
+                            status: Strings.serviceUser);
+                      }
+                    } else {
+                      return UserSelectionPage();
+                    }
+                  },
+                )
+              : ServiceProviderDashBoard(status: Strings.employee),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,

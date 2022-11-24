@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,7 +12,6 @@ import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
-
 import '../repository/utils/custom_widgets.dart';
 import 'category_dialogue.dart';
 
@@ -33,14 +31,15 @@ class _PackageDetailsState extends State<PackageDetails> {
   late TextEditingController priceController;
   late ScrollController scrollController;
   late LocationPicker getLocation;
-  File? ImagesFile;
+  File? imagesFile;
+
   bool isSearching = false;
   final firebaseStorage = FirebaseStorage.instance.ref();
   late final CollectionReference generalPackagesCollection;
 
   Future<String> uploadImage() async {
     var upload = firebaseStorage.child('Package/${DateTime.now().millisecond}');
-    await upload.putFile(ImagesFile!);
+    await upload.putFile(imagesFile!);
     return upload.getDownloadURL();
   }
 
@@ -50,9 +49,7 @@ class _PackageDetailsState extends State<PackageDetails> {
     super.initState();
     getLocation = Provider.of<LocationPicker>(context, listen: false);
     getLocation.getCurrentPosition(context);
-
     generalPackagesCollection = DBHandler.generalPackagesCollection();
-
     categoryNameController = TextEditingController();
     discountController = TextEditingController();
     priceController = TextEditingController();
@@ -100,21 +97,20 @@ class _PackageDetailsState extends State<PackageDetails> {
                   left: ScreenPading.leftPading,
                   right: ScreenPading.leftPading),
               child: ListView(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                      padding: EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 8),
                       alignment: Alignment.topLeft,
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios,
                         color: CustomColors.greenish,
                       )),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: const Align(
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
                         'Create your offer\nhere...!',
@@ -133,7 +129,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                       onTap: () async {
                         XFile? xFile = await pickImage();
                         if (xFile != null) {
-                          ImagesFile = File(xFile.path);
+                          imagesFile = File(xFile.path);
                         }
                         setState(() {});
                       },
@@ -161,8 +157,8 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 spreadRadius: -1,
                               ),
                             ]),
-                        child: ImagesFile == null
-                            ? Icon(
+                        child: imagesFile == null
+                            ? const Icon(
                                 Icons.photo_camera,
                                 size: 150,
                                 color: CustomColors.buttonBackgroundColor,
@@ -171,7 +167,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   image: DecorationImage(
-                                    image: FileImage(ImagesFile!),
+                                    image: FileImage(imagesFile!),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -189,40 +185,12 @@ class _PackageDetailsState extends State<PackageDetails> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
                     child: CustomWidget.customTextField3(
-                        onTap: () {
-                          setState(() {
-                            CategoryBottomSheetBar.categoryBottomSheet(
-                              status: '',
-                              context: context,
-                              child: ListView.builder(
-                                itemCount: Categories.categoryList.length,
-                                dragStartBehavior: DragStartBehavior.start,
-                                physics: const BouncingScrollPhysics(),
-                                itemExtent: 50.0,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 8, right: 8, bottom: 2, top: 2),
-                                    child: ListTile(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      title:
-                                          Text(Categories.categoryList[index]),
-                                      tileColor: Colors.white70,
-                                      onTap: () {
-                                        setState(() {
-                                          categoryNameController.text =
-                                              Categories.categoryList[index];
-                                          Navigator.pop(context);
-                                        });
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          });
+                        readOnly: true,
+                        onTap: () async {
+                          categoryNameController.text =
+                              await CategoryBottomSheetBar.categoryBottomSheet(
+                            context: context,
+                          );
                         },
                         titleName: 'Categories',
                         textInputType: TextInputType.none,
@@ -307,13 +275,13 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 controller: priceController,
                                 context: context,
                                 titleName: 'Price')),
-                        Spacer(),
+                        const Spacer(),
                         Flexible(
                             flex: 5,
                             child: CustomWidget.customTextField3(
                                 textInputType: TextInputType.number,
-                                suffix: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
+                                suffix: const Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
                                   child: Text(
                                     '%',
                                     style: TextStyle(
@@ -355,7 +323,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                         maxLines: 5,
                         controller: descriptionController,
                         keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(10),
                             hintText: 'Describe about your offer',
                             border: InputBorder.none),
@@ -366,13 +334,12 @@ class _PackageDetailsState extends State<PackageDetails> {
                     onTap: () async {
                       //  print( FirebaseAuth.instance.currentUser!.uid);
 
-                      if (ImagesFile != null) {
-                        if (offerNameController.text.toString().length != 0 &&
-                            categoryNameController.text.toString().length !=
-                                0 &&
-                            locationController.text.toString().length != 0 &&
-                            priceController.text.toString().length != 0 &&
-                            descriptionController.text.toString().length != 0) {
+                      if (imagesFile != null) {
+                        if (offerNameController.text.toString().isNotEmpty &&
+                            categoryNameController.text.toString().isNotEmpty &&
+                            locationController.text.toString().isNotEmpty &&
+                            priceController.text.toString().isNotEmpty &&
+                            descriptionController.text.toString().isNotEmpty) {
                           var imageURL = await uploadImage();
 
                           var packagesInfo = ModelServicePackages(
@@ -380,11 +347,10 @@ class _PackageDetailsState extends State<PackageDetails> {
                             description: descriptionController.text.toString(),
                             price:
                                 double.parse(priceController.text.toString()),
-                            discount:
-                                discountController.text.toString().length == 0
-                                    ? 0
-                                    : double.parse(
-                                        discountController.text.toString()),
+                            discount: discountController.text.toString().isEmpty
+                                ? 0
+                                : double.parse(
+                                    discountController.text.toString()),
                             category: categoryNameController.text.toString(),
                             imageURL: imageURL,
                             location: locationController.text.toString(),

@@ -16,7 +16,8 @@ import 'package:wedding_planner/service_provider_interface/image_details.dart';
 import '../repository/utils/db_handler.dart';
 
 class AddImages extends StatefulWidget {
-  const AddImages({Key? key}) : super(key: key);
+  final String UID;
+  const AddImages({Key? key, this.UID = ''}) : super(key: key);
 
   @override
   State<AddImages> createState() => _AddImagesState();
@@ -33,7 +34,7 @@ class _AddImagesState extends State<AddImages> {
   @override
   void initState() {
     super.initState();
-    photosCollection = DBHandler.photosCollection();
+    photosCollection = DBHandler.photosCollection(UID: widget.UID);
 
     firebaseStorageRef = FirebaseStorage.instance.ref();
   }
@@ -208,7 +209,7 @@ class _AddImagesState extends State<AddImages> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.UID == '' ? FloatingActionButton(
         splashColor: Colors.white70,
         elevation: 5,
         onPressed: () async {
@@ -226,7 +227,7 @@ class _AddImagesState extends State<AddImages> {
         tooltip: 'Pick Images from gallery',
         backgroundColor: CustomColors.buttonBackgroundColor,
         child: const Icon(Icons.photo_library),
-      ),
+      ) : const SizedBox()
     );
   }
 }

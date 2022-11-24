@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -16,20 +15,22 @@ import '../repository/utils/custom_widgets.dart';
 import 'video_item.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
-  VideoPlayerScreen({Key? key}) : super(key: key);
+   VideoPlayerScreen({Key? key, this.UID = ''}) : super(key: key);
 
 //   @override
 //   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 // }
 
 // class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+
+  final String UID;
   final bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
   List<XFile> videosCollection = [];
 
   // late final firebaseStorageRef;
   // late final CollectionReference videosDataCollection;
-  final videosDataCollection = DBHandler.videosCollection();
+
   final firebaseStorageRef = FirebaseStorage.instance.ref();
 
   // @override
@@ -55,7 +56,7 @@ class VideoPlayerScreen extends StatelessWidget {
       if (pickedVideo == null) return;
       var videoUrl = await uploadVideos(File(pickedVideo.path));
       var modelServicesVideos = ModelServicesPhotosAndVideos(url: videoUrl);
-      videosDataCollection.doc().set(modelServicesVideos.toMap());
+      DBHandler.videosCollection(UID: UID).doc().set(modelServicesVideos.toMap());
     } on PlatformException catch (e) {
       ShowCustomToast(msg: 'Failed to pick image: $e');
     }
@@ -71,7 +72,7 @@ class VideoPlayerScreen extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
           child: StreamBuilder<QuerySnapshot>(
-              stream: videosDataCollection.snapshots(),
+              stream: DBHandler.videosCollection(UID: UID).snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -108,7 +109,7 @@ class VideoPlayerScreen extends StatelessWidget {
                   );
                 }
               })),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: UID == '' ? FloatingActionButton(
         backgroundColor: CustomColors.buttonBackgroundColor,
         elevation: 5,
         splashColor: Colors.white70,
@@ -128,7 +129,7 @@ class VideoPlayerScreen extends StatelessWidget {
           color: CustomColors.buttonTextFontColor,
           size: 30,
         ),
-      ),
+      ) : const SizedBox()
     );
   }
 }

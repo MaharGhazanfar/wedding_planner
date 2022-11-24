@@ -69,6 +69,7 @@ class CustomWidget {
     required BuildContext context,
     bool obscureText = false,
     String? titleName,
+    bool readOnly = false,
     Widget? suffix,
     void Function()? onTap,
     FormFieldValidator<String>? validate,
@@ -111,6 +112,7 @@ class CustomWidget {
         key: key,
         onTap: onTap,
         onChanged: onChanged,
+        readOnly: readOnly,
         inputFormatters: inputFormatters,
         validator: validate,
         autofocus: false,
@@ -269,7 +271,7 @@ class CustomWidget {
     );
   }
 
-  static Widget CustomCardForProfileData(
+  static Widget customCardForProfileData(
       {required String title, required String value}) {
     return Card(
       elevation: 5,
@@ -281,11 +283,15 @@ class CustomWidget {
             Expanded(
                 flex: 1,
                 child: Text(title,
-                    style: TextStyle(color: CustomColors.textFontColor))),
+                    style: const TextStyle(color: CustomColors.textFontColor))),
             Expanded(
                 flex: 2,
-                child: Text(value,
-                    style: TextStyle(color: CustomColors.textFontColor)))
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(value,
+                      style:
+                          const TextStyle(color: CustomColors.textFontColor)),
+                ))
           ],
         ),
       ),
@@ -304,14 +310,21 @@ class CustomWidget {
 
     if (datePicked != null) {
       timePicked = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay(
-              hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute));
+        context: context,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        ),
+        initialTime: TimeOfDay(
+            hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute),
+      );
+      print(
+          '${timePicked.toString().substring(10, 15)}/////${timePicked!.format(context)}////time');
       if (timePicked != null) {
         print("${DateFormat("yyyy-MM-dd").format(datePicked)}  ");
       }
     }
-    return '${datePicked.toString().substring(0, datePicked.toString().length - 12)} ${timePicked!.format(context)}';
+    return '${datePicked.toString().substring(0, datePicked.toString().length - 12)} ${timePicked!.toString().substring(10, 15)}';
   }
 }
 

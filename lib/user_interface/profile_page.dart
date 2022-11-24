@@ -72,7 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('sdasjkhgkljbuild cALled');
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -181,23 +180,23 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Name',
                                 value:
                                     '${doc[ModelPersonalLoginInfo.firstNameKey] + ' ' + doc[ModelPersonalLoginInfo.lastNameKey]}',
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Phone Number',
                                 value:
                                 '${doc[ModelPersonalLoginInfo
                                     .countryCodeKey]}${doc[ModelPersonalLoginInfo
                                     .numberKey]}',
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Email',
                                 value: DBHandler.user!.email.toString(),
                               ),
-                              CustomWidget.CustomCardForProfileData(
+                              CustomWidget.customCardForProfileData(
                                 title: 'Location',
                                 value: doc[ModelPersonalLoginInfo.locationKey],
                               ),
@@ -207,12 +206,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onTap: () {
                                     FirebaseAuth.instance.signOut();
                                   },
-                                  contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 24),
-                                  title: Text(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 24.0, right: 24),
+                                  title: const Text(
                                     'Log Out',
                                   ),
-                                  trailing: Icon(
+                                  trailing: const Icon(
                                     Icons.logout,
                                     color: CustomColors.textFontColor,
                                   ),
@@ -222,10 +221,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               Card(
                                 elevation: 5,
                                 child: ListTile(
-                                  contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 24),
-                                  title: Text(
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 24.0, right: 24),
+                                  title: const Text(
                                     'Edit Your Profile',
+                                  ),
+                                  trailing: const Icon(
+                                    Icons.edit,
+                                    color: CustomColors.textFontColor,
                                   ),
                                   onTap: () {
                                     print('${widget.status}///////');

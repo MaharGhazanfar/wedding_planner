@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/modelClasses/service_packages.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -8,10 +7,9 @@ import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/my_custom_card.dart';
 import 'package:wedding_planner/service_provider_interface/package_details.dart';
 
-import '../modelClasses/model_personal_login_info.dart';
-
 class ProviderPackages extends StatefulWidget {
-  const ProviderPackages({Key? key}) : super(key: key);
+  final String UID;
+  const ProviderPackages({Key? key, this.UID = ''}) : super(key: key);
 
   @override
   State<ProviderPackages> createState() => _ProviderPackagesState();
@@ -23,7 +21,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    providerPackages = DBHandler.providerPackages();
+    providerPackages = DBHandler.providerPackages(UID: widget.UID);
   }
 
   @override
@@ -96,18 +94,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                 Expanded(
                   flex: 7,
                   child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection(Strings.serviceProvider)
-                        .doc(ModelPersonalLoginInfo.prefs!.getString(
-                                  Strings.UIDPref,
-                                ) ==
-                                null
-                            ? FirebaseAuth.instance.currentUser!.uid
-                            : ModelPersonalLoginInfo.prefs!.getString(
-                                Strings.UIDPref,
-                              ))
-                        .collection('Packages')
-                        .snapshots(),
+                    stream:providerPackages.snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
@@ -214,7 +201,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                                             FontWeight.bold)),
                                                                 TextSpan(
                                                                     text:
-                                                                        '  ${(snapshot.data!.docs[index][ModelServicePackages.discountKey] / 100) * snapshot.data!.docs[index][ModelServicePackages.priceKey]}',
+                                                                        '  ${snapshot.data!.docs[index][ModelServicePackages.priceKey] - ((snapshot.data!.docs[index][ModelServicePackages.discountKey] / 100) * snapshot.data!.docs[index][ModelServicePackages.priceKey])}',
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .black,
@@ -321,7 +308,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.UID == '' ? FloatingActionButton(
         backgroundColor: CustomColors.buttonBackgroundColor,
         onPressed: () {
           Navigator.push(
@@ -331,7 +318,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
               ));
         },
         child: const Icon(Icons.add),
-      ),
+      ) :const SizedBox(),
     );
   }
 }
