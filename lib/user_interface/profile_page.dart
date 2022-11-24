@@ -123,7 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                       MediaQuery.of(context).size.width * 0.35),
                               child: imageUrl!.isNotEmpty
                                   ? CachedNetworkImage(
-                                      //fit: BoxFit.scaleDown,
                                       imageBuilder: (context, imageProvider) =>
                                           Container(
                                         width:
@@ -188,7 +187,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               CustomWidget.customCardForProfileData(
                                 title: 'Phone Number',
-                                value: doc[ModelPersonalLoginInfo.numberKey],
+                                value:
+                                '${doc[ModelPersonalLoginInfo
+                                    .countryCodeKey]}${doc[ModelPersonalLoginInfo
+                                    .numberKey]}',
                               ),
                               CustomWidget.customCardForProfileData(
                                 title: 'Email',

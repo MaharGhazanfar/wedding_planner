@@ -3,11 +3,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ModelPersonalLoginInfo {
   late String _firstName;
   late String _lastName;
+  late String _countryCode;
   late String _number;
   late String _business;
   late String _categories;
   late String _location;
   late String _imageUrl;
+
+  String get countryCode => _countryCode;
+
+  set countryCode(String value) {
+    _countryCode = value;
+  }
 
   String get imageUrl => _imageUrl;
 
@@ -21,6 +28,7 @@ class ModelPersonalLoginInfo {
   static const lastNameKey = 'lastNameKey';
   static const numberKey = 'numberKey';
   static const imgUrlKey = 'ImageUrl';
+  static const countryCodeKey = 'CountryCodeKey';
   static const businessKey = 'businessKey';
   static const categoryKey = 'categoryKey';
   static const locationKey = 'locationKey';
@@ -29,14 +37,17 @@ class ModelPersonalLoginInfo {
     required String firstName,
     required String lastName,
     required String number,
+    required String countryCode,
     required String business,
     required String imgUrl,
     required String category,
     required String location,
-  })  : _firstName = firstName,
+  })
+      : _firstName = firstName,
         _lastName = lastName,
         _number = number,
         _imageUrl = imgUrl,
+        _countryCode = countryCode,
         _business = business,
         _categories = category,
         _location = location;
@@ -47,6 +58,7 @@ class ModelPersonalLoginInfo {
       lastNameKey: lastName,
       businessKey: business,
       numberKey: number,
+      countryCodeKey: countryCode,
       imgUrlKey: imageUrl,
       categoryKey: categories,
       locationKey: location
@@ -58,6 +70,7 @@ class ModelPersonalLoginInfo {
       firstNameKey: firstName,
       lastNameKey: lastName,
       numberKey: number,
+      countryCodeKey: countryCode,
       imgUrlKey: imageUrl,
       locationKey: location
     };
