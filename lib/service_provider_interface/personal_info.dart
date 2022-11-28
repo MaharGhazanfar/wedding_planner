@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -12,17 +10,18 @@ import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
-
 import 'category_dialogue.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   final String status;
   final String mode;
-
+  final String loginWith;
+  final String emailOrNumber;
+  final String countryCode;
   final Map<String, dynamic>? doc;
 
-  PersonalInfoPage(
-      {Key? key, required this.status, required this.mode, this.doc})
+  const PersonalInfoPage(
+      {Key? key, required this.status, this.emailOrNumber = '', this.countryCode = '' ,this.loginWith ='', required this.mode, this.doc})
       : super(key: key);
 
   @override
@@ -32,6 +31,7 @@ class PersonalInfoPage extends StatefulWidget {
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   late TextEditingController firstNameController;
   late TextEditingController lastNameController;
+  late TextEditingController emailController;
   late TextEditingController phoneNumberController;
   late TextEditingController businessNameController;
   late TextEditingController categoryNameController;
@@ -62,6 +62,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     if (widget.mode != Strings.editMode) {
       getLocation.getCurrentPosition(context);
     }
+    if(Strings.loginWithEmail == widget.loginWith) {
+      emailController = TextEditingController(text: widget.emailOrNumber);
+    }else{
+      emailController = TextEditingController();
+    }
+
     firstNameController = TextEditingController(
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.firstNameKey]
@@ -73,7 +79,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     phoneNumberController = TextEditingController(
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.numberKey]
-            : null);
+            : Strings.loginWithNumber == widget.loginWith ?  widget.emailOrNumber : null);
     businessNameController = TextEditingController(
         text: widget.mode == Strings.editMode
             ? widget.doc![ModelPersonalLoginInfo.businessKey]
@@ -91,7 +97,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         : '';
     countryCode = widget.mode == Strings.editMode
         ? widget.doc![ModelPersonalLoginInfo.countryCodeKey]
-        : '+94';
+        : Strings.loginWithNumber == widget.loginWith ?  widget.countryCode : '+94';
 
     locationController.addListener(() {
       if (getLocation.sessionToken == null) {
@@ -129,6 +135,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     businessNameController.dispose();
     categoryNameController.dispose();
     locationController.dispose();
+    emailController.dispose();
 
     super.dispose();
   }
@@ -160,7 +167,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 32.0),
                           child: IconButton(
-                              padding: EdgeInsets.only(top: 8),
+                              padding: const EdgeInsets.only(top: 8),
                               alignment: Alignment.topLeft,
                               onPressed: () {
                                 Navigator.pop(context);
@@ -196,6 +203,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             controller: lastNameController,
                             context: mainContext),
                       ),
+
+                      widget.loginWith != Strings.loginWithNumber ?
                       Padding(
                         padding: const EdgeInsets.only(top: 12.0),
                         child: Container(
@@ -236,37 +245,44 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                     leadingDistribution:
                                         TextLeadingDistribution.even),
                                 contentPadding:
-                                EdgeInsets.only(top: 17, bottom: 0),
+                                    EdgeInsets.only(top: 17, bottom: 0),
                                 hintText: 'Phone Number',
                                 fillColor: Colors.white,
                                 filled: true,
                                 border: InputBorder.none,
                               ),
                               onChanged: (phone) {
-                                print('//////$phone');
+
                                 countryCode = phone.countryCode;
                               },
                               style: const TextStyle(
                                   fontSize: 14, color: Colors.black54),
                               onCountryChanged: (country) {
-                                print('//////Country changed to: ' +
-                                    country.name +
-                                    ' ' +
-                                    country.dialCode +
-                                    " " +
-                                    country.code);
+
                                 countryCode = '+${country.dialCode}';
                               },
                               autovalidateMode: AutovalidateMode.disabled,
                               dropdownTextStyle:
-                              TextStyle(color: Colors.black54),
+                                  const TextStyle(color: Colors.black54),
                               pickerDialogStyle: PickerDialogStyle(
                                   countryCodeStyle:
-                                  TextStyle(color: Colors.black54)),
+                                      const TextStyle(color: Colors.black54)),
                             ),
                           ),
                         ),
+                      ) : Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: CustomWidget.customTextField3(
+                          titleName: 'Email',
+                          context: context,
+                          controller: emailController,
+                          textInputType: TextInputType.emailAddress,
+                          //   validate: (value) =>
+                          //       ModelValidation.gmailValidation(value!)
+                        ),
                       ),
+
+
                       widget.status == Strings.serviceProvider
                           ? Padding(
                               padding: const EdgeInsets.only(
@@ -277,7 +293,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   controller: businessNameController,
                                   context: mainContext),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       widget.status == Strings.serviceProvider
                           ? Padding(
                               padding: const EdgeInsets.only(
@@ -296,7 +312,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   controller: categoryNameController,
                                   context: mainContext),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       Padding(
                           padding: const EdgeInsets.only(
                             top: 12.0,
@@ -342,14 +358,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                                           .hasPrimaryFocus) {
                                                         currentFocus.unfocus();
                                                       }
-                                                      print(
-                                                          '_searchController.text == ${locationController.text}/////////');
                                                     });
                                               }),
                                     )
                                   : const SizedBox(),
                               CustomWidget.customTextField3(
-                                  contentPadding: EdgeInsets.all(10),
+                                  contentPadding: const EdgeInsets.all(10),
                                   onChanged: (value) async {
                                     setState(() {
                                       getLocation.isSearching = true;
@@ -371,11 +385,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       InkWell(
                         splashColor: Colors.white70,
                         onTap: () async {
-                          print(phoneNumberController.text.toString());
                           if (firstNameController.text.toString().isNotEmpty &&
                                   lastNameController.text
                                       .toString()
                                       .isNotEmpty &&
+                              widget.loginWith != Strings.loginWithEmail ?
+                              emailController.toString().isNotEmpty :
                                   phoneNumberController.text
                                       .toString()
                                       .isNotEmpty &&
@@ -393,6 +408,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                           .isNotEmpty) {
                             var personalInfo = ModelPersonalLoginInfo(
                                 firstName: firstNameController.text.toString(),
+                                email: emailController.text.toString(),
                                 lastName: lastNameController.text.toString(),
                                 number: phoneNumberController.text.toString(),
                                 countryCode: countryCode,
@@ -418,27 +434,33 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             });
 
                             if (widget.mode == Strings.editMode) {
-                              Navigator.pop(context);
+                              () {
+                                Navigator.pop(context);
+                              }();
                             } else {
                               if (widget.status == Strings.serviceProvider) {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ServiceProviderDashBoard(
-                                        status: widget.status,
+                                () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ServiceProviderDashBoard(
+                                          status: widget.status,
+                                        ),
                                       ),
-                                    ),
-                                    (route) => false);
+                                      (route) => false);
+                                }();
                               } else {
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BottomNavigationBarForUser(
-                                              status: widget.status),
-                                    ),
-                                    (route) => false);
+                                () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BottomNavigationBarForUser(
+                                                status: widget.status),
+                                      ),
+                                      (route) => false);
+                                }();
                               }
                             }
                           } else {

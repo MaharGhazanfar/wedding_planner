@@ -4,7 +4,6 @@ import 'package:wedding_planner/modelClasses/employee_info.dart';
 import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
-
 import 'chat/chat_user_list.dart';
 
 class Appointments extends StatefulWidget {
@@ -27,7 +26,6 @@ class _AppointmentsState extends State<Appointments> {
   @override
   void initState() {
     super.initState();
-    print(widget.senderNumber);
   }
 
   @override
@@ -82,22 +80,16 @@ class _AppointmentsState extends State<Appointments> {
                               .doc(widget.UID != ''
                                   ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                            Strings.UIDPref,
-                                          ) ==
-                                          null
-                                      ? DBHandler.user!.uid
-                                      : ModelPersonalLoginInfo.prefs!.getString(
                                           Strings.UIDPref,
-                                        ))
+                                        ) ?? DBHandler.user!.uid)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               Map<String, dynamic> doc =
                                   snapshot.data!.data() as Map<String, dynamic>;
-                              print(doc[ModelPersonalLoginInfo.firstNameKey]);
                               return Card(
                                 child: ListTile(
-                                  leading: CircleAvatar(
+                                  leading: const CircleAvatar(
                                     backgroundColor:
                                         CustomColors.buttonBackgroundColor,
                                     child: Icon(Icons.person),
@@ -145,7 +137,7 @@ class _AppointmentsState extends State<Appointments> {
                                                                   '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
                                                     ));
                                               },
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.chat,
                                                 color: CustomColors
                                                     .buttonBackgroundColor,
@@ -178,15 +170,6 @@ class _AppointmentsState extends State<Appointments> {
                                                         widget.senderNumber,
                                                   )));
                                     }
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //       builder: (context) => ChatPage(
-                                    //           senderNumber: widget.senderNumber,
-                                    //           receiverNumber: doc[ModelPersonalLoginInfo.numberKey],
-                                    //           name:
-                                    //               '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
-                                    //     ));
                                   },
                                 ),
                               );
@@ -217,25 +200,20 @@ class _AppointmentsState extends State<Appointments> {
                               .doc(widget.UID != ''
                                   ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                            Strings.UIDPref,
-                                          ) ==
-                                          null
-                                      ? DBHandler.user!.uid
-                                      : ModelPersonalLoginInfo.prefs!.getString(
                                           Strings.UIDPref,
-                                        ))
+                                        ) ?? DBHandler.user!.uid)
                               .collection(Strings.employee)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData &&
-                                snapshot.data!.docs.length != 0) {
+                                snapshot.data!.docs.isNotEmpty) {
                               return ListView.builder(
                                 itemCount: snapshot.data!.docs.length,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) => Card(
                                   child: ListTile(
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       backgroundColor:
                                           CustomColors.buttonBackgroundColor,
                                       child: Icon(Icons.person),
@@ -283,7 +261,7 @@ class _AppointmentsState extends State<Appointments> {
                                                                 '${snapshot.data!.docs[index][ModelEmployeeInfo.firstNameKey]} ${snapshot.data!.docs[index][ModelEmployeeInfo.lastNameKey]}'),
                                                   ));
                                             },
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.chat,
                                               color: CustomColors
                                                   .buttonBackgroundColor,

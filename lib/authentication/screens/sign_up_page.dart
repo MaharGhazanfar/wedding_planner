@@ -6,7 +6,7 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class SignUpPage extends StatefulWidget {
   final String status;
-  SignUpPage({Key? key, required this.status}) : super(key: key);
+  const SignUpPage({Key? key, required this.status}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -28,7 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
             padding: const EdgeInsets.only(
               left: ScreenPading.topPading,
               right: ScreenPading.topPading,
-              // bottom: Pading.bottomPading,
             ),
             child: Column(
               // mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    EmailLoginPage(status: widget.status),
+                                    EmailLoginPage(status: widget.status,loginWithEmail: Strings.loginWithEmail),
                               ));
                         },
                         child: Container(

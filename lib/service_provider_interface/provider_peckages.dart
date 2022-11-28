@@ -44,7 +44,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                    padding: EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 8),
                     alignment: Alignment.topLeft,
                     onPressed: () {
                       Navigator.pop(context);
@@ -61,7 +61,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                       color: Colors.white,
                     ),
                     hintText: 'Search',
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24),
                       borderSide: const BorderSide(color: Colors.red),
@@ -146,7 +146,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                     ),
                                                   ),
                                               placeholder: (context, url) =>
-                                                  Center(
+                                                  const Center(
                                                     child:
                                                         CircularProgressIndicator(),
                                                   ),
@@ -167,7 +167,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                               snapshot.data!.docs[index][
                                                   ModelServicePackages
                                                       .offerNameKey],
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: CustomColors
@@ -191,7 +191,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                                 TextSpan(
                                                                     text:
                                                                         '${snapshot.data!.docs[index][ModelServicePackages.priceKey].toString()}',
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black,
                                                                         decoration:
@@ -202,7 +202,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                                 TextSpan(
                                                                     text:
                                                                         '  ${snapshot.data!.docs[index][ModelServicePackages.priceKey] - ((snapshot.data!.docs[index][ModelServicePackages.discountKey] / 100) * snapshot.data!.docs[index][ModelServicePackages.priceKey])}',
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         color: Colors
                                                                             .black,
                                                                         fontWeight:
@@ -216,7 +216,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                                   ModelServicePackages
                                                                       .priceKey]
                                                               .toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -229,7 +229,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                           0
                                                       ? Text(
                                                           '${snapshot.data!.docs[index][ModelServicePackages.discountKey].toString()}%',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               // fontSize: 20,
                                                               fontWeight:
                                                                   FontWeight
@@ -244,7 +244,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                             ////////
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(top: 20.0),
+                                                  const EdgeInsets.only(top: 20.0),
                                               child: Text(
                                                 snapshot
                                                     .data!
@@ -253,7 +253,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                             .descriptionKey]
                                                     .toString(),
                                                 overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                     color: CustomColors
@@ -269,7 +269,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                           },
                         );
                       } else {
-                        return Center(child: const CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                     },
                   ),
@@ -314,7 +314,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PackageDetails(),
+                builder: (context) => const PackageDetails(),
               ));
         },
         child: const Icon(Icons.add),

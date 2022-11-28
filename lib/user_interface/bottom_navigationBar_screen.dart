@@ -68,8 +68,7 @@ class _BottomNavigationBarForUserState
                   //print(snapshot.data![ModelPersonalLoginInfo.numberKey]);
                   return ChatUserList(
                       senderStatus: Strings.serviceUser,
-                      senderName:
-                          '${snapshot.data![ModelPersonalLoginInfo.firstNameKey]} ${snapshot.data![ModelPersonalLoginInfo.lastNameKey]}',
+                      senderName: '${snapshot.data![ModelPersonalLoginInfo.firstNameKey]} ${snapshot.data![ModelPersonalLoginInfo.lastNameKey]}',
                       senderNumber:
                           snapshot.data![ModelPersonalLoginInfo.numberKey]);
                 } else {

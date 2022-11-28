@@ -6,8 +6,9 @@ import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class EmailLoginPage extends StatefulWidget {
   final String status;
+  final String loginWithEmail;
 
-  const EmailLoginPage({Key? key, required this.status}) : super(key: key);
+  const EmailLoginPage({Key? key,required this.loginWithEmail , required this.status}) : super(key: key);
 
   @override
   State<EmailLoginPage> createState() => _EmailLoginPageState();
@@ -64,7 +65,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       IconButton(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           alignment: Alignment.topLeft,
                           onPressed: () {
                             Navigator.pop(context);
@@ -73,9 +74,9 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                             Icons.arrow_back_ios,
                             color: CustomColors.backGroundColor,
                           )),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 32),
-                        child: const Text(
+                   const   Padding(
+                        padding:  EdgeInsets.only(top: 32),
+                        child:  Text(
                           "Great!\nLets get you started…",
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -120,7 +121,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                     onPressed: () {
                                       setState(() {
                                         _isObscure = !_isObscure;
-                                        print('$_isObscure/////////////////');
                                       });
                                     },
                                   ),
@@ -146,7 +146,6 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                     onPressed: () {
                                       setState(() {
                                         _isObscure = !_isObscure;
-                                        print('$_isObscure/////////////////');
                                       });
                                     },
                                   ),
@@ -155,14 +154,10 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                             ),
                             GestureDetector(
                               onTap: () async {
-                                if (emailController.text.toString().length !=
-                                        0 &&
-                                    passwordController.text.toString().length !=
-                                        0 &&
+                                if (emailController.text.toString().isNotEmpty &&
+                                    passwordController.text.toString().isNotEmpty &&
                                     confirmPasswordController.text
-                                            .toString()
-                                            .length !=
-                                        0) {
+                                            .toString().isNotEmpty) {
                                   if (emailController.text
                                       .toString()
                                       .toLowerCase()
@@ -170,6 +165,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                     if (passwordController.text.toString() ==
                                         confirmPasswordController.text
                                             .toString()) {
+
                                       String status = await loginWithEmailPas(
                                           email: emailController.text
                                             ..toString(),
@@ -177,15 +173,19 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                               .toString());
                                       if (status == 'Login Successful') {
                                         ShowCustomToast(msg: status);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PersonalInfoPage(
-                                                status: widget.status,
-                                                mode: Strings.normalMode,
-                                              ),
-                                            ));
+                                        () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PersonalInfoPage(
+                                                      emailOrNumber: emailController.text.toString(),
+                                                      loginWith: widget.loginWithEmail,
+                                                      status: widget.status,
+                                                      mode: Strings.normalMode,
+                                                    ),
+                                              ));
+                                        }();
                                       } else {
                                         ShowCustomToast(msg: status);
                                       }

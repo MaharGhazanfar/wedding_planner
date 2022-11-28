@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
                             Strings.servicePref,
                           ) ==
                           Strings.serviceProvider) {
-                        return ServiceProviderDashBoard(
+                        return const ServiceProviderDashBoard(
                           status: Strings.serviceProvider,
                         );
                       } else {
@@ -102,11 +102,11 @@ class HomePage extends StatelessWidget {
                             status: Strings.serviceUser);
                       }
                     } else {
-                      return UserSelectionPage();
+                      return const UserSelectionPage();
                     }
                   },
                 )
-              : ServiceProviderDashBoard(status: Strings.employee),
+              : const ServiceProviderDashBoard(status: Strings.employee),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.Normal,

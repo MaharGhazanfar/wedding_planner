@@ -80,7 +80,7 @@ class _VendorsOfSpecificCategoriesStates
                             borderRadius: BorderRadius.circular(20)),
                         title: const Text('Service Provider'),
                         tileColor: Colors.white70,
-                        trailing: Text('Location'),
+                        trailing: const Text('Location'),
                         onTap: () {
                           // Navigator.push(
                           //     context,

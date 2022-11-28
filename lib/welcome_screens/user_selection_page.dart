@@ -87,7 +87,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignUpPage(
+                                    builder: (context) => const SignUpPage(
                                       status: Strings.serviceUser,
                                     ),
                                   ));
@@ -112,7 +112,7 @@ void showSheet({required BuildContext context}) {
     builder: (context) => SizedBox(
       height: 160,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
@@ -131,17 +131,16 @@ void showSheet({required BuildContext context}) {
                     onPressed: () {
                       ModelPersonalLoginInfo.prefs!.setString(
                           Strings.servicePref, Strings.serviceProvider);
-                      print('${Strings.serviceProvider}');
                        Navigator.pop(context);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpPage(
+                            builder: (context) => const SignUpPage(
                               status: Strings.serviceProvider,
                             ),
                           ));
 
-                    }, child: Text('Continue As Service Provider')),
+                    }, child: const Text('Continue As Service Provider')),
               ),
               SizedBox(
                 width: double.infinity,
@@ -154,7 +153,7 @@ void showSheet({required BuildContext context}) {
                             builder: (context) =>
                                 LoginPage(status: Strings.employee),
                           ));
-                    }, child: Text('Continue As Employee')),
+                    }, child: const Text('Continue As Employee')),
               ),
               SizedBox(
                   width: double.infinity,
@@ -162,7 +161,7 @@ void showSheet({required BuildContext context}) {
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
                       onPressed: () {
                     Navigator.pop(context);
-                  }, child: Text('Cancel'))),
+                  }, child: const Text('Cancel'))),
             ],
           ),
         ),

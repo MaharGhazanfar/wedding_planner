@@ -5,6 +5,7 @@ class ModelPersonalLoginInfo {
   late String _lastName;
   late String _countryCode;
   late String _number;
+  late String _email;
   late String _business;
   late String _categories;
   late String _location;
@@ -28,6 +29,7 @@ class ModelPersonalLoginInfo {
   static const lastNameKey = 'lastNameKey';
   static const numberKey = 'numberKey';
   static const imgUrlKey = 'ImageUrl';
+  static const emailKey = 'emailKey';
   static const countryCodeKey = 'CountryCodeKey';
   static const businessKey = 'businessKey';
   static const categoryKey = 'categoryKey';
@@ -37,6 +39,7 @@ class ModelPersonalLoginInfo {
     required String firstName,
     required String lastName,
     required String number,
+    required String email,
     required String countryCode,
     required String business,
     required String imgUrl,
@@ -45,6 +48,7 @@ class ModelPersonalLoginInfo {
   })
       : _firstName = firstName,
         _lastName = lastName,
+        _email = email,
         _number = number,
         _imageUrl = imgUrl,
         _countryCode = countryCode,
@@ -57,6 +61,7 @@ class ModelPersonalLoginInfo {
       firstNameKey: firstName,
       lastNameKey: lastName,
       businessKey: business,
+      emailKey : email,
       numberKey: number,
       countryCodeKey: countryCode,
       imgUrlKey: imageUrl,
@@ -70,10 +75,18 @@ class ModelPersonalLoginInfo {
       firstNameKey: firstName,
       lastNameKey: lastName,
       numberKey: number,
+      emailKey : email,
       countryCodeKey: countryCode,
       imgUrlKey: imageUrl,
       locationKey: location
     };
+  }
+
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
   }
 
   String get location => _location;

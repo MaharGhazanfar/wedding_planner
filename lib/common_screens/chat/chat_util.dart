@@ -23,7 +23,7 @@ void showSheet({
     builder: (context) => SizedBox(
       height: 160,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
@@ -54,7 +54,7 @@ void showSheet({
                           mediaImageSource: ImageSource.gallery,
                           context: buildContext);
                     },
-                    child: Text('Image')),
+                    child: const Text('Image')),
               ),
               SizedBox(
                   width: double.infinity,
@@ -65,7 +65,7 @@ void showSheet({
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('Cancel'))),
+                      child: const Text('Cancel'))),
             ],
           ),
         ),

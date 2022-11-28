@@ -95,14 +95,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           title: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundColor: Colors.white70,
                 child: Icon(
                   Icons.person,
                   color: CustomColors.buttonBackgroundColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Text(widget.receiverName)
@@ -231,7 +231,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                             height: 50,
                             width: 50,
                             alignment: Alignment.center,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Colors.green, shape: BoxShape.circle),
                             child: const Icon(
                               Icons.send,

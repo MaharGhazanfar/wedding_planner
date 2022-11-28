@@ -90,6 +90,9 @@ class Strings {
   static const String blogPost = 'BlogPost';
   static const String editMode = 'EditMode';
   static const String normalMode = 'normalMode';
+  static const String loginWithEmail = 'emailLogin';
+  static const String loginWithNumber = 'numberLogin';
+
 
   ///  for chats.........................................
   static const String chats = 'chats';

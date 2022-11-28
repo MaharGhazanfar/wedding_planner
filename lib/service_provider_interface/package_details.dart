@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -210,8 +209,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                                       const Duration(seconds: 1));
                                   scrollController.jumpTo(scrollController
                                           .position.maxScrollExtent -
-                                      (MediaQuery.of(context).size.height *
-                                          .2));
+                                      (MediaQuery.of(context).size.height * .2));
                                 }
                               },
                               // onTap: () =>
@@ -356,12 +354,10 @@ class _PackageDetailsState extends State<PackageDetails> {
                             location: locationController.text.toString(),
                             uid: FirebaseAuth.instance.currentUser!.uid,
                           );
-                          print(
-                              '${FirebaseAuth.instance.currentUser!.uid}////////////////');
                           await FirebaseFirestore.instance
                               .collection(Strings.serviceProvider)
                               .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection('Packages')
+                              .collection(Strings.providerPackages)
                               .doc()
                               .set(packagesInfo.toMap());
 
@@ -374,7 +370,10 @@ class _PackageDetailsState extends State<PackageDetails> {
                           categoryNameController.clear();
                           priceController.clear();
                           descriptionController.clear();
-                          Navigator.pop(context);
+                          (){
+                            Navigator.pop(context);
+                          }();
+
                         } else {
                           ShowCustomToast(msg: 'All Field Are Must Filled');
                         }

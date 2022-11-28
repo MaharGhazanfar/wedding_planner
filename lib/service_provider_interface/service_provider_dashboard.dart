@@ -41,7 +41,6 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('collection data///////////////////////////////');
     providerCollectionReference = DBHandler.personalInfoCollectionForProvider();
   }
 
@@ -62,7 +61,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                   fit: BoxFit.fill,
                   height: MediaQuery.of(context).size.height * 0.18,
                   width: MediaQuery.of(context).size.width * 0.4,
-                  image: AssetImage('assets/images/Mayaring_app_logo.png'),
+                  image: const AssetImage('assets/images/Mayaring_app_logo.png'),
                 ),
                 // InkWell(
                 //   onTap: () {
@@ -128,11 +127,10 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 //       ],
                 //     ),
                 //   ),
-                // ),
-
+                // ),'
                 InkWell(
                   onTap: () {},
-                  child: Text(
+                  child: const Text(
                     'Bookings',
                     style: TextStyle(),
                   ),
@@ -142,10 +140,10 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EmployeesList(),
+                            builder: (context) => const EmployeesList(),
                           ));
                     },
-                    child: Text('Employee Details')),
+                    child: const Text('Employee Details')),
 
                 InkWell(
                   onTap: () {
@@ -159,7 +157,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           ),
                         ));
                   },
-                  child: Text('Update Profile'),
+                  child: const Text('Update Profile'),
                 ),
                 InkWell(
                   onTap: () {
@@ -178,12 +176,12 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserSelectionPage(),
+                            builder: (context) => const UserSelectionPage(),
                           ),
                           (route) => false);
                     }
                   },
-                  child: Text('LogOut'),
+                  child: const Text('LogOut'),
                 ),
                 const Padding(
                   padding: EdgeInsets.only(right: 12),
@@ -240,7 +238,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           .snapshots(),
                   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Center(child: const Text('Something went wrong'));
+                      return const Center(child: Text('Something went wrong'));
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -261,6 +259,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               null
                           ? doc[ModelPersonalLoginInfo.numberKey].toString()
                           : doc[ModelEmployeeInfo.numberKey].toString();
+
+                      senderName =  ModelPersonalLoginInfo.prefs!.getString(
+                        Strings.UIDPref,
+                      ) ==
+                          null
+                          ? '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'
+                          : '${doc[ModelEmployeeInfo.firstNameKey]} ${doc[ModelEmployeeInfo.lastNameKey]}';
 
                       return Column(
                         children: [
@@ -300,7 +305,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => BlogsPage(),
+                                            builder: (context) => const BlogsPage(),
                                           ));
                                     },
                                     icon: const Icon(
@@ -336,7 +341,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                               '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}'
                                           : '${doc[ModelEmployeeInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
                                               '${doc[ModelEmployeeInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: CustomColors
                                               .buttonBackgroundColor),
@@ -364,33 +369,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0, top: 8),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.mail,
-                                      color: CustomColors.backGroundColor,
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                        ModelPersonalLoginInfo.prefs!.getString(
-                                                  Strings.UIDPref,
-                                                ) ==
-                                                null
-                                            ? DBHandler.user!.email != null
-                                                ? DBHandler.user!.email!
-                                                : ''
-                                            : doc[ModelEmployeeInfo.emailKey]
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                CustomColors.backGroundColor)),
-                                  ],
-                                ),
                                 Icon(
                                   Icons.mail,
                                   color: CustomColors.backGroundColor,
@@ -403,15 +382,14 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                               Strings.UIDPref,
                                             ) ==
                                             null
-                                        ? DBHandler.user!.email != null
-                                            ? DBHandler.user!.email!
-                                            : ''
+                                        ?  doc[ModelPersonalLoginInfo.emailKey]
+                                        .toString()
                                         : doc[ModelEmployeeInfo.emailKey]
                                             .toString(),
                                     style: TextStyle(
-                                        //fontSize: 17,
                                         fontWeight: FontWeight.bold,
-                                        color: CustomColors.backGroundColor)),
+                                        color:
+                                            CustomColors.backGroundColor)),
                               ],
                             ),
                           ),

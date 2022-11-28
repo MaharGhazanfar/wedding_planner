@@ -13,10 +13,12 @@ class OTPScreen extends StatefulWidget {
   final String status;
   final String signFor;
   final String number;
+  final String countryCode;
 
   const OTPScreen({
     Key? key,
     required this.status,
+    required this.countryCode,
     required this.signFor,
     required this.number,
     required this.verificationID,
@@ -92,7 +94,7 @@ class _OTPScreenState extends State<OTPScreen> {
                               obscureText: false,
                               keyboardType: TextInputType.number,
                               animationType: AnimationType.scale,
-                              textStyle: TextStyle(color: Colors.black),
+                              textStyle:const TextStyle(color: Colors.black),
                               pinTheme: PinTheme(
                                 shape: PinCodeFieldShape.box,
                                 borderRadius: BorderRadius.circular(8),
@@ -121,7 +123,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ServiceProviderDashBoard(
+                                          const   ServiceProviderDashBoard(
                                             status: Strings.normalMode,
                                           ),
                                         ),
@@ -132,6 +134,9 @@ class _OTPScreenState extends State<OTPScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PersonalInfoPage(
+                                                loginWith: Strings.loginWithNumber,
+                                            emailOrNumber: widget.number,
+                                            countryCode: widget.countryCode,
                                             status: widget.status,
                                             mode: Strings.normalMode,
                                           ),
@@ -192,6 +197,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           await phoneAuthentication(
                                               status: widget.status,
                                               signFor: widget.signFor,
+                                              countryCode: widget.countryCode,
                                               number: widget.number,
                                               context: context);
                                         },
@@ -218,10 +224,11 @@ class _OTPScreenState extends State<OTPScreen> {
 Future<void> phoneAuthentication(
     {required String status,
     required String number,
+    required String countryCode,
     required String signFor,
     required BuildContext context}) async {
   await FirebaseAuth.instance.verifyPhoneNumber(
-    phoneNumber: number,
+    phoneNumber: '$countryCode$number',
     verificationCompleted: (PhoneAuthCredential credential) {},
     verificationFailed: (FirebaseAuthException e) {},
     codeSent: (String verificationId, int? resendToken) {
@@ -230,6 +237,7 @@ Future<void> phoneAuthentication(
           MaterialPageRoute(
             builder: (context) => OTPScreen(
               verificationID: verificationId,
+              countryCode: countryCode,
               status: status,
               number: number,
               signFor: signFor,

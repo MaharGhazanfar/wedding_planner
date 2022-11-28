@@ -32,13 +32,8 @@ class DBHandler {
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                      Strings.UIDPref,
-                    ) ==
-                    null
-                ? user!.uid
-                : ModelPersonalLoginInfo.prefs!.getString(
                     Strings.UIDPref,
-                  ))
+                  ) ?? user!.uid)
         .collection('Photos');
   }
 
@@ -48,13 +43,8 @@ class DBHandler {
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                      Strings.UIDPref,
-                    ) ==
-                    null
-                ? user!.uid
-                : ModelPersonalLoginInfo.prefs!.getString(
                     Strings.UIDPref,
-                  ))
+                  ) ?? user!.uid)
         .collection('Videos');
   }
 
@@ -73,13 +63,8 @@ class DBHandler {
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                      Strings.UIDPref,
-                    ) ==
-                    null
-                ? user!.uid
-                : ModelPersonalLoginInfo.prefs!.getString(
                     Strings.UIDPref,
-                  ))
+                  ) ?? user!.uid)
         .collection(Strings.providerPackages);
   }
 }

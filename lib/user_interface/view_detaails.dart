@@ -284,8 +284,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                     .snapshots(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                print(snapshot
-                                    .data![ModelPersonalLoginInfo.numberKey]);
+
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 6),
                                   child: Row(
