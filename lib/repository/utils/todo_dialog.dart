@@ -10,6 +10,7 @@ import '../../modelClasses/model_tasks_handler.dart';
 class TOdoDialog extends StatefulWidget {
   final Map<String, dynamic>? doc;
   final String? id;
+  static const pageName = '/TOdoDialog';
 
   const TOdoDialog({Key? key, this.doc, this.id}) : super(key: key);
 
@@ -27,7 +28,7 @@ class _TOdoDialogState extends State<TOdoDialog> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     userTasksCollection = DBHandler.usersTasksCollection();
     _todoController = TextEditingController(
@@ -106,20 +107,30 @@ class _TOdoDialogState extends State<TOdoDialog> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          var userTasks = ModelTasksHandler(
-                            toDO: _todoController.text,
-                            dateTime: pickedDate,
-                            category: selectedItem,
-                            notes: _notesController.text,
-                            //reminder: false
-                          );
-                          userTasksCollection
-                              .doc(widget.id.toString().isNotEmpty
-                                  ? widget.id
-                                  : null)
-                              .set(userTasks.toMap());
+                          var currentFocus = FocusScope.of(context);
+                          currentFocus.unfocus();
 
-                          Navigator.of(context).pop();
+                          if (_todoController.text.isNotEmpty &&
+                              pickedDate.isNotEmpty &&
+                              selectedItem.isNotEmpty &&
+                              _notesController.text.isNotEmpty) {
+                            var userTasks = ModelTasksHandler(
+                              toDO: _todoController.text,
+                              dateTime: pickedDate,
+                              category: selectedItem,
+                              notes: _notesController.text,
+                              //reminder: false
+                            );
+                            userTasksCollection
+                                .doc(widget.id.toString().isNotEmpty
+                                    ? widget.id
+                                    : null)
+                                .set(userTasks.toMap());
+
+                            Navigator.of(context).pop();
+                          } else {
+                            showCustomToast(msg: "All Field Must Be Filled");
+                          }
                         },
                       ),
                     ],
@@ -161,8 +172,10 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 InkWell(
                   splashColor: CustomColors.greenish,
                   onTap: () async {
-                    pickedDate = await CustomWidget.showDateTimePicker(context);
-                    setState(() {});
+                    pickedDate = await CustomWidget.selectDateTime(context);
+                    setState(() {
+                      print('/////////pickedDate/////////$pickedDate');
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -280,11 +293,11 @@ class _TOdoDialogState extends State<TOdoDialog> {
                 const Divider(
                   thickness: 1.5,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.delete,
                         color: Colors.red,

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,7 @@ class _PackageDetailsState extends State<PackageDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     getLocation = Provider.of<LocationPicker>(context, listen: false);
     getLocation.getCurrentPosition(context);
@@ -92,15 +93,16 @@ class _PackageDetailsState extends State<PackageDetails> {
                 alignment: Alignment.center, fit: BoxFit.fill),
             Padding(
               padding: const EdgeInsets.only(
-                  top: ScreenPading.topPading,
-                  left: ScreenPading.leftPading,
-                  right: ScreenPading.leftPading),
+                  top: ScreenPadding.topPadding,
+                  left: ScreenPadding.leftPadding,
+                  right: ScreenPadding.leftPadding),
               child: ListView(
                 children: [
                   IconButton(
                       padding: const EdgeInsets.only(top: 8),
                       alignment: Alignment.topLeft,
                       onPressed: () {
+                       // context.pop();
                         Navigator.pop(context);
                       },
                       icon: const Icon(
@@ -209,7 +211,8 @@ class _PackageDetailsState extends State<PackageDetails> {
                                       const Duration(seconds: 1));
                                   scrollController.jumpTo(scrollController
                                           .position.maxScrollExtent -
-                                      (MediaQuery.of(context).size.height * .2));
+                                      (MediaQuery.of(context).size.height *
+                                          .2));
                                 }
                               },
                               // onTap: () =>
@@ -217,10 +220,6 @@ class _PackageDetailsState extends State<PackageDetails> {
                               titleName: 'Location',
                               maxLines: 2,
                               textInputType: TextInputType.multiline,
-                              // onTap: () {
-                              //
-                              //
-                              // },
                               controller: locationController,
                               context: context),
                           isSearching
@@ -370,15 +369,14 @@ class _PackageDetailsState extends State<PackageDetails> {
                           categoryNameController.clear();
                           priceController.clear();
                           descriptionController.clear();
-                          (){
+                          () {
                             Navigator.pop(context);
                           }();
-
                         } else {
-                          ShowCustomToast(msg: 'All Field Are Must Filled');
+                          showCustomToast(msg: 'All Field Are Must Filled');
                         }
                       } else {
-                        ShowCustomToast(msg: 'Please Select Image');
+                        showCustomToast(msg: 'Please Select Image');
                       }
                     },
                     child: Padding(

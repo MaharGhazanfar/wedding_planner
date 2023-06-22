@@ -10,9 +10,11 @@ import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/data_constants.dart';
 import '../repository/utils/db_handler.dart';
 
+// ignore: must_be_immutable
 class BottomNavigationBarForUser extends StatefulWidget {
   int currentIndex = 0;
   final String? status;
+  static const pageName = '/BottomNavigationBarForUser';
 
   BottomNavigationBarForUser({Key? key, currentIndex, required this.status})
       : super(
@@ -38,7 +40,7 @@ class _BottomNavigationBarForUserState
 
   @override
   void dispose() {
-    // TODO: implement dispose
+   
     pageController.dispose();
     super.dispose();
   }

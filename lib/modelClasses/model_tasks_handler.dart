@@ -1,10 +1,20 @@
-class ModelTasksHandler {
-  late String _toDO;
-  late String _dateTime;
+import 'package:flutter/material.dart';
+
+class ModelTasksHandler extends ChangeNotifier {
+  late String? _toDO;
+  late String? _dateTime;
   late bool _reminder;
-  late String _category;
-  late String _notes;
+  late DateTime _taskDate = DateTime.now();
+  late String? _category;
+  late String? _notes;
   bool _isSelected;
+
+  DateTime get taskDate => _taskDate;
+
+  set taskDate(DateTime value) {
+    _taskDate = value;
+    notifyListeners();
+  }
 
   static const toDOKey = 'toDOKey';
   static const dateTimeKey = 'dateTimeKey';
@@ -12,13 +22,14 @@ class ModelTasksHandler {
   static const categoryKey = 'categoryKey';
   static const notesKey = 'notesKey';
   static const selectedKey = 'selectedKey';
+  static const taskDateKey = 'taskDate';
 
   ModelTasksHandler({
-    required String toDO,
-    required String dateTime,
+    String? toDO,
+    String? dateTime,
     bool reminder = false,
-    required String category,
-    required String notes,
+    String? category,
+    String? notes,
     bool isSelected = false,
   })  : _toDO = toDO,
         _dateTime = dateTime,
@@ -27,13 +38,13 @@ class ModelTasksHandler {
         _notes = notes,
         _isSelected = isSelected;
 
-  String get notes => _notes;
+  String get notes => _notes!;
 
   set notes(String value) {
     _notes = value;
   }
 
-  String get category => _category;
+  String get category => _category!;
 
   set category(String value) {
     _category = value;
@@ -45,13 +56,14 @@ class ModelTasksHandler {
     _reminder = value;
   }
 
-  String get dateTime => _dateTime;
+  String get dateTime => _dateTime!;
 
   set dateTime(String value) {
     _dateTime = value;
+    notifyListeners();
   }
 
-  String get toDO => _toDO;
+  String get toDO => _toDO!;
 
   set toDO(String value) {
     _toDO = value;
@@ -67,6 +79,7 @@ class ModelTasksHandler {
     return {
       toDOKey: toDO,
       dateTimeKey: dateTime,
+
       reminderKey: reminder,
       categoryKey: category,
       notesKey: notes,

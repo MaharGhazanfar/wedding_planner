@@ -1,16 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
-import 'package:wedding_planner/service_provider_interface/add_video.dart';
+
 
 import '../modelClasses/service_packages.dart';
 import '../service_provider_interface/provider_peckages.dart';
 
 class ViewDetails extends StatefulWidget {
   final Map<String, dynamic> doc;
+  static const pageName ='/ViewDetails';
 
   const ViewDetails({Key? key, required this.doc}) : super(key: key);
 
@@ -28,14 +30,27 @@ class _ViewDetailsState extends State<ViewDetails> {
           child: ListView(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * .3,
+                height: mq!.height * .3,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
+                /* decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     image: DecorationImage(
                         image: NetworkImage(
                             widget.doc[ModelServicePackages.imageURLKey]),
-                        fit: BoxFit.fill)),
+                        fit: BoxFit.fill)),*/
+                child: CachedNetworkImage(
+                  imageUrl: widget.doc[ModelServicePackages.imageURLKey],
+                  fit: BoxFit.cover,
+                  height: mq!.height * 0.29,
+                  width: mq!.width,
+                  progressIndicatorBuilder: (context, url, progress) => Center(
+                      child: CircularProgressIndicator(
+                    color: CustomColors.greenish,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        CustomColors.buttonBackgroundColor),
+                    value: progress.progress,
+                  )),
+                errorWidget: (context, url, error) => const Icon(Icons.broken_image),),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 24, left: 6, right: 6),
@@ -131,12 +146,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6, left: 6, right: 6),
+              const Padding(
+                padding: EdgeInsets.only(top: 6, left: 6, right: 6),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Description :',
                       style: TextStyle(
@@ -181,12 +196,13 @@ class _ViewDetailsState extends State<ViewDetails> {
                   ],
                 ),
               ),
+
               StreamBuilder(
                 stream: DBHandler.personalInfoCollectionForProvider()
                     .doc(widget.doc[ModelServicePackages.uidKey])
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && snapshot.data!.exists) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 6.0, top: 6),
                       child: Column(
@@ -214,7 +230,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => AddImages(
-                                                    UID: widget.doc[
+                                                    uid: widget.doc[
                                                         ModelServicePackages
                                                             .uidKey],
                                                   )));
@@ -236,15 +252,15 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  VideoPlayerScreen(
-                                                    UID: widget.doc[
-                                                        ModelServicePackages
-                                                            .uidKey],
-                                                  )));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             VideoPlayerScreen(
+                                      //               UID: widget.doc[
+                                      //                   ModelServicePackages
+                                      //                       .uidKey],
+                                      //             )));
                                     },
                                     child: const Text('Video'))
                               ],
@@ -371,11 +387,11 @@ class _ViewDetailsState extends State<ViewDetails> {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6, right: 6),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 6, right: 6),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text(
                                   'Email',
                                   style: TextStyle(
@@ -394,8 +410,11 @@ class _ViewDetailsState extends State<ViewDetails> {
                         ],
                       ),
                     );
-                  } else {
-                    return const SizedBox();
+                  } else{
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 24.0),
+                      child: Center(child: Text('No data found',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)),
+                    );
                   }
                 },
               )

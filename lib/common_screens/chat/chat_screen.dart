@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wedding_planner/common_screens/chat/single_item_view.dart';
+
 import '../../modelClasses/model_chat.dart';
 import '../../repository/utils/data_constants.dart';
 import '../../repository/utils/db_handler.dart';
@@ -14,6 +15,7 @@ class ChatScreen extends StatefulWidget {
   final String receiverNumber;
   final String senderStatus;
   final String receiverStatus;
+  static const pageName = '/ChatScreen';
 
   const ChatScreen(
       {Key? key,

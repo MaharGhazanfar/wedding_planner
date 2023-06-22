@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:wedding_planner/modelClasses/model_chat.dart';
+
 import '../../repository/utils/data_constants.dart';
 
 class SingleItemView extends StatefulWidget {
@@ -14,9 +15,9 @@ class SingleItemView extends StatefulWidget {
 }
 
 class _SingleItemViewState extends State<SingleItemView> {
-  var isPlaying = false;
-  var durationAudio = Duration.zero;
-  var positionAudio = Duration.zero;
+  // var isPlaying = false;
+  // var durationAudio = Duration.zero;
+  // var positionAudio = Duration.zero;
 
   @override
   Widget build(BuildContext context) {

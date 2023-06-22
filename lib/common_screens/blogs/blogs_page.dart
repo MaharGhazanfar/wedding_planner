@@ -9,6 +9,7 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import '../../repository/utils/db_handler.dart';
 
 class BlogsPage extends StatefulWidget {
+  static const pageName = '/BlogsPage';
   const BlogsPage({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +32,7 @@ class _BlogsPageState extends State<BlogsPage> {
       appBar: AppBar(
         backgroundColor: CustomColors.greenish,
         leading: IconButton(
-            padding: EdgeInsets.only(top: 8, left: 16),
+            padding: const EdgeInsets.only(top: 8, left: 16),
             alignment: Alignment.topLeft,
             onPressed: () {
               Navigator.pop(context);
@@ -96,7 +97,7 @@ class _BlogsPageState extends State<BlogsPage> {
                                 ]),
                             child: ListTile(
                               contentPadding:
-                                  EdgeInsets.only(left: 0, top: 0, bottom: 0),
+                                  const EdgeInsets.only(left: 0, top: 0, bottom: 0),
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
@@ -114,17 +115,17 @@ class _BlogsPageState extends State<BlogsPage> {
                                   height: 100,
                                   colorBlendMode: BlendMode.colorDodge,
                                   placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
+                                      const CircularProgressIndicator(),
                                   errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                      const Icon(Icons.error),
                                   fit: BoxFit.fill,
                                 ),
                               ),
                               title: Padding(
-                                padding: EdgeInsets.only(bottom: 8.0),
+                                padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Text(
                                   doc[ModelBlogPost.keyBlogTitle],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18),
                                 ),
@@ -148,9 +149,7 @@ class _BlogsPageState extends State<BlogsPage> {
         backgroundColor: CustomColors.buttonBackgroundColor,
         isExtended: true,
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CreateBlog(),
-          ));
+         Navigator.pushNamed(context, CreateBlog.pageName);
         },
         child: const Icon(
           Icons.add,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/chat/chat_screen.dart';
 import 'package:wedding_planner/modelClasses/model_chat.dart';
+
 import '../../repository/utils/data_constants.dart';
 import '../../repository/utils/db_handler.dart';
 
@@ -32,9 +33,9 @@ class _ChatUserListState extends State<ChatUserList> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-                top: ScreenPading.topPading,
-                left: ScreenPading.leftPading,
-                right: ScreenPading.leftPading),
+                top: ScreenPadding.topPadding,
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.leftPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -82,7 +83,7 @@ class _ChatUserListState extends State<ChatUserList> {
                                 itemBuilder: (context, index) => Card(
                                   child: ListTile(
                                     onTap: () {
-                                      Navigator.push(
+                                      /*Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ChatScreen(
@@ -100,9 +101,28 @@ class _ChatUserListState extends State<ChatUserList> {
                                                     .data!.docs[index].id,
                                                 senderStatus:
                                                     widget.senderStatus),
-                                          ));
+                                          ));*/
+
+                                      Navigator.pushNamed(
+                                          context, ChatScreen.pageName,
+                                          arguments: {
+                                            Strings.senderName:
+                                                widget.senderName,
+                                            Strings.senderNumber:
+                                                widget.senderNumber,
+                                            Strings.receiverStatus: snapshot
+                                                    .data!.docs[index]
+                                                [ModelChat.receiverStatusKey],
+                                            Strings.receiverName:
+                                                snapshot.data!.docs[index]
+                                                    [ModelChat.receiverNameKey],
+                                            Strings.receiverNumber:
+                                                snapshot.data!.docs[index].id,
+                                            Strings.senderStatus:
+                                                widget.senderStatus
+                                          });
                                     },
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       backgroundColor:
                                           CustomColors.buttonBackgroundColor,
                                       child: Icon(Icons.person),

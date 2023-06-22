@@ -3,6 +3,7 @@ import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/user_interface/view_detaails.dart';
 
 class MyWishList extends StatefulWidget {
+  static const pageName = '/MyWishList';
   const MyWishList({Key? key}) : super(key: key);
 
   @override
@@ -20,7 +21,7 @@ class _MyWishListState extends State<MyWishList> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-              top: ScreenPading.topPading,
+              top: ScreenPadding.topPadding,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,8 +41,8 @@ class _MyWishListState extends State<MyWishList> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                      top: ScreenPading.topPading,
-                      left: ScreenPading.leftPading),
+                      top: ScreenPadding.topPadding,
+                      left: ScreenPadding.leftPadding),
                   child: Align(
                       alignment: Alignment.topLeft,
                       child: Text('Saved Items!',

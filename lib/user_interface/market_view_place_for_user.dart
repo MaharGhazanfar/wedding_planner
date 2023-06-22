@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -9,6 +8,7 @@ import 'package:wedding_planner/user_interface/view_detaails.dart';
 import 'package:wedding_planner/user_interface/wish_list/my_wish_list.dart';
 
 import '../modelClasses/service_packages.dart';
+import '../repository/utils/custom_widgets.dart';
 import '../repository/utils/db_handler.dart';
 
 class MarketPlaceView extends StatefulWidget {
@@ -28,7 +28,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     generalPackagesCollection = DBHandler.generalPackagesCollection();
   }
@@ -55,7 +55,13 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         PopupMenuButton(
+                          tooltip: 'Filters',
                           color: Colors.white,
+                          offset: const Offset(20, 0),
+                          icon: const Icon(
+                            Icons.more_vert_rounded,
+                            color: Colors.white,
+                          ),
                           position: PopupMenuPosition.under,
                           itemBuilder: (context) => [
                             PopupMenuItem(
@@ -73,12 +79,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MyWishList(),
-                                      ));
+                                  Navigator.pushNamed(context, MyWishList.pageName);
                                 },
                                 color: CustomColors.backGroundColor,
                                 icon: const Icon(
@@ -87,11 +88,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const BlogsPage(),
-                                      ));
+                                  Navigator.pushNamed(context, BlogsPage.pageName);
                                 },
                                 color: CustomColors.backGroundColor,
                                 icon: const Icon(CupertinoIcons.color_filter),
@@ -120,7 +117,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                           color: Colors.white,
                         ),
                         hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintStyle: const TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: const BorderSide(color: Colors.red),
@@ -224,7 +221,6 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                           flex: 7,
                                                           child: Stack(
                                                             fit: StackFit.loose,
-                                                            //alignment: Alignment.center,
                                                             children: [
                                                               Container(
                                                                 alignment:
@@ -272,7 +268,7 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                           doc[ModelServicePackages.ratingKey]
                                                                               .toString(),
                                                                           style:
-                                                                              TextStyle(color: CustomColors.greenish),
+                                                                              const TextStyle(color: CustomColors.greenish),
                                                                         )
                                                                       ],
                                                                     ),
@@ -285,11 +281,25 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                                 child:
                                                                     IconButton(
                                                                         onPressed:
-                                                                            () {},
+                                                                            () {
+                                                                          // if (doc[
+                                                                          //     ModelServicePackages.favouriteKey]) {
+                                                                          //   DBHandler.usersFavouritePackagesCollection().doc().delete().whenComplete(() =>
+                                                                          //       ShowCustomToast(msg: 'The Item is removed'));
+                                                                          // } else {
+                                                                          DBHandler.usersFavouritePackagesCollection()
+                                                                              .doc()
+                                                                              .set(
+                                                                                doc,
+                                                                              )
+                                                                              .whenComplete(() => showCustomToast(msg: 'The Item is Saved'));
+                                                                          // }
+                                                                        },
                                                                         icon:
-                                                                            const Icon(
-                                                                          Icons
-                                                                              .favorite_border_outlined,
+                                                                            Icon(
+                                                                          doc[ModelServicePackages.favouriteKey]
+                                                                              ? Icons.favorite_rounded
+                                                                              : Icons.favorite_border_outlined,
                                                                           color:
                                                                               CustomColors.buttonBackgroundColor,
                                                                           size:
@@ -432,15 +442,12 @@ class _MarketPlaceViewState extends State<MarketPlaceView> {
                                                   ),
                                                   child: InkWell(
                                                     onTap: () {
-                                                      Navigator.push(
+                                                      Navigator.pushNamed(
                                                           context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    ViewDetails(
-                                                              doc: doc,
-                                                            ),
-                                                          ));
+                                                          ViewDetails.pageName,
+                                                          arguments: {
+                                                            Strings.doc: doc
+                                                          });
                                                     },
                                                     child: Container(
                                                       height: 80,

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wedding_planner/authentication/authentication_services.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
+import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/modelClasses/employee_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
-
 import '../../modelClasses/model_personal_login_info.dart';
 import '../../user_interface/bottom_navigationBar_screen.dart';
 
@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
   final String status;
 
   const LoginPage({Key? key, required this.status}) : super(key: key);
+  static const pageName = '/LoginPage';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Stack(
         fit: StackFit.expand,
@@ -55,8 +56,8 @@ class _LoginPageState extends State<LoginPage> {
               key: globalKey,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: ScreenPading.topPading,
-                    right: ScreenPading.topPading),
+                    left: ScreenPadding.topPadding,
+                    right: ScreenPadding.topPadding),
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -115,18 +116,21 @@ class _LoginPageState extends State<LoginPage> {
                                   padding: const EdgeInsets.only(top: 4.0),
                                   child: FutureBuilder(
                                     future: FirebaseFirestore.instance
-                                        .collection(Strings.serviceProvider == widget.status ? Strings.serviceProvider : Strings.serviceUser)
+                                        .collection(Strings.serviceProvider ==
+                                                widget.status
+                                            ? Strings.serviceProvider
+                                            : Strings.serviceUser)
                                         .where(ModelPersonalLoginInfo.emailKey,
                                             isEqualTo: _emailController.text
                                                 .toString())
                                         .get(),
                                     builder: (context, snapshot) {
-                                      if(snapshot.hasData) {
+                                      if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () async {
                                             if (_emailController.text
-                                                .toString()
-                                                .isNotEmpty &&
+                                                    .toString()
+                                                    .isNotEmpty &&
                                                 _passwordController.text
                                                     .toString()
                                                     .isNotEmpty) {
@@ -134,70 +138,95 @@ class _LoginPageState extends State<LoginPage> {
                                                   .toString()
                                                   .trim()
                                                   .contains('@gmail.com')) {
-                                                if(snapshot
-                                                    .data!.docs.isEmpty){
-                                                  ShowCustomToast(
+                                                if (snapshot
+                                                    .data!.docs.isEmpty) {
+                                                  showCustomToast(
                                                       msg:
-                                                      'Please Fill Correct Information');
-                                                }else {
+                                                          'Please Fill Correct Information');
+                                                } else {
                                                   String status =
-                                                  await signInWithEmail(
-                                                      password:
-                                                      _passwordController.text
-                                                          .toString(),
-                                                      email: _emailController
-                                                          .text
-                                                          .toString()
-                                                          .trim());
+                                                      await signInWithEmail(
+                                                          password:
+                                                              _passwordController
+                                                                  .text
+                                                                  .toString(),
+                                                          email:
+                                                              _emailController
+                                                                  .text
+                                                                  .toString()
+                                                                  .trim());
                                                   if (status ==
                                                       'Login Successful') {
-                                                    ShowCustomToast(
+                                                    showCustomToast(
                                                         msg: status);
                                                     if (widget.status ==
                                                         Strings
                                                             .serviceProvider) {
-                                                          () {
-                                                        Navigator
+                                                      () {
+                                                        /* Navigator
                                                             .pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (
-                                                                  context) =>
-                                                                  ServiceProviderDashBoard(
-                                                                      status: widget
-                                                                          .status),
-                                                            ),
-                                                                (
-                                                                route) => false);
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ServiceProviderDashBoard(
+                                                                          status:
+                                                                              widget.status),
+                                                                ),
+                                                                (route) =>
+                                                                    false);*/
+
+                                                        Navigator
+                                                            .pushNamedAndRemoveUntil(
+                                                                context,
+                                                                ServiceProviderDashBoard
+                                                                    .pageName,
+                                                                arguments: {
+                                                                  Strings.status:
+                                                                      widget
+                                                                          .status
+                                                                },
+                                                                (route) =>
+                                                                    false);
                                                       }();
                                                     } else if (widget.status ==
                                                         Strings.serviceUser) {
-                                                          () {
-                                                        Navigator
+                                                      () {
+                                                        /*Navigator
                                                             .pushAndRemoveUntil(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (
-                                                                    context) =>
-                                                                    BottomNavigationBarForUser(
-                                                                      status: widget
-                                                                          .status,
-                                                                    )),
-                                                                (
-                                                                route) => false);
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            BottomNavigationBarForUser(
+                                                                              status: widget.status,
+                                                                            )),
+                                                                (route) =>
+                                                                    false);*/
+                                                        Navigator
+                                                            .pushNamedAndRemoveUntil(
+                                                                context,
+                                                                BottomNavigationBarForUser
+                                                                    .pageName,
+                                                                arguments: {
+                                                                  Strings.status:
+                                                                      widget
+                                                                          .status
+                                                                },
+                                                                (route) =>
+                                                                    false);
                                                       }();
                                                     }
                                                   } else {
-                                                    ShowCustomToast(
+                                                    showCustomToast(
                                                         msg: status);
                                                   }
                                                 }
                                               } else {
-                                                ShowCustomToast(
+                                                showCustomToast(
                                                     msg: 'inValid Email');
                                               }
                                             } else {
-                                              ShowCustomToast(
+                                              showCustomToast(
                                                   msg: 'Field Must BE Filled');
                                             }
                                           },
@@ -208,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   color: CustomColors
                                                       .buttonBackgroundColor,
                                                   borderRadius:
-                                                  BorderRadius.circular(40),
+                                                      BorderRadius.circular(40),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       color: Colors.black
@@ -237,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     fontSize: 20),
                                               )),
                                         );
-                                      }else{
+                                      } else {
                                         return const SizedBox();
                                       }
                                     },
@@ -270,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   .contains('@gmail.com')) {
                                                 if (snapshot
                                                     .data!.docs.isEmpty) {
-                                                  ShowCustomToast(
+                                                  showCustomToast(
                                                       msg:
                                                           'Please Fill Correct Information');
                                                 } else {
@@ -342,7 +371,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       .set(
                                                           employeeInfo.toMap());
 
-                                                  Navigator.pushAndRemoveUntil(
+                                                  /*Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
@@ -350,14 +379,24 @@ class _LoginPageState extends State<LoginPage> {
                                                           status: widget.status,
                                                         ),
                                                       ),
-                                                      (route) => false);
+                                                      (route) => false);*/
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          ServiceProviderDashBoard
+                                                              .pageName,
+                                                          arguments: {
+                                                            Strings.status:
+                                                                widget.status
+                                                          },
+                                                          (route) => false);
                                                 }
                                               } else {
-                                                ShowCustomToast(
+                                                showCustomToast(
                                                     msg: 'inValid Email');
                                               }
                                             } else {
-                                              ShowCustomToast(
+                                              showCustomToast(
                                                   msg: 'Field Must BE Filled');
                                             }
                                           },
@@ -403,8 +442,6 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                   ),
                                 ),
-
-
                           widget.status != Strings.employee
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 16.0),
@@ -485,7 +522,13 @@ class _LoginPageState extends State<LoginPage> {
                                           fontSize: 18),
                                     ),
                                     TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushReplacementNamed(
+                                              context, SignUpPage.pageName,
+                                              arguments: {
+                                                Strings.status: widget.status
+                                              });
+                                        },
                                         child: const Text(
                                           'Sign Up',
                                           style: TextStyle(
@@ -527,25 +570,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-          )
+          ),
+          Positioned(top: 32, left: 15, child: backButton(context))
         ],
       ),
     );
   }
-}
-
-Future<String> signInWithEmail(
-    {required String password, required String email}) async {
-  try {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    return 'Login Successful';
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      return 'No user found for that email';
-    } else if (e.code == 'wrong-password') {
-      return 'Wrong password provided for that user';
-    }
-  }
-  return 'SomeThing Went Wrong';
 }

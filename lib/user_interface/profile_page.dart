@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +11,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
-
+import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
 import '../modelClasses/model_personal_login_info.dart';
 import '../repository/utils/custom_widgets.dart';
 import '../service_provider_interface/personal_info.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ProfilePage extends StatefulWidget {
   final String status;
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .update({ModelPersonalLoginInfo.imgUrlKey: imageUrl});
       setState(() {});
     } on PlatformException catch (e) {
-      ShowCustomToast(msg: 'Failed to pick image: $e');
+      showCustomToast(msg: 'Failed to pick image: $e');
     }
   }
 
@@ -84,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   .snapshots(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Center(child: const Text('Something went wrong'));
+                  return const Center(child: Text('Something went wrong'));
                 }
                 ;
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -94,69 +94,66 @@ class _ProfilePageState extends State<ProfilePage> {
                       snapshot.data!.data() as Map<String, dynamic>;
                   imageUrl = doc[ModelPersonalLoginInfo.imgUrlKey];
                   return Padding(
-                    padding: const EdgeInsets.only(top: ScreenPading.topPading),
+                    padding:
+                        const EdgeInsets.only(top: ScreenPadding.topPadding),
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 24.0, bottom: 8),
-                          child: InkWell(
-                            onTap: () async {
-                              var status = await Permission.storage.status;
+                        InkWell(
+                          onTap: () async {
+                            var status = await Permission.storage.status;
 
-                              if (status.isGranted) {
-                                pickImage();
-                              } else if (await Permission.storage
-                                  .request()
-                                  .isGranted) {
-                                pickImage();
-                              } else {
-                                ShowCustomToast(msg: 'Permission denied');
-                              }
-                            },
-                            child: Badge(
-                              badgeColor: CustomColors.buttonBackgroundColor,
-                              badgeContent: Icon(Icons.camera_enhance),
-                              position: BadgePosition.topEnd(
-                                  top: MediaQuery.of(context).size.width * 0.25,
-                                  end:
-                                      MediaQuery.of(context).size.width * 0.35),
-                              child: imageUrl!.isNotEmpty
-                                  ? CachedNetworkImage(
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.35,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover),
-                                        ),
-                                      ),
-                                      imageUrl:
-                                          doc[ModelPersonalLoginInfo.imgUrlKey],
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    )
-                                  : Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.35,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.35,
-                                      alignment: Alignment.center,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white60,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
+                            if (status.isGranted) {
+                              pickImage();
+                            } else if (await Permission.storage
+                                .request()
+                                .isGranted) {
+                              pickImage();
+                            } else {
+                              showCustomToast(msg: 'Permission denied');
+                            }
+                          },
+                          child: badges.Badge(
+                            badgeStyle: const badges.BadgeStyle(
+                                badgeColor: CustomColors.buttonBackgroundColor),
+                            badgeContent: const Icon(
+                              Icons.camera_alt,
+                              color: CustomColors.greenish,
+                            ),
+                            position: BadgePosition.topEnd(
+                                top: MediaQuery.of(context).size.width * 0.25,
+                                end: MediaQuery.of(context).size.width * 0.35),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                radius: mq!.width * .17,
+                                backgroundColor: CustomColors.greenish,
+                                child: imageUrl!.isNotEmpty
+                                    ? CachedNetworkImage(
+                                        /*imageBuilder: (context, imageProvider) =>
+                                   Container(
+                                     width: MediaQuery.of(context).size.width *
+                                         0.35,
+                                     height:
+                                     MediaQuery.of(context).size.width *
+                                         0.35,
+                                     decoration: BoxDecoration(
+                                       shape: BoxShape.circle,
+                                       image: DecorationImage(
+                                           image: imageProvider,
+                                           fit: BoxFit.cover),
+                                     ),
+                                   ),*/
+                                        imageUrl: doc[
+                                            ModelPersonalLoginInfo.imgUrlKey],
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      )
+                                    : Text(
                                         '${doc[ModelPersonalLoginInfo.firstNameKey].toString().characters.characterAt(0).toUpperCase()}'
                                         '${doc[ModelPersonalLoginInfo.lastNameKey].toString().characters.characterAt(0).toUpperCase()}',
                                         style: TextStyle(
@@ -168,15 +165,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: CustomColors
                                                 .buttonBackgroundColor),
                                       ),
-                                    ),
+                              ),
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: ScreenPading.topPading,
-                              left: ScreenPading.leftPading,
-                              right: ScreenPading.rightPading),
+                              top: ScreenPadding.topPadding,
+                              left: ScreenPadding.leftPadding,
+                              right: ScreenPadding.rightPadding),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -188,9 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               CustomWidget.customCardForProfileData(
                                 title: 'Phone Number',
                                 value:
-                                '${doc[ModelPersonalLoginInfo
-                                    .countryCodeKey]}${doc[ModelPersonalLoginInfo
-                                    .numberKey]}',
+                                    '${doc[ModelPersonalLoginInfo.countryCodeKey]}${doc[ModelPersonalLoginInfo.numberKey]}',
                               ),
                               CustomWidget.customCardForProfileData(
                                 title: 'Email',
@@ -205,6 +200,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ListTile(
                                   onTap: () {
                                     FirebaseAuth.instance.signOut();
+                                    Navigator.pushReplacementNamed(
+                                        context, UserSelectionPage.pageName);
                                   },
                                   contentPadding: const EdgeInsets.only(
                                       left: 24.0, right: 24),
@@ -232,29 +229,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   onTap: () {
                                     print('${widget.status}///////');
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PersonalInfoPage(
-                                            status: widget.status,
-                                            mode: Strings.editMode,
-                                            doc: doc,
-                                          ),
-                                        ));
+                                    Navigator.pushNamed(
+                                        context, PersonalInfoPage.pageName,
+                                        arguments: {
+                                          Strings.status: widget.status,
+                                          Strings.mode: Strings.editMode,
+                                          Strings.doc: doc
+                                        });
                                   },
                                 ),
                               ),
                               const Divider(
                                 thickness: 2,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: ScreenPading.topPading,
-                                    left: ScreenPading.leftPading),
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                    top: ScreenPadding.topPadding,
+                                    left: ScreenPadding.leftPadding),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       'RATE ON PLAY STORE',
                                       style: TextStyle(color: Colors.black54),

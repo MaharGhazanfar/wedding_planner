@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/modelClasses/employee_info.dart';
@@ -11,7 +12,6 @@ import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
-import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employees_list_page.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
@@ -20,6 +20,7 @@ import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
 
 class ServiceProviderDashBoard extends StatefulWidget {
   final String status;
+  static const pageName = '/ServiceProviderDashBoard';
 
   const ServiceProviderDashBoard({Key? key, required this.status})
       : super(key: key);
@@ -33,13 +34,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
   late final CollectionReference providerCollectionReference;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late Map<String, dynamic> doc;
-  String SPBusiness = '';
+  String serviceProviderBusiness = '';
   String senderNumber = '';
   String senderName = '';
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     providerCollectionReference = DBHandler.personalInfoCollectionForProvider();
   }
@@ -61,7 +62,8 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                   fit: BoxFit.fill,
                   height: MediaQuery.of(context).size.height * 0.18,
                   width: MediaQuery.of(context).size.width * 0.4,
-                  image: const AssetImage('assets/images/Mayaring_app_logo.png'),
+                  image:
+                      const AssetImage('assets/images/Mayaring_app_logo.png'),
                 ),
                 // InkWell(
                 //   onTap: () {
@@ -137,16 +139,23 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                 ),
                 InkWell(
                     onTap: () {
-                      Navigator.push(
+                      // context.push('/employeeDetails');
+                      /*Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const EmployeesList(),
-                          ));
+                          ));*/
+                      Navigator.pushNamed(context, EmployeesList.pageName);
                     },
                     child: const Text('Employee Details')),
 
                 InkWell(
                   onTap: () {
+                    /* context.push('/updateProfile', extra: {
+                      Strings.status: widget.status,
+                      Strings.mode: Strings.editMode,
+                      Strings.doc: doc
+                    });*/ /*
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -155,17 +164,27 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                             mode: Strings.editMode,
                             doc: doc,
                           ),
-                        ));
+                        ));*/
+
+                    Navigator.pushNamed(context, PersonalInfoPage.pageName,
+                        arguments: {
+                          Strings.status: widget.status,
+                          Strings.mode: Strings.editMode,
+                          Strings.doc: doc
+                        });
                   },
                   child: const Text('Update Profile'),
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (ModelPersonalLoginInfo.prefs!.getString(
                           Strings.UIDPref,
                         ) ==
                         null) {
-                      FirebaseAuth.instance.signOut();
+                      await FirebaseAuth.instance.signOut();
+                      if (!mounted) return;
+                      Navigator.pushReplacementNamed(
+                          context, UserSelectionPage.pageName);
                     } else {
                       ModelPersonalLoginInfo.prefs!.remove(
                         Strings.UIDPref,
@@ -173,12 +192,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       ModelPersonalLoginInfo.prefs!.remove(
                         Strings.EIDPref,
                       );
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const UserSelectionPage(),
-                          ),
-                          (route) => false);
+
+                      Navigator.pushReplacementNamed(
+                          context, UserSelectionPage.pageName);
                     }
                   },
                   child: const Text('LogOut'),
@@ -237,16 +253,18 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                           ))
                           .snapshots(),
                   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    print('//////////////${DBHandler.user!.uid}');
                     if (snapshot.hasError) {
                       return const Center(child: Text('Something went wrong'));
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
-                    } else {
-                      doc = snapshot.data!.data() as Map<String, dynamic>;
-
-                      SPBusiness = ModelPersonalLoginInfo.prefs!.getString(
+                    } else if(snapshot.hasData){
+                     doc = snapshot.data!.data() as Map<String, dynamic>;
+                        
+                      serviceProviderBusiness = ModelPersonalLoginInfo.prefs!
+                                  .getString(
                                 Strings.UIDPref,
                               ) ==
                               null
@@ -259,11 +277,17 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               null
                           ? doc[ModelPersonalLoginInfo.numberKey].toString()
                           : doc[ModelEmployeeInfo.numberKey].toString();
+                      senderName = ModelPersonalLoginInfo.prefs!.getString(
+                                Strings.UIDPref,
+                              ) ==
+                              null
+                          ? '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'
+                          : '${doc[ModelEmployeeInfo.firstNameKey]} ${doc[ModelEmployeeInfo.lastNameKey]}';
 
-                      senderName =  ModelPersonalLoginInfo.prefs!.getString(
-                        Strings.UIDPref,
-                      ) ==
-                          null
+                      senderName = ModelPersonalLoginInfo.prefs!.getString(
+                                Strings.UIDPref,
+                              ) ==
+                              null
                           ? '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'
                           : '${doc[ModelEmployeeInfo.firstNameKey]} ${doc[ModelEmployeeInfo.lastNameKey]}';
 
@@ -302,18 +326,25 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 const Spacer(),
                                 IconButton(
                                     onPressed: () {
-                                      Navigator.push(
+                                      // context.push('/blogs');
+                                      /* Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => const BlogsPage(),
-                                          ));
+                                          ));*/
+                                      Navigator.pushNamed(
+                                        context,
+                                        BlogsPage.pageName,
+                                      );
                                     },
                                     icon: const Icon(
                                       Icons.markunread_mailbox_outlined,
                                       color: CustomColors.yellowIconsColor,
                                     )),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                    },
                                     icon: const Icon(
                                       Icons.notifications_sharp,
                                       color: CustomColors.yellowIconsColor,
@@ -382,14 +413,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                               Strings.UIDPref,
                                             ) ==
                                             null
-                                        ?  doc[ModelPersonalLoginInfo.emailKey]
-                                        .toString()
+                                        ? doc[ModelPersonalLoginInfo.emailKey]
+                                            .toString()
                                         : doc[ModelEmployeeInfo.emailKey]
                                             .toString(),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            CustomColors.backGroundColor)),
+                                        color: CustomColors.backGroundColor)),
                               ],
                             ),
                           ),
@@ -409,8 +439,8 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                               Strings.UIDPref,
                                             ) ==
                                             null
-                                        ? doc[ModelPersonalLoginInfo.numberKey]
-                                        : doc[ModelEmployeeInfo.numberKey],
+                                        ? '${doc[ModelPersonalLoginInfo.countryCodeKey]}${doc[ModelPersonalLoginInfo.numberKey]}'
+                                        : '${doc[ModelEmployeeInfo.countryCodeKey]}${doc[ModelEmployeeInfo.numberKey]}',
                                     style: TextStyle(
                                         //fontSize: 17,
                                         fontWeight: FontWeight.bold,
@@ -430,23 +460,30 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                Text(
-                                    ModelPersonalLoginInfo.prefs!.getString(
-                                              Strings.UIDPref,
-                                            ) ==
-                                            null
-                                        ? doc[
-                                            ModelPersonalLoginInfo.locationKey]
-                                        : doc[ModelEmployeeInfo.addressKey],
-                                    style: TextStyle(
-                                        //fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                        color: CustomColors.backGroundColor))
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Text(
+                                      ModelPersonalLoginInfo.prefs!.getString(
+                                                Strings.UIDPref,
+                                              ) ==
+                                              null
+                                          ? doc[ModelPersonalLoginInfo
+                                              .locationKey]
+                                          : doc[ModelEmployeeInfo.addressKey],
+                                      style: TextStyle(
+                                          //fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                          color: CustomColors.backGroundColor,
+                                          overflow: TextOverflow.ellipsis)),
+                                )
                               ],
                             ),
                           )
                         ],
                       );
+                    } else{
+                      return const Center(child: Text('No ata'));
                     }
                   },
                 ),
@@ -478,11 +515,14 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       iconSize: 40,
                       title: 'Photos',
                       onTap: () {
-                        Navigator.push(
+                        // context.push('/photos');
+                        /*Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const AddImages(),
-                            ));
+                            ));*/
+
+                        Navigator.pushNamed(context, AddImages.pageName);
                       }),
                   CustomWidget.customCardButton(
                       height: MediaQuery.of(context).size.width * .25,
@@ -491,12 +531,16 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       iconSize: 40,
                       title: 'Videos',
                       onTap: () {
-                        Navigator.push(
+                        //context.push('/videos');
+                        /* Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => VideoPlayerScreen(),
-                            ));
-                      }),
+                            ));*/
+
+                      //   Navigator.pushNamed(
+                      //       context, VideoPlayerScreen.pageName);
+                       }),
                 ],
               ),
               const SizedBox(
@@ -512,11 +556,13 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       iconSize: 40,
                       title: 'Packages',
                       onTap: () {
-                        Navigator.push(
+                        //context.push('/packages');
+                        /*  Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const ProviderPackages(),
-                            ));
+                            ));*/
+                        Navigator.pushNamed(context, ProviderPackages.pageName);
                       }),
                   CustomWidget.customCardButton(
                       height: MediaQuery.of(context).size.width * .25,
@@ -525,14 +571,23 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       iconSize: 40,
                       title: 'Appointments',
                       onTap: () {
-                        Navigator.push(
+                        /*  context.push('/appointments', extra: {
+                          Strings.senderName: senderName,
+                          Strings.senderNumber: senderNumber,
+                        });*/
+                        /* Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Appointments(
                                 senderName: senderName,
                                 senderNumber: senderNumber,
                               ),
-                            ));
+                            ));*/
+                        Navigator.pushNamed(context, Appointments.pageName,
+                            arguments: {
+                              Strings.senderName: senderName,
+                              Strings.senderNumber: senderNumber,
+                            });
                       }),
                 ],
               ),
@@ -549,12 +604,10 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       iconSize: 40,
                       title: 'Employee',
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  EmployeeInfoPage(SPBusiness: SPBusiness),
-                            ));
+                        Navigator.pushNamed(context, EmployeeInfoPage.pageName,
+                            arguments: {
+                              Strings.business: serviceProviderBusiness
+                            });
                       }),
                   CustomWidget.customCardButton(
                       height: MediaQuery.of(context).size.width * .25,

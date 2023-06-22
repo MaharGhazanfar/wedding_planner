@@ -5,7 +5,6 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:wedding_planner/authentication/screens/otp_screen.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
 import '../../modelClasses/model_personal_login_info.dart';
 
 class PhoneLoginPage extends StatefulWidget {
@@ -51,7 +50,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-                left: 16.0, right: 16, top: ScreenPading.topPading),
+                left: 16.0, right: 16, top: ScreenPadding.topPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -83,7 +82,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Container(
-                        height: 60,
+                        height: mq!.height*0.07,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -168,7 +167,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                     if (widget.signFor == 'login'
                                         ? snapshot.data!.docs.isEmpty
                                         : false) {
-                                      ShowCustomToast(
+                                      showCustomToast(
                                           msg:
                                               'Please Fill Correct Information');
                                     } else {
@@ -181,7 +180,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                                           status: widget.status);
                                     }
                                   } else {
-                                    ShowCustomToast(
+                                    showCustomToast(
                                         msg: 'Field Must Be Filled');
                                   }
                                 },

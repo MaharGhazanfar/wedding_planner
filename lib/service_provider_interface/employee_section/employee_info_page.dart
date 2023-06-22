@@ -3,15 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 import '../../modelClasses/employee_info.dart';
 
 class EmployeeInfoPage extends StatefulWidget {
-  final String SPBusiness;
-
-  const EmployeeInfoPage({required this.SPBusiness, Key? key})
+  final String serviceProviderBusiness;
+   static const pageName = '/EmployeeInfoPage';
+  const EmployeeInfoPage({required this.serviceProviderBusiness, Key? key})
       : super(key: key);
 
   @override
@@ -26,9 +27,8 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   late TextEditingController emailNameController;
   late TextEditingController passwordNameController;
   String countryCode = '+94';
-
-  //String completeNumber = '';
   var globalKey = GlobalKey<FormState>();
+  late ModelEmployeeInfo _provider;
 
   @override
   void initState() {
@@ -39,6 +39,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
     addressNameController = TextEditingController();
     emailNameController = TextEditingController();
     passwordNameController = TextEditingController();
+    _provider = Provider.of(context, listen: false);
   }
 
   @override
@@ -53,9 +54,10 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: mq!.height,
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -65,19 +67,19 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                 key: globalKey,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: ScreenPading.leftPading,
-                      right: ScreenPading.leftPading),
+                      left: ScreenPadding.leftPadding,
+                      right: ScreenPadding.leftPadding),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .3,
+                        height: mq!.height * .3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 32.0),
                               child: IconButton(
-                                  padding: EdgeInsets.only(top: 8),
+                                  padding: const EdgeInsets.only(top: 8),
                                   alignment: Alignment.topLeft,
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -87,9 +89,9 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                     color: CustomColors.backGroundColor,
                                   )),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: const Align(
+                            const Padding(
+                              padding: EdgeInsets.only(top: 16.0),
+                              child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   'Add few details about \nyour Employee...',
@@ -104,7 +106,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .7,
+                        height: mq!.height * .7,
                         child: Column(
                           children: [
                             Padding(
@@ -124,7 +126,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Container(
-                                height: 60,
+                                height: 55,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
@@ -151,7 +153,7 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                   child: IntlPhoneField(
                                     dropdownIconPosition: IconPosition.trailing,
                                     flagsButtonPadding:
-                                        EdgeInsets.only(left: 5, top: 5),
+                                        const EdgeInsets.only(left: 5, top: 5),
                                     initialValue: countryCode,
                                     decoration: const InputDecoration(
                                         prefixStyle:
@@ -167,8 +169,6 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                         filled: true,
                                         border: InputBorder.none),
                                     onChanged: (phone) {
-                                      print(phone.countryCode);
-                                      // completeNumber = phone.completeNumber;
                                       countryCode = phone.countryCode;
                                     },
                                     style: const TextStyle(
@@ -176,15 +176,14 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                     controller: phoneNameController,
                                     onCountryChanged: (country) {
                                       countryCode = '+${country.dialCode}';
-                                      print('Country changed to: ' +
-                                          country.name);
+
                                     },
                                     autovalidateMode: AutovalidateMode.disabled,
                                     dropdownTextStyle:
-                                        TextStyle(color: Colors.black54),
+                                        const TextStyle(color: Colors.black54),
                                     pickerDialogStyle: PickerDialogStyle(
                                         countryCodeStyle:
-                                            TextStyle(color: Colors.black54)),
+                                            const TextStyle(color: Colors.black54)),
                                   ),
                                 ),
                               ),
@@ -212,29 +211,20 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                   controller: passwordNameController,
                                   context: context),
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () async {
-                                if (firstNameController.text.toString().length != 0 &&
-                                    lastNameController.text.toString().length !=
-                                        0 &&
+                                if (firstNameController.text.toString().isNotEmpty &&
+                                    lastNameController.text.toString().isNotEmpty &&
                                     phoneNameController.text
-                                            .toString()
-                                            .length !=
-                                        0 &&
+                                            .toString().isNotEmpty &&
                                     emailNameController.text
-                                            .toString()
-                                            .length !=
-                                        0 &&
+                                            .toString().isNotEmpty &&
                                     addressNameController.text
-                                            .toString()
-                                            .length !=
-                                        0 &&
+                                            .toString().isNotEmpty &&
                                     passwordNameController.text
-                                            .toString()
-                                            .length !=
-                                        0) {
+                                            .toString().isNotEmpty) {
                                   var employeeInfo = ModelEmployeeInfo(
-                                      business: widget.SPBusiness,
+                                      business: widget.serviceProviderBusiness,
                                       firstName:
                                           firstNameController.text.toString(),
                                       address:
@@ -250,15 +240,20 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                       UID: FirebaseAuth
                                           .instance.currentUser!.uid,
                                       countryCode: countryCode);
-                                  FirebaseFirestore.instance
+                                  _provider.isLoading = true;
+                                 await FirebaseFirestore.instance
                                       .collection('Employee')
                                       .doc()
                                       .set(employeeInfo.toMap());
+                                  _provider.isLoading = false;
 
-                                  ShowCustomToast(msg: 'Successful Added');
-                                  Navigator.pop(context);
+                                  showCustomToast(msg: 'Successful Added');
+                                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                                    Navigator.pop(context);
+                                  });
+
                                 } else {
-                                  ShowCustomToast(
+                                  showCustomToast(
                                       msg: 'Fields are Must Filled');
                                 }
                               },
@@ -289,9 +284,19 @@ class _EmployeeInfoPageState extends State<EmployeeInfoPage> {
                                                   spreadRadius: 3,
                                                   blurRadius: 1),
                                             ]),
-                                        child: Text('Save',
-                                            style: ButtonsStyle.buttonTextStyle(
-                                                context))),
+                                        child: Consumer<ModelEmployeeInfo>(
+                                          builder: (context, value, child) => value
+                                                  .isLoading
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                  color: CustomColors.greenish,
+                                                ))
+                                              : Text('Save',
+                                                  style: ButtonsStyle
+                                                      .buttonTextStyle(
+                                                          context)),
+                                        )),
                                   ],
                                 ),
                               ),

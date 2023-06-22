@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../repository/utils/data_constants.dart';
 
 class EmployeesList extends StatefulWidget {
+  static const pageName = '/EmployeesList';
   const EmployeesList({Key? key}) : super(key: key);
 
   @override
@@ -21,9 +22,9 @@ class _EmployeesListState extends State<EmployeesList> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-                top: ScreenPading.topPading,
-                left: ScreenPading.leftPading,
-                right: ScreenPading.leftPading),
+                top: ScreenPadding.topPadding,
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.leftPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

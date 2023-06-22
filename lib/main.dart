@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-import 'package:wedding_planner/repository/utils/model_location.dart';
+import 'package:wedding_planner/repository/utils/providers.dart';
+import 'package:wedding_planner/routing_cofiguration/route_configuration.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
 import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
@@ -19,7 +20,7 @@ void main() async {
   );
 
   ModelPersonalLoginInfo.prefs = await SharedPreferences.getInstance();
-  runApp(const MyApp());
+  runApp(mayaRingProviders);
 }
 
 class MyApp extends StatelessWidget {
@@ -28,13 +29,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<LocationPicker>(
-          create: (context) => LocationPicker(),
-        ),
-      ],
+    return GestureDetector(
+      //behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
       child: MaterialApp(
+        onGenerateRoute: RouteConfiguration.generateRoutes,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -42,10 +41,10 @@ class MyApp extends StatelessWidget {
             color: Colors.black38,
           ),
           textTheme: (Theme.of(context).textTheme.copyWith(
-              bodyText2: TextStyle(
+              bodyMedium: TextStyle(
                   color: CustomColors.backGroundColor,
                   fontWeight: FontWeight.bold),
-              bodyText1: const TextStyle(
+              bodySmall: const TextStyle(
                 color: Colors.black38,
               ))),
         ),
@@ -53,38 +52,39 @@ class MyApp extends StatelessWidget {
         home: const HomePage(),
       ),
     );
-
-    // ChangeNotifierProvider<LocationPicker>(
-    //   create: (context) => LocationPicker(),
-    //   child: MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     title: 'Flutter Demo',
-    //     theme: ThemeData(
-    //       iconTheme: const IconThemeData(
-    //         color: Colors.black38,
-    //       ),
-    //       textTheme: (Theme.of(context).textTheme.copyWith(
-    //           bodyText2: TextStyle(
-    //               color: CustomColors.backGroundColor,
-    //               fontWeight: FontWeight.bold),
-    //           bodyText1: const TextStyle(
-    //             color: Colors.black38,
-    //           ))),
-    //     ),
-    //     themeMode: ThemeMode.dark,
-    //     home: const HomePage(),
-    //   ),
-    // );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late Ticker _ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    _ticker = Ticker((_) => {});
+    _ticker.start();
+  }
+
+  @override
+  void dispose() {
+   
+    _ticker.dispose(); //
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return SplashScreenView(
-      navigateRoute:
+      navigateRoute: 
           ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) == null
               ? StreamBuilder(
                   stream: FirebaseAuth.instance.authStateChanges(),
@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
               : const ServiceProviderDashBoard(status: Strings.employee),
       backgroundColor: CustomColors.greenish,
       speed: 2,
-      pageRouteTransition: PageRouteTransition.Normal,
+      pageRouteTransition: PageRouteTransition.SlideTransition,
       duration: 4000,
       imageSize: 300,
       imageSrc: 'assets/images/Mayaring_splash.png',

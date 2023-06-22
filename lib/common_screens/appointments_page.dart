@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/common_screens/chat/chat_screen.dart';
+import 'package:wedding_planner/common_screens/chat/chat_user_list.dart';
 import 'package:wedding_planner/modelClasses/employee_info.dart';
 import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
-import 'chat/chat_user_list.dart';
 
 class Appointments extends StatefulWidget {
   final String senderNumber;
   final String senderName;
   final String UID;
+  static const pageName = '/Appointments';
 
   const Appointments(
       {Key? key,
@@ -39,12 +40,23 @@ class _AppointmentsState extends State<Appointments> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-                top: ScreenPading.topPading,
-                left: ScreenPading.leftPading,
-                right: ScreenPading.leftPading),
+                top: ScreenPadding.topPadding,
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.leftPadding),
             child: Column(
+              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                IconButton(
+                              padding: const EdgeInsets.only(top: 8),
+                              alignment: Alignment.topLeft,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: CustomColors.backGroundColor,
+                              )),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Align(
@@ -80,8 +92,9 @@ class _AppointmentsState extends State<Appointments> {
                               .doc(widget.UID != ''
                                   ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                          Strings.UIDPref,
-                                        ) ?? DBHandler.user!.uid)
+                                        Strings.UIDPref,
+                                      ) ??
+                                      DBHandler.user!.uid)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -103,7 +116,7 @@ class _AppointmentsState extends State<Appointments> {
                                           ? const SizedBox()
                                           : InkWell(
                                               onTap: () {
-                                                Navigator.push(
+                                                /*Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
@@ -135,7 +148,35 @@ class _AppointmentsState extends State<Appointments> {
                                                                       .numberKey],
                                                               receiverName:
                                                                   '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
-                                                    ));
+                                                    ));*/
+
+                                                Navigator.pushNamed(context, ChatScreen.pageName,arguments: {Strings.senderName: widget
+                                                    .senderName,
+                                                  Strings.receiverStatus:
+                                                  Strings
+                                                      .serviceProvider,
+                                                  Strings.senderStatus: widget
+                                                      .UID !=
+                                                      ''
+                                                      ? Strings
+                                                      .serviceUser
+                                                      : ModelPersonalLoginInfo
+                                                      .prefs!
+                                                      .getString(
+                                                    Strings.UIDPref,
+                                                  ) ==
+                                                      null
+                                                      ? Strings
+                                                      .serviceProvider
+                                                      : Strings
+                                                      .employee,
+                                                  Strings.senderNumber: widget
+                                                      .senderNumber,
+                                                  Strings.receiverNumber: doc[
+                                                  ModelPersonalLoginInfo
+                                                      .numberKey],
+                                                  Strings.receiverName:
+                                                  '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'});
                                               },
                                               child: const Icon(
                                                 Icons.chat,
@@ -170,6 +211,15 @@ class _AppointmentsState extends State<Appointments> {
                                                         widget.senderNumber,
                                                   )));
                                     }
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //       builder: (context) => ChatPage(
+                                    //           senderNumber: widget.senderNumber,
+                                    //           receiverNumber: doc[ModelPersonalLoginInfo.numberKey],
+                                    //           name:
+                                    //               '${doc[ModelPersonalLoginInfo.firstNameKey]} ${doc[ModelPersonalLoginInfo.lastNameKey]}'),
+                                    //     ));
                                   },
                                 ),
                               );
@@ -200,8 +250,9 @@ class _AppointmentsState extends State<Appointments> {
                               .doc(widget.UID != ''
                                   ? widget.UID
                                   : ModelPersonalLoginInfo.prefs!.getString(
-                                          Strings.UIDPref,
-                                        ) ?? DBHandler.user!.uid)
+                                        Strings.UIDPref,
+                                      ) ??
+                                      DBHandler.user!.uid)
                               .collection(Strings.employee)
                               .snapshots(),
                           builder: (context, snapshot) {

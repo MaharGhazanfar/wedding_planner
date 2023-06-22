@@ -1,8 +1,8 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
+
+
 import 'package:outline_gradient_button/outline_gradient_button.dart';
 
 import 'data_constants.dart';
@@ -52,7 +52,7 @@ class CustomWidget {
             backgroundColor: CustomColors.buttonBackgroundColor,
             gradient: borderEnabled
                 ? LinearGradient(
-                    colors: [Colors.white, Colors.white],
+                    colors: const [Colors.white, Colors.white],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     stops: [0, width * 0.5])
@@ -142,7 +142,7 @@ class CustomWidget {
 
   ////////////////////////////////DropDown//////////////////////
 
-  static Widget dropdownButton2({
+/*  static Widget dropdownButton2({
     required List items,
     double? dropDownMaxHeight,
     required BuildContext context,
@@ -215,7 +215,7 @@ class CustomWidget {
           onChanged: onChanged,
           onSaved: onSaved),
     );
-  }
+  }*/
 
   ////////////////////////////Drawer/////////////////////
 
@@ -299,36 +299,51 @@ class CustomWidget {
   }
 
   //Date picker method
-  static Future<String> showDateTimePicker(BuildContext context) async {
-    TimeOfDay? timePicked;
-    DateTime? datePicked;
-    datePicked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
 
-    if (datePicked != null) {
-      timePicked = await showTimePicker(
-        context: context,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        ),
-        initialTime: TimeOfDay(
-            hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute),
-      );
-      print(
-          '${timePicked.toString().substring(10, 15)}/////${timePicked!.format(context)}////time');
-      if (timePicked != null) {
-        print("${DateFormat("yyyy-MM-dd").format(datePicked)}  ");
-      }
+
+
+  static Future<String> selectDateTime(BuildContext context) async {
+    DateTime? combinedDateTime;
+    final DateTime? pickedDateTime = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2030),
+    );
+
+    if (pickedDateTime != null) {
+
+        final TimeOfDay? pickedTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+        );
+
+        if (pickedTime != null) {
+          combinedDateTime = DateTime(
+            pickedDateTime.year,
+            pickedDateTime.month,
+            pickedDateTime.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+        }
+
     }
-    return '${datePicked.toString().substring(0, datePicked.toString().length - 12)} ${timePicked!.toString().substring(10, 15)}';
+    return combinedDateTime.toString().substring(0,combinedDateTime.toString().length -7);
   }
 }
 
-ShowCustomToast({required String msg}) {
+Widget backButton(BuildContext context) {
+  return IconButton(
+      onPressed: () => Navigator.pop(context),
+      icon: const Icon(
+        Icons.arrow_back_ios,
+        color: Colors.white,
+        size: 30,
+      ));
+}
+
+showCustomToast({required String msg}) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,

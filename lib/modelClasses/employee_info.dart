@@ -1,13 +1,24 @@
-class ModelEmployeeInfo {
-  late String _firstName;
-  late String _lastName;
-  late String _number;
-  late String _email;
-  late String _countryCode;
-  late String _address;
-  late String _business;
-  late String _password;
-  late String _UID;
+import 'package:flutter/foundation.dart';
+
+class ModelEmployeeInfo extends ChangeNotifier {
+  late String? _firstName;
+  late String? _lastName;
+  late String? _number;
+  late String? _email;
+  late String? _countryCode;
+  late String? _address;
+  late String? _business;
+  late String? _password;
+  late String? _UID;
+  late bool? _isLoading = false;
+
+
+  bool get isLoading => _isLoading!;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   static const firstNameKey = 'firstNameKey';
   static const lastNameKey = 'lastNameKey';
@@ -20,15 +31,16 @@ class ModelEmployeeInfo {
   static const UIDKey = 'UIDKey';
 
   ModelEmployeeInfo({
-    required String firstName,
-    required String lastName,
-    required String number,
-    required String email,
-    required String countryCode,
-    required String address,
-    required String business,
-    required String password,
-    required String UID,
+     String? firstName,
+     String? lastName,
+     String? number,
+     String? email,
+     String? countryCode,
+     String? address,
+     String? business,
+     String? password,
+     String? UID,
+
   })
       : _firstName = firstName,
         _lastName = lastName,
@@ -54,55 +66,55 @@ class ModelEmployeeInfo {
     };
   }
 
-  String get countryCode => _countryCode;
+  String get countryCode => _countryCode!;
 
   set countryCode(String value) {
     _countryCode = value;
   }
 
-  String get business => _business;
+  String get business => _business!;
 
   set business(String value) {
     _business = value;
   }
 
-  String get UID => _UID;
+  String get UID => _UID!;
 
   set UID(String value) {
     _UID = value;
   }
 
-  String get password => _password;
+  String get password => _password!;
 
   set password(String value) {
     _password = value;
   }
 
-  String get address => _address;
+  String get address => _address!;
 
   set address(String value) {
     _address = value;
   }
 
-  String get email => _email;
+  String get email => _email!;
 
   set email(String value) {
     _email = value;
   }
 
-  String get number => _number;
+  String get number => _number!;
 
   set number(String value) {
     _number = value;
   }
 
-  String get lastName => _lastName;
+  String get lastName => _lastName!;
 
   set lastName(String value) {
     _lastName = value;
   }
 
-  String get firstName => _firstName;
+  String get firstName => _firstName!;
 
   set firstName(String value) {
     _firstName = value;

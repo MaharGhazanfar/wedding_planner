@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
-
 import '../../modelClasses/model_blog_post.dart';
 import '../../repository/utils/custom_widgets.dart';
 import '../../repository/utils/db_handler.dart';
 
 class CreateBlog extends StatefulWidget {
+  static const pageName = '/CreateBlog';
+
   const CreateBlog({Key? key}) : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class _CreateBlogState extends State<CreateBlog> {
       //if (pickedImage == null) return;
       setState(() {});
     } on PlatformException catch (e) {
-      ShowCustomToast(msg: 'Failed to pick image: $e');
+      showCustomToast(msg: 'Failed to pick image: $e');
     }
   }
 
@@ -72,14 +72,14 @@ class _CreateBlogState extends State<CreateBlog> {
               alignment: Alignment.center, fit: BoxFit.fill),
           Padding(
             padding: const EdgeInsets.only(
-                top: ScreenPading.topPading,
-                left: ScreenPading.leftPading,
-                right: ScreenPading.rightPading),
+                top: ScreenPadding.topPadding,
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.rightPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       top: 8,
                     ),
                     alignment: Alignment.topLeft,
@@ -114,7 +114,7 @@ class _CreateBlogState extends State<CreateBlog> {
                     } else if (await Permission.storage.request().isGranted) {
                       pickImage();
                     } else {
-                      ShowCustomToast(msg: 'Permission denied');
+                      showCustomToast(msg: 'Permission denied');
                     }
                   },
                   child: Container(
@@ -190,7 +190,7 @@ class _CreateBlogState extends State<CreateBlog> {
                     maxLines: 10,
                     minLines: 5,
                     keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         contentPadding: EdgeInsets.all(10),
                         hintText: 'Write your blog here',
                         border: InputBorder.none),
@@ -202,6 +202,7 @@ class _CreateBlogState extends State<CreateBlog> {
                 InkWell(
                   splashColor: Colors.white,
                   onTap: () async {
+                    //  popUntil('/packageDetails');
                     if (pickedImage != null) {
                       if (blogTitleController.text.isNotEmpty &&
                           blogBodyController.text.isNotEmpty) {
@@ -218,7 +219,7 @@ class _CreateBlogState extends State<CreateBlog> {
                             .doc()
                             .set(modelBlogPost.toMap())
                             .whenComplete(() {
-                          ShowCustomToast(
+                          showCustomToast(
                               msg: "Your blog is created successfully");
 
                           setState(() {
@@ -228,12 +229,11 @@ class _CreateBlogState extends State<CreateBlog> {
                             isLoading = false;
                           });
                         });
-                        // Navigator.pop(context);
                       } else {
-                        ShowCustomToast(msg: "All Field Must Be Filled");
+                        showCustomToast(msg: "All Field Must Be Filled");
                       }
                     } else {
-                      ShowCustomToast(
+                      showCustomToast(
                           msg: "Please tap on the camera icon to pick image");
                     }
                   },

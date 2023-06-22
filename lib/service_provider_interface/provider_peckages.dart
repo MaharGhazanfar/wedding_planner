@@ -9,6 +9,7 @@ import 'package:wedding_planner/service_provider_interface/package_details.dart'
 
 class ProviderPackages extends StatefulWidget {
   final String UID;
+  static const pageName = '/ProviderPackages';
   const ProviderPackages({Key? key, this.UID = ''}) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
   late final CollectionReference providerPackages;
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     providerPackages = DBHandler.providerPackages(UID: widget.UID);
   }
@@ -37,9 +38,9 @@ class _ProviderPackagesState extends State<ProviderPackages> {
           ),
           Padding(
             padding: const EdgeInsets.only(
-                top: ScreenPading.topPading,
-                left: ScreenPading.leftPading,
-                right: ScreenPading.rightPading),
+                top: ScreenPadding.topPadding,
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.rightPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,7 +95,7 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                 Expanded(
                   flex: 7,
                   child: StreamBuilder(
-                    stream:providerPackages.snapshots(),
+                    stream: providerPackages.snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
@@ -127,10 +128,10 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                               borderRadius:
                                                   BorderRadius.circular(20)),
                                           child: CachedNetworkImage(
-                                              imageUrl:
-                                                  snapshot.data!.docs[index][
-                                                      ModelServicePackages
-                                                          .imageURLKey],
+                                              imageUrl: snapshot.data!.docs[
+                                                      index][
+                                                  ModelServicePackages
+                                                      .imageURLKey],
                                               alignment: Alignment.center,
                                               imageBuilder: (context,
                                                       imageProvider) =>
@@ -229,13 +230,14 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                                           0
                                                       ? Text(
                                                           '${snapshot.data!.docs[index][ModelServicePackages.discountKey].toString()}%',
-                                                          style: const TextStyle(
-                                                              // fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: CustomColors
-                                                                  .textFontColor),
+                                                          style:
+                                                              const TextStyle(
+                                                                  // fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: CustomColors
+                                                                      .textFontColor),
                                                         )
                                                       : const SizedBox()
                                                 ],
@@ -243,8 +245,8 @@ class _ProviderPackagesState extends State<ProviderPackages> {
                                             ),
                                             ////////
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(top: 20.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 20.0),
                                               child: Text(
                                                 snapshot
                                                     .data!
@@ -308,17 +310,19 @@ class _ProviderPackagesState extends State<ProviderPackages> {
           ),
         ],
       ),
-      floatingActionButton: widget.UID == '' ? FloatingActionButton(
-        backgroundColor: CustomColors.buttonBackgroundColor,
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PackageDetails(),
-              ));
-        },
-        child: const Icon(Icons.add),
-      ) :const SizedBox(),
+      floatingActionButton: widget.UID == ''
+          ? FloatingActionButton(
+              backgroundColor: CustomColors.buttonBackgroundColor,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PackageDetails(),
+                    ));
+              },
+              child: const Icon(Icons.add),
+            )
+          : const SizedBox(),
     );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:wedding_planner/authentication/screens/email_login_page.dart';
 import 'package:wedding_planner/authentication/screens/login_page.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
+import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 
 class SignUpPage extends StatefulWidget {
   final String status;
+
   const SignUpPage({Key? key, required this.status}) : super(key: key);
+  static const pageName = '/SignUpPage';
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -16,6 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey,
       body: Stack(
         fit: StackFit.expand,
@@ -26,39 +31,37 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(
-              left: ScreenPading.topPading,
-              right: ScreenPading.topPading,
+              left: ScreenPadding.topPadding,
+              right: ScreenPadding.topPadding,
             ),
             child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: mq!.height * 0.3,
+                  width: mq!.width * 0.45,
                   child: Image.asset(
                     'assets/images/Mayaringbar_logo.png',
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: mq!.height * 0.7,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       /// sign up with email.........................
 
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    EmailLoginPage(status: widget.status,loginWithEmail: Strings.loginWithEmail),
-                              ));
+                          Navigator.pushNamed(context, EmailLoginPage.pageName,
+                              arguments: {
+                                Strings.status: widget.status,
+                                Strings.loginWithEmail: Strings.loginWithEmail
+                              });
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          height: 50,
+                          height: mq!.height * 0.06,
                           decoration: BoxDecoration(
                               color: CustomColors.buttonBackgroundColor,
                               borderRadius: BorderRadius.circular(40),
@@ -118,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           padding: const EdgeInsets.only(top: 12.0, bottom: 12),
                           child: Container(
                             alignment: Alignment.center,
-                            height: 50,
+                            height: mq!.height * 0.06,
                             decoration: BoxDecoration(
                                 color: CustomColors.buttonBackgroundColor,
                                 borderRadius: BorderRadius.circular(50),
@@ -163,13 +166,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
 
-
-
                       SizedBox(
-                        height: 30,
-                        child: Row(
+                        height: mq!.height * 0.03,
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
+                          children: [
                             Padding(
                               padding: EdgeInsets.only(left: 2.0),
                               child: Text(
@@ -191,8 +192,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           ],
                         ),
                       ),
-
-
 
                       SizedBox(
                         //width: MediaQuery.of(context).size.width*0.7,
@@ -217,17 +216,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            LoginPage(status: widget.status),
-                                      ));
+                                  Navigator.pushNamed(context, LoginPage.pageName,arguments: {Strings.status: widget.status});
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 40,
-                                  width: 90,
+                                  height: mq!.height * 0.05,
+                                  width: mq!.width * 0.25,
                                   decoration: BoxDecoration(
                                       color: CustomColors.buttonBackgroundColor,
                                       borderRadius: BorderRadius.circular(40),
@@ -267,6 +261,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
           ),
+          Positioned(top: 32, left: 15, child: backButton(context))
         ],
       ),
     );

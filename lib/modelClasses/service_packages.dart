@@ -7,7 +7,7 @@ class ModelServicePackages {
   late String _imageURL;
   late String _description;
   late bool favourite = false;
-  late double rating = 0.0;
+  late double? rating = 0.0;
   late String _uid;
 
   static const offerNameKey = 'offerNameKey';

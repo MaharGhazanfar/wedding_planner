@@ -11,29 +11,15 @@ class DBHandler {
     return FirebaseFirestore.instance.collection(Strings.serviceProvider);
   }
 
-  static CollectionReference chatsUserList() {
-    return FirebaseFirestore.instance.collection(Strings.chats);
-  }
-
-  static CollectionReference personalInfoCollectionForServiceUser() {
-    return FirebaseFirestore.instance.collection(Strings.serviceUser);
-  }
-
-  static CollectionReference usersTasksCollection() {
-    return FirebaseFirestore.instance
-        .collection(Strings.serviceUser)
-        .doc(user!.uid)
-        .collection(Strings.userPersonalTasks);
-  }
-
   static CollectionReference photosCollection({required String UID}) {
     return FirebaseFirestore.instance
         .collection(Strings.serviceProvider)
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                    Strings.UIDPref,
-                  ) ?? user!.uid)
+                  Strings.UIDPref,
+                ) ??
+                user!.uid)
         .collection('Photos');
   }
 
@@ -43,8 +29,9 @@ class DBHandler {
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                    Strings.UIDPref,
-                  ) ?? user!.uid)
+                  Strings.UIDPref,
+                ) ??
+                user!.uid)
         .collection('Videos');
   }
 
@@ -63,8 +50,33 @@ class DBHandler {
         .doc(UID != ''
             ? UID
             : ModelPersonalLoginInfo.prefs!.getString(
-                    Strings.UIDPref,
-                  ) ?? user!.uid)
+                  Strings.UIDPref,
+                ) ??
+                user!.uid)
         .collection(Strings.providerPackages);
+  }
+
+  /// User Section
+
+  static CollectionReference chatsUserList() {
+    return FirebaseFirestore.instance.collection(Strings.chats);
+  }
+
+  static CollectionReference personalInfoCollectionForServiceUser() {
+    return FirebaseFirestore.instance.collection(Strings.serviceUser);
+  }
+
+  static CollectionReference usersTasksCollection() {
+    return FirebaseFirestore.instance
+        .collection(Strings.serviceUser)
+        .doc(user!.uid)
+        .collection(Strings.userPersonalTasks);
+  }
+
+  static CollectionReference usersFavouritePackagesCollection() {
+    return FirebaseFirestore.instance
+        .collection(Strings.serviceUser)
+        .doc(user!.uid)
+        .collection(Strings.userFavouriteItems);
   }
 }

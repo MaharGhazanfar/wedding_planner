@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -7,6 +8,7 @@ import '../modelClasses/model_personal_login_info.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({Key? key}) : super(key: key);
+  static const pageName = '/UserSelectionPage';
 
   @override
   State<UserSelectionPage> createState() => _GenderCheckPageState();
@@ -29,7 +31,8 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(
-                left: ScreenPading.leftPading, right: ScreenPading.rightPading),
+                left: ScreenPadding.leftPadding,
+                right: ScreenPadding.rightPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -49,7 +52,7 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                         padding: const EdgeInsets.only(top: 16.0, bottom: 8),
                         child: CustomWidget.customContainer(
                             child: Text(
-                              'Service Provider',
+                              Strings.serviceProvider,
                               style: TextStyle(
                                   color: borderEnabled1
                                       ? CustomColors.backGroundColor
@@ -59,15 +62,15 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled1,
                             onTap: () {
-                              showSheet(context: context);
-
+                              // showSheet(context: context);
+                              showUserDialogue(context: context);
                             }),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                         child: CustomWidget.customContainer(
                             child: Text(
-                              'Service User',
+                              Strings.serviceUser,
                               style: TextStyle(
                                   color: borderEnabled2
                                       ? CustomColors.backGroundColor
@@ -77,20 +80,18 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             height: 50,
                             borderEnabled: borderEnabled2,
                             onTap: () {
-                              ModelPersonalLoginInfo.prefs!
-                                  .setString(Strings.servicePref, Strings.serviceUser);
+                              ModelPersonalLoginInfo.prefs!.setString(
+                                  Strings.servicePref, Strings.serviceUser);
                               setState(() {
                                 borderEnabled1 = false;
                                 borderEnabled2 = true;
                                 borderEnabled3 = false;
                               });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUpPage(
-                                      status: Strings.serviceUser,
-                                    ),
-                                  ));
+
+                              Navigator.pushNamed(context, SignUpPage.pageName,
+                                  arguments: {
+                                    Strings.status: Strings.serviceUser,
+                                  });
                             }),
                       ),
                     ],
@@ -105,67 +106,56 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
   }
 }
 
-void showSheet({required BuildContext context}) {
-  showModalBottomSheet(
-    backgroundColor: Colors.transparent,
+void showUserDialogue({required BuildContext context}) {
+  showDialog(
     context: context,
-    builder: (context) => SizedBox(
-      height: 160,
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-        ),
-        child: Padding(
-          padding:  const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
-                    onPressed: () {
-                      ModelPersonalLoginInfo.prefs!.setString(
-                          Strings.servicePref, Strings.serviceProvider);
-                       Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpPage(
-                              status: Strings.serviceProvider,
-                            ),
-                          ));
-
-                    }, child: const Text('Continue As Service Provider')),
+    builder: (context) => SimpleDialog(
+        backgroundColor: CustomColors.greenish,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        contentPadding: const EdgeInsets.all(12),
+        children: [
+          CustomWidget.customContainer(
+              child: Text(
+                Strings.continueAs + Strings.serviceProvider,
+                style: TextStyle(
+                    color: CustomColors.backGroundColor, fontSize: 18),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                LoginPage(status: Strings.employee),
-                          ));
-                    }, child: const Text('Continue As Employee')),
-              ),
-              SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(CustomColors.buttonBackgroundColor)),
-                      onPressed: () {
-                    Navigator.pop(context);
-                  }, child: const Text('Cancel'))),
-            ],
+              height: mq!.height * 0.06,
+              onTap: () {
+                ModelPersonalLoginInfo.prefs!
+                    .setString(Strings.servicePref, Strings.serviceProvider);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, SignUpPage.pageName,
+                    arguments: {
+                      Strings.status: Strings.serviceProvider
+                    });
+              }),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: CustomWidget.customContainer(
+                child: Text(
+                  Strings.continueAs + Strings.employee,
+                  style: TextStyle(
+                      color: CustomColors.backGroundColor, fontSize: 18),
+                ),
+                height: mq!.height * 0.06,
+                onTap: () {
+                  Navigator.pushNamed(context, LoginPage.pageName,
+                      arguments: {
+                        Strings.status: Strings.employee
+                      });
+                }),
           ),
-        ),
-      ),
-    ),
+          CustomWidget.customContainer(
+              child: Text(
+                Strings.cancel,
+                style: TextStyle(
+                    color: CustomColors.backGroundColor, fontSize: 18),
+              ),
+              height: mq!.height * 0.06,
+              onTap: () {
+                Navigator.pop(context);
+              }),
+        ]),
   );
 }
