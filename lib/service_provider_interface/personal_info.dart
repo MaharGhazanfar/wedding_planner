@@ -157,6 +157,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   Widget build(BuildContext mainContext) {
+     log(' build PInfo//////${DBHandler.user!.uid}');
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     log('profilepage');
@@ -430,6 +431,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               location: locationController.text.toString(),
                               imgUrl: imgUrl);
                           _provider.isLoading = true;
+                           log(' personal info//////${DBHandler.user!.uid}');
                           await collectionInfo.doc(DBHandler.user!.uid).set(
                               widget.status == Strings.serviceProvider
                                   ? personalInfo.toMapForProvider()

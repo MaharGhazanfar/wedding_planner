@@ -1,10 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/providers.dart';
 import 'package:wedding_planner/routing_cofiguration/route_configuration.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
@@ -82,31 +85,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+     log(' build main//////${DBHandler.user!.uid}');
+    log('${ModelPersonalLoginInfo.prefs!.getString(Strings.status)}');
     mq = MediaQuery.of(context).size;
     return SplashScreenView(
-      navigateRoute: 
-          ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) == null
-              ? StreamBuilder(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (ModelPersonalLoginInfo.prefs!.getString(
-                            Strings.servicePref,
-                          ) ==
-                          Strings.serviceProvider) {
-                        return const ServiceProviderDashBoard(
-                          status: Strings.serviceProvider,
-                        );
-                      } else {
-                        return BottomNavigationBarForUser(
-                            status: Strings.serviceUser);
-                      }
-                    } else {
-                      return const UserSelectionPage();
-                    }
-                  },
-                )
-              : const ServiceProviderDashBoard(status: Strings.employee),
+      navigateRoute:
+           ModelPersonalLoginInfo.prefs!.getString(Strings.status) == Strings.serviceProvider && ModelPersonalLoginInfo.prefs!= Null ?ServiceProviderDashBoard(status: Strings.serviceProvider)
+           : ModelPersonalLoginInfo.prefs!.getString(Strings.status) == Strings.serviceUser && ModelPersonalLoginInfo.prefs!= Null ? BottomNavigationBarForUser(status: Strings.serviceUser)
+           //: ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) != Null ? const ServiceProviderDashBoard(status: Strings.employee)
+           : UserSelectionPage(),           
+          //     ? StreamBuilder(
+          //         stream: FirebaseAuth.instance.authStateChanges(),
+          //         builder: (context, snapshot) {
+          //           if (snapshot.hasData) {
+          //             if (ModelPersonalLoginInfo.prefs!.getString(
+          //                   Strings.servicePref,
+          //                 ) ==
+          //                 Strings.serviceProvider) {
+          //               return const ServiceProviderDashBoard(
+          //                 status: Strings.serviceProvider,
+          //               );
+          //             } else {
+          //               return BottomNavigationBarForUser(
+          //                   status: Strings.serviceUser);
+          //             }
+          //           } else {
+          //             return const UserSelectionPage();
+          //           }
+          //         },
+          //       )
+          //     : const ServiceProviderDashBoard(status: Strings.employee),
       backgroundColor: CustomColors.greenish,
       speed: 2,
       pageRouteTransition: PageRouteTransition.SlideTransition,

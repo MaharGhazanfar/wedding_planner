@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:wedding_planner/common_screens/appointments_page.dart';
 import 'package:wedding_planner/common_screens/blogs/blogs_page.dart';
 import 'package:wedding_planner/modelClasses/employee_info.dart';
@@ -12,6 +13,7 @@ import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
+import 'package:wedding_planner/service_provider_interface/add_video.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employees_list_page.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
@@ -47,6 +49,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
 
   @override
   Widget build(BuildContext context) {
+    log(' build PD//////${DBHandler.user!.uid}');
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomWidget.myCustomDrawer(
@@ -182,7 +185,11 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         ) ==
                         null) {
                       await FirebaseAuth.instance.signOut();
+                       ModelPersonalLoginInfo.prefs!.clear();
+                       DBHandler.user =null;
+
                       if (!mounted) return;
+
                       Navigator.pushReplacementNamed(
                           context, UserSelectionPage.pageName);
                     } else {
@@ -235,7 +242,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                     color: Colors.white.withOpacity(0.1),
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50))),
-                child: StreamBuilder<DocumentSnapshot>(
+                 child: StreamBuilder<DocumentSnapshot>(
                   stream: ModelPersonalLoginInfo.prefs!.getString(
                             Strings.UIDPref,
                           ) ==
@@ -486,7 +493,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                       return const Center(child: Text('No ata'));
                     }
                   },
-                ),
+                ), 
               ),
               const SizedBox(
                 height: 20,
@@ -538,8 +545,9 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                               builder: (context) => VideoPlayerScreen(),
                             ));*/
 
-                      //   Navigator.pushNamed(
-                      //       context, VideoPlayerScreen.pageName);
+                        Navigator.pushNamed(
+                            context, VideoPlayerScreen.pageName);
+
                        }),
                 ],
               ),

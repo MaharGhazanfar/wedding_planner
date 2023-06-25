@@ -41,7 +41,6 @@ class _UserDashboardState extends State<UserDashboard> {
   Widget getDifference(DateTime date) {
     log(taskDate.toString());
     if (taskDate.day == 0) {
-
       return Text(
         ' ${(taskDate.hour - date.hour).toString().padLeft(2, '0')} :${(taskDate.minute - date.minute).toString().padLeft(2, '0')} ',
         style: const TextStyle(color: Colors.red, fontSize: 28),
@@ -60,6 +59,7 @@ class _UserDashboardState extends State<UserDashboard> {
     height = MediaQuery.of(context).size.height;
     size = false;
     return Scaffold(
+
       backgroundColor: Colors.black26,
       body: SingleChildScrollView(
         child: Stack(
@@ -340,6 +340,7 @@ class _UserDashboardState extends State<UserDashboard> {
                                           child: Text(
                                           'No Task Added',
                                           style: TextStyle(
+
                                               color: CustomColors.greenish,
                                               fontWeight: FontWeight.bold,
                                               fontSize: width! * 0.05),

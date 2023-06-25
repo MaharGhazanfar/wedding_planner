@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +6,7 @@ import 'package:wedding_planner/authentication/authentication_services.dart';
 import 'package:wedding_planner/modelClasses/model_personal_login_info.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/service_provider_interface/personal_info.dart';
 
 class EmailLoginPage extends StatefulWidget {
@@ -50,6 +51,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+     log(' build email//////${DBHandler.user!.uid}');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -186,7 +188,9 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                     _provider.isLoading = false;
                                     if (status == 'Login Successful') {
                                       showCustomToast(msg: status);
-                                      () {
+                                          ModelPersonalLoginInfo.prefs!
+                                                      .setString(
+                                                          Strings.status , widget.status);
                                         Navigator.pushNamed(
                                             context, PersonalInfoPage.pageName,
 
@@ -200,7 +204,7 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                                   Strings.normalMode,
                                             });
                                         
-                                      }();
+                                      
                                     } else {
                                       showCustomToast(msg: status);
                                     }

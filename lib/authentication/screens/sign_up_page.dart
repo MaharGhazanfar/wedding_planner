@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
               right: ScreenPadding.topPadding,
             ),
             child: Column(
-               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: mq!.height * 0.3,
@@ -216,7 +216,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, LoginPage.pageName,arguments: {Strings.status: widget.status});
+                                  Navigator.pushNamed(
+                                      context, LoginPage.pageName, arguments: {
+                                    Strings.status: widget.status
+                                  });
                                 },
                                 child: Container(
                                   alignment: Alignment.center,

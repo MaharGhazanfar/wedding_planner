@@ -10,6 +10,7 @@ import 'package:wedding_planner/common_screens/chat/chat_screen.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/repository/utils/todo_dialog.dart';
 import 'package:wedding_planner/service_provider_interface/add_images.dart';
+import 'package:wedding_planner/service_provider_interface/add_video.dart';
 
 import 'package:wedding_planner/service_provider_interface/employee_section/employee_info_page.dart';
 import 'package:wedding_planner/service_provider_interface/employee_section/employees_list_page.dart';
@@ -141,11 +142,11 @@ class RouteConfiguration {
               child: const ProviderPackages(),
               type: PageTransitionType.leftToRight);
 
-        // case VideoPlayerScreen.pageName:
-        //   return PageTransition(
-        //       duration: duration,
-        //       child: VideoPlayerScreen(),
-        //       type: PageTransitionType.rightToLeft);
+           case VideoPlayerScreen.pageName:
+          return PageTransition(
+              duration: duration,
+              child: VideoPlayerScreen(),
+              type: PageTransitionType.rightToLeft);
 
         case AddImages.pageName:
           return PageTransition(

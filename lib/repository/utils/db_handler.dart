@@ -5,7 +5,7 @@ import '../../modelClasses/model_personal_login_info.dart';
 import 'data_constants.dart';
 
 class DBHandler {
-  static var user = FirebaseAuth.instance.currentUser;
+  static User? user = FirebaseAuth.instance.currentUser;
 
   static CollectionReference personalInfoCollectionForProvider() {
     return FirebaseFirestore.instance.collection(Strings.serviceProvider);

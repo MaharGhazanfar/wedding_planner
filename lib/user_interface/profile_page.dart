@@ -200,6 +200,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ListTile(
                                   onTap: () {
                                     FirebaseAuth.instance.signOut();
+                                    ModelPersonalLoginInfo.prefs!.clear();
+                                    DBHandler.user = null;
+
                                     Navigator.pushReplacementNamed(
                                         context, UserSelectionPage.pageName);
                                   },

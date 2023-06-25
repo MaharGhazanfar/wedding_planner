@@ -125,9 +125,12 @@ class _LoginPageState extends State<LoginPage> {
                                                 .toString())
                                         .get(),
                                     builder: (context, snapshot) {
+                                      
                                       if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () async {
+                                            print('${snapshot
+                                                    .data!.docs.isEmpty}}');
                                             if (_emailController.text
                                                     .toString()
                                                     .isNotEmpty &&
@@ -138,12 +141,12 @@ class _LoginPageState extends State<LoginPage> {
                                                   .toString()
                                                   .trim()
                                                   .contains('@gmail.com')) {
-                                                if (snapshot
-                                                    .data!.docs.isEmpty) {
-                                                  showCustomToast(
-                                                      msg:
-                                                          'Please Fill Correct Information');
-                                                } else {
+                                                // if (snapshot
+                                                //     .data!.docs.isEmpty) {
+                                                //   showCustomToast(
+                                                //       msg:
+                                                //           'Please Fill Correct Information');
+                                                //} else {
                                                   String status =
                                                       await signInWithEmail(
                                                           password:
@@ -162,65 +165,42 @@ class _LoginPageState extends State<LoginPage> {
                                                     if (widget.status ==
                                                         Strings
                                                             .serviceProvider) {
-                                                      () {
-                                                        /* Navigator
-                                                            .pushAndRemoveUntil(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      ServiceProviderDashBoard(
-                                                                          status:
-                                                                              widget.status),
-                                                                ),
-                                                                (route) =>
-                                                                    false);*/
-
-                                                        Navigator
-                                                            .pushNamedAndRemoveUntil(
-                                                                context,
-                                                                ServiceProviderDashBoard
-                                                                    .pageName,
-                                                                arguments: {
-                                                                  Strings.status:
-                                                                      widget
-                                                                          .status
-                                                                },
-                                                                (route) =>
-                                                                    false);
-                                                      }();
+                                                               ModelPersonalLoginInfo.prefs!
+                                                      .setString(
+                                                          Strings.status , widget.status);
+                                                      Navigator
+                                                          .pushNamedAndRemoveUntil(
+                                                              context,
+                                                              ServiceProviderDashBoard
+                                                                  .pageName,
+                                                              arguments: {
+                                                                Strings.status:
+                                                                    widget
+                                                                        .status
+                                                              },
+                                                              (route) => false);
                                                     } else if (widget.status ==
                                                         Strings.serviceUser) {
-                                                      () {
-                                                        /*Navigator
-                                                            .pushAndRemoveUntil(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            BottomNavigationBarForUser(
-                                                                              status: widget.status,
-                                                                            )),
-                                                                (route) =>
-                                                                    false);*/
-                                                        Navigator
-                                                            .pushNamedAndRemoveUntil(
-                                                                context,
-                                                                BottomNavigationBarForUser
-                                                                    .pageName,
-                                                                arguments: {
-                                                                  Strings.status:
-                                                                      widget
-                                                                          .status
-                                                                },
-                                                                (route) =>
-                                                                    false);
-                                                      }();
+                                                           ModelPersonalLoginInfo.prefs!
+                                                      .setString(
+                                                          Strings.status , widget.status);
+                                                      Navigator
+                                                          .pushNamedAndRemoveUntil(
+                                                              context,
+                                                              BottomNavigationBarForUser
+                                                                  .pageName,
+                                                              arguments: {
+                                                                Strings.status:
+                                                                    widget
+                                                                        .status
+                                                              },
+                                                              (route) => false);
                                                     }
                                                   } else {
                                                     showCustomToast(
                                                         msg: status);
                                                   }
-                                                }
+                                               // }
                                               } else {
                                                 showCustomToast(
                                                     msg: 'inValid Email');
@@ -371,15 +351,8 @@ class _LoginPageState extends State<LoginPage> {
                                                       .set(
                                                           employeeInfo.toMap());
 
-                                                  /*Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ServiceProviderDashBoard(
-                                                          status: widget.status,
-                                                        ),
-                                                      ),
-                                                      (route) => false);*/
+                                                
+
                                                   Navigator
                                                       .pushNamedAndRemoveUntil(
                                                           context,
@@ -473,6 +446,7 @@ class _LoginPageState extends State<LoginPage> {
                                         ]),
                                     child: InkWell(
                                       onTap: () async {
+                                        
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -543,29 +517,6 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     )
-
-                    // Padding(
-                    //   padding: const EdgeInsets.only(
-                    //       left: 36.0, right: 36.0, top: 24),
-                    //   child: TextFormField(
-                    //     decoration: const InputDecoration(
-                    //         enabledBorder: UnderlineInputBorder(
-                    //             borderSide: BorderSide(
-                    //                 color: Colors.grey, width: 1)),
-                    //         labelText: 'Password',
-                    //         labelStyle: TextStyle(color: Colors.black),
-                    //         prefixIcon: Icon(
-                    //           Icons.lock,
-                    //           color: CustomColors.textFontColor,
-                    //         ),
-                    //         suffix: Text(
-                    //           'Hide',
-                    //           style: TextStyle(
-                    //               color: CustomColors.textFontColor),
-                    //         )),
-                    //     obscureText: true,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
