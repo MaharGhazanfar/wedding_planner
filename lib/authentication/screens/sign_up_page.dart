@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:wedding_planner/authentication/screens/email_login_page.dart';
 import 'package:wedding_planner/authentication/screens/login_page.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
+import 'package:wedding_planner/service_provider_interface/personal_info.dart';
+import 'package:wedding_planner/welcome_screens/user_selection_page.dart';
+
+import '../../service_provider_interface/add_images.dart';
 
 class SignUpPage extends StatefulWidget {
   final String status;
@@ -50,63 +53,50 @@ class _SignUpPageState extends State<SignUpPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       /// sign up with email.........................
-
-                      InkWell(
+                      CustomWidget.customContainer(
+                        height: mq!.height * 0.06,
+                        
                         onTap: () {
+
                           Navigator.pushNamed(context, EmailLoginPage.pageName,
                               arguments: {
                                 Strings.status: widget.status,
                                 Strings.loginWithEmail: Strings.loginWithEmail
                               });
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: mq!.height * 0.06,
-                          decoration: BoxDecoration(
-                              color: CustomColors.buttonBackgroundColor,
-                              borderRadius: BorderRadius.circular(40),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.09),
-                                  offset: const Offset(
-                                    0.1,
-                                    1.5,
-                                  ),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.09),
-                                  offset: const Offset(
-                                    -0.1,
-                                    -0.001,
-                                  ),
-                                  spreadRadius: -1,
-                                ),
-                              ]),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.email,
-                                size: 30,
-                                color: CustomColors.backGroundColor,
-                              ),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                'Sign up with Email',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: CustomColors.backGroundColor,
-                                    fontSize: 20),
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.email,
+                              size: 30,
+                              color: CustomColors.backGroundColor,
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Sign up with Email',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.backGroundColor,
+                                  fontSize: 20),
+                            ),
+                          ],
                         ),
                       ),
-
-                      /// sign up with phone.........................
-                      InkWell(
+                      SizedBox(height: 20,),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.pushNamed(context, EmailLoginPage.pageName,
+                      //         arguments: {
+                      //           Strings.status: widget.status,
+                      //           Strings.loginWithEmail: Strings.loginWithEmail
+                      //         });
+                      //   },
+                      //   child:
+                      CustomWidget.customContainer(
+                        height: mq!.height * 0.06,
                         onTap: () async {
                           Navigator.push(
                               context,
@@ -117,145 +107,171 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                               ));
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 12.0, bottom: 12),
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: mq!.height * 0.06,
-                            decoration: BoxDecoration(
-                                color: CustomColors.buttonBackgroundColor,
-                                borderRadius: BorderRadius.circular(50),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.09),
-                                    offset: const Offset(
-                                      0.1,
-                                      1.5,
-                                    ),
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.09),
-                                    offset: const Offset(
-                                      -0.1,
-                                      -0.001,
-                                    ),
-                                    spreadRadius: -1,
-                                  ),
-                                ]),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.phone_android,
-                                  size: 32,
-                                  color: CustomColors.backGroundColor,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Sign up with Phone',
-                                  style: TextStyle(
-                                      color: CustomColors.backGroundColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.phone,
+                              size: 30,
+                              color: CustomColors.backGroundColor,
                             ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Sign up with Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.backGroundColor,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //   Container(
+                      //     alignment: Alignment.center,
+                      //     height: mq!.height * 0.06,
+                      //     decoration: BoxDecoration(
+                      //         color: CustomColors.buttonBackgroundColor,
+                      //         borderRadius: BorderRadius.circular(40),
+                      //         boxShadow: [
+                      //           BoxShadow(
+                      //             color: Colors.black.withOpacity(0.09),
+                      //             offset: const Offset(
+                      //               0.1,
+                      //               1.5,
+                      //             ),
+                      //           ),
+                      //           BoxShadow(
+                      //             color: Colors.black.withOpacity(0.09),
+                      //             offset: const Offset(
+                      //               -0.1,
+                      //               -0.001,
+                      //             ),
+                      //             spreadRadius: -1,
+                      //           ),
+                      //         ]),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Icon(
+                      //           Icons.email,
+                      //           size: 30,
+                      //           color: CustomColors.backGroundColor,
+                      //         ),
+                      //         const SizedBox(
+                      //           width: 15,
+                      //         ),
+                      //         Text(
+                      //           'Sign up with Email',
+                      //           style: TextStyle(
+                      //               fontWeight: FontWeight.bold,
+                      //               color: CustomColors.backGroundColor,
+                      //               fontSize: 20),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+
+                      /// sign up with phone.........................
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: SizedBox(
+                          height: mq!.height * 0.03,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 2.0),
+                                child: Text(
+                                  'Terms & Conditions',
+                                  style: TextStyle(
+                                      color: CustomColors.buttonTextFontColor,
+                                      fontSize: 15),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 2.0),
+                                child: Text(
+                                  'Privacy policy',
+                                  style: TextStyle(
+                                      color: CustomColors.buttonTextFontColor,
+                                      fontSize: 15),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
 
-                      SizedBox(
-                        height: mq!.height * 0.03,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 2.0),
-                              child: Text(
-                                'Terms & Conditions',
-                                style: TextStyle(
-                                    color: CustomColors.buttonTextFontColor,
-                                    fontSize: 15),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 2.0),
-                              child: Text(
-                                'Privacy policy',
-                                style: TextStyle(
-                                    color: CustomColors.buttonTextFontColor,
-                                    fontSize: 15),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                        //width: MediaQuery.of(context).size.width*0.7,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                top: 12.0,
-                              ),
-                              child: Text(
-                                'Already have an account?',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: CustomColors.buttonTextFontColor,
-                                    fontSize: 16),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: 16.0,
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, LoginPage.pageName, arguments: {
-                                    Strings.status: widget.status
-                                  });
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: mq!.height * 0.05,
-                                  width: mq!.width * 0.25,
-                                  decoration: BoxDecoration(
-                                      color: CustomColors.buttonBackgroundColor,
-                                      borderRadius: BorderRadius.circular(40),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.09),
-                                          offset: const Offset(
-                                            0.1,
-                                            1.5,
-                                          ),
-                                        ),
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.09),
-                                          offset: const Offset(
-                                            -0.1,
-                                            -0.001,
-                                          ),
-                                          spreadRadius: -1,
-                                        ),
-                                      ]),
-                                  child: Text(
-                                    'LOGIN',
-                                    style: TextStyle(
-                                        color: CustomColors.backGroundColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
+                      Padding(
+                        padding: const EdgeInsets.only(top:12.0),
+                        child: SizedBox(
+                          //width: MediaQuery.of(context).size.width*0.7,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  top: 12.0,
+                                ),
+                                child: Text(
+                                  'Already have an account?',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: CustomColors.buttonTextFontColor,
+                                      fontSize: 16),
                                 ),
                               ),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 16.0,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, LoginPage.pageName, arguments: {
+                                      Strings.status: widget.status
+                                    });
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: mq!.height * 0.05,
+                                    width: mq!.width * 0.25,
+                                    decoration: BoxDecoration(
+                                        color: CustomColors.buttonBackgroundColor,
+                                        borderRadius: BorderRadius.circular(40),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.09),
+                                            offset: const Offset(
+                                              0.1,
+                                              1.5,
+                                            ),
+                                          ),
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.09),
+                                            offset: const Offset(
+                                              -0.1,
+                                              -0.001,
+                                            ),
+                                            spreadRadius: -1,
+                                          ),
+                                        ]),
+                                    child: Text(
+                                      'LOGIN',
+                                      style: TextStyle(
+                                          color: CustomColors.backGroundColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],

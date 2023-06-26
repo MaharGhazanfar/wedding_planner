@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wedding_planner/authentication/authentication_services.dart';
 import 'package:wedding_planner/authentication/screens/phone_login_page.dart';
@@ -8,6 +9,7 @@ import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import '../../modelClasses/model_personal_login_info.dart';
+import '../../repository/utils/db_handler.dart';
 import '../../user_interface/bottom_navigationBar_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -129,8 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                       if (snapshot.hasData) {
                                         return InkWell(
                                           onTap: () async {
-                                            print('${snapshot
-                                                    .data!.docs.isEmpty}}');
+
                                             if (_emailController.text
                                                     .toString()
                                                     .isNotEmpty &&
@@ -160,6 +161,8 @@ class _LoginPageState extends State<LoginPage> {
                                                                   .trim());
                                                   if (status ==
                                                       'Login Successful') {
+                                                    //print('///user/////${FirebaseAuth.instance.currentUser}');
+                                                   // print('///uid/////${DBHandler.user!.uid}');
                                                     showCustomToast(
                                                         msg: status);
                                                     if (widget.status ==

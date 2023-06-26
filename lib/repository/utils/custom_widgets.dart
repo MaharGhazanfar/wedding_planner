@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-
 import 'package:outline_gradient_button/outline_gradient_button.dart';
-
 import 'data_constants.dart';
 import 'my_custom_card.dart';
 
@@ -14,7 +11,8 @@ class CustomWidget {
       double height = double.infinity,
       double width = double.infinity,
       void Function()? onTap,
-      bool borderEnabled = false}) {
+     
+      }) {
     return Container(
       height: height,
       width: width,
@@ -50,13 +48,13 @@ class CustomWidget {
             inkWell: true,
             elevation: 5,
             backgroundColor: CustomColors.buttonBackgroundColor,
-            gradient: borderEnabled
-                ? LinearGradient(
+            gradient: 
+                 LinearGradient(
                     colors: const [Colors.white, Colors.white],
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    stops: [0, width * 0.5])
-                : const LinearGradient(colors: [Colors.white, Colors.white]),
+                    stops: [0, width * 0.5]),
+                
             child: Center(child: child)),
       ),
     );

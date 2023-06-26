@@ -12,6 +12,15 @@ class ModelPersonalLoginInfo extends ChangeNotifier{
   late String? _location;
   late String? _imageUrl;
   late bool? _isLoading = false;
+  late bool _isObscure = false;
+
+
+  bool get isObscure => _isObscure;
+
+  set isObscure(bool value) {
+    _isObscure = value;
+    notifyListeners();
+  }
 
   bool get isLoading => _isLoading!;
 

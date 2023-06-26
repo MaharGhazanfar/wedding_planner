@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:wedding_planner/authentication/screens/sign_up_page.dart';
 import 'package:wedding_planner/repository/utils/custom_widgets.dart';
 import 'package:wedding_planner/repository/utils/data_constants.dart';
@@ -15,9 +14,7 @@ class UserSelectionPage extends StatefulWidget {
 }
 
 class _GenderCheckPageState extends State<UserSelectionPage> {
-  bool borderEnabled1 = false;
-  bool borderEnabled2 = false;
-  bool borderEnabled3 = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +51,13 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             child: Text(
                               Strings.serviceProvider,
                               style: TextStyle(
-                                  color: borderEnabled1
-                                      ? CustomColors.backGroundColor
-                                      : CustomColors.backGroundColor,
+                                  color: 
+                                      CustomColors.backGroundColor,
+                                      
                                   fontSize: 18),
                             ),
                             height: 50,
-                            borderEnabled: borderEnabled1,
+                           
                             onTap: () {
                               // showSheet(context: context);
                               showUserDialogue(context: context);
@@ -72,21 +69,16 @@ class _GenderCheckPageState extends State<UserSelectionPage> {
                             child: Text(
                               Strings.serviceUser,
                               style: TextStyle(
-                                  color: borderEnabled2
-                                      ? CustomColors.backGroundColor
-                                      : CustomColors.backGroundColor,
+                                  color: 
+                                       CustomColors.backGroundColor,
                                   fontSize: 18),
                             ),
                             height: 50,
-                            borderEnabled: borderEnabled2,
+                            
                             onTap: () {
                               ModelPersonalLoginInfo.prefs!.setString(
                                   Strings.servicePref, Strings.serviceUser);
-                              setState(() {
-                                borderEnabled1 = false;
-                                borderEnabled2 = true;
-                                borderEnabled3 = false;
-                              });
+                             
 
                               Navigator.pushNamed(context, SignUpPage.pageName,
                                   arguments: {
@@ -123,7 +115,7 @@ void showUserDialogue({required BuildContext context}) {
               height: mq!.height * 0.06,
               onTap: () {
                 ModelPersonalLoginInfo.prefs!
-                    .setString(Strings.servicePref, Strings.serviceProvider);
+                    .setString(Strings.status, Strings.serviceProvider);
                 Navigator.pop(context);
                 Navigator.pushNamed(context, SignUpPage.pageName,
                     arguments: {

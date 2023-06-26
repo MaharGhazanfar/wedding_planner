@@ -85,15 +85,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-     log(' build main//////${DBHandler.user!.uid}');
-    log('${ModelPersonalLoginInfo.prefs!.getString(Strings.status)}');
     mq = MediaQuery.of(context).size;
     return SplashScreenView(
       navigateRoute:
            ModelPersonalLoginInfo.prefs!.getString(Strings.status) == Strings.serviceProvider && ModelPersonalLoginInfo.prefs!= Null ?ServiceProviderDashBoard(status: Strings.serviceProvider)
            : ModelPersonalLoginInfo.prefs!.getString(Strings.status) == Strings.serviceUser && ModelPersonalLoginInfo.prefs!= Null ? BottomNavigationBarForUser(status: Strings.serviceUser)
-           //: ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) != Null ? const ServiceProviderDashBoard(status: Strings.employee)
-           : UserSelectionPage(),           
+           : ModelPersonalLoginInfo.prefs!.getString(Strings.UIDPref) != null ? const ServiceProviderDashBoard(status: Strings.employee)
+            :UserSelectionPage(),
           //     ? StreamBuilder(
           //         stream: FirebaseAuth.instance.authStateChanges(),
           //         builder: (context, snapshot) {

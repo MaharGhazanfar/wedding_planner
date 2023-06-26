@@ -51,18 +51,18 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-     log(' build email//////${DBHandler.user!.uid}');
+    _provider = Provider.of<ModelPersonalLoginInfo>(context,listen: false);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Form(
-          key: globalKey,
-          child: Stack(
-            // fit: StackFit.expand,
-            children: [
-              Image.asset("assets/images/front_page.png",
-                  alignment: Alignment.center, fit: BoxFit.fill),
-              Padding(
+      //resizeToAvoidBottomInset: false,
+      body: Stack(
+         fit: StackFit.expand,
+        children: [
+          Image.asset("assets/images/front_page.png",
+              alignment: Alignment.center, fit: BoxFit.fill),
+          SingleChildScrollView(
+            child: Form(
+              key: globalKey,
+              child: Padding(
                 padding: const EdgeInsets.only(
                     left: ScreenPadding.leftPadding,
                     right: ScreenPadding.rightPadding,
@@ -115,19 +115,22 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                               obscureText: _isObscure,
                               textInputType: TextInputType.visiblePassword,
                               controller: passwordController,
-                              // validate: (value) =>
-                              //     ModelValidation.passwordValidation(value!),
+
                               context: context,
                               suffix: Padding(
                                 padding: const EdgeInsets.only(right: 16.0),
                                 child: IconButton(
-                                  icon: Icon(_isObscure
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
+                                  icon: Consumer<ModelPersonalLoginInfo>(
+
+                                    builder: (BuildContext context, value, Widget? child) =>
+                                        Icon(value.isObscure
+                                            ? Icons.visibility_off
+                                            : Icons.visibility),
+                                  ),
                                   onPressed: () {
-                                    setState(() {
-                                      _isObscure = !_isObscure;
-                                    });
+
+                                    _provider.isObscure = !_provider.isObscure;
+
                                   },
                                 ),
                               ),
@@ -146,13 +149,17 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                               suffix: Padding(
                                 padding: const EdgeInsets.only(right: 16.0),
                                 child: IconButton(
-                                  icon: Icon(_isObscure
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
+                                  icon: Consumer<ModelPersonalLoginInfo>(
+
+                                    builder: (BuildContext context, value, Widget? child) =>
+                                    Icon(value.isObscure
+                                        ? Icons.visibility_off
+                                        : Icons.visibility),
+                                  ),
                                   onPressed: () {
-                                    setState(() {
-                                      _isObscure = !_isObscure;
-                                    });
+
+                                    _provider.isObscure = !_provider.isObscure;
+
                                   },
                                 ),
                               ),
@@ -186,7 +193,10 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                         password: passwordController.text
                                             .toString());
                                     _provider.isLoading = false;
+
                                     if (status == 'Login Successful') {
+                                      print('/////user///${DBHandler.user}');
+                                      print('/////uid///${DBHandler.user!.uid}');
                                       showCustomToast(msg: status);
                                           ModelPersonalLoginInfo.prefs!
                                                       .setString(
@@ -202,9 +212,10 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                                               Strings.status: widget.status,
                                               Strings.mode:
                                                   Strings.normalMode,
+                                              Strings.doc: null
                                             });
-                                        
-                                      
+
+
                                     } else {
                                       showCustomToast(msg: status);
                                     }
@@ -222,46 +233,41 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(top: 24.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      alignment: Alignment.center,
-                                      height: 50,
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                              0.5,
-                                      decoration: BoxDecoration(
-                                          color: CustomColors
-                                              .buttonBackgroundColor,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.06),
-                                                offset: const Offset(
-                                                  0,
-                                                  2,
-                                                ),
-                                                spreadRadius: 3,
-                                                blurRadius: 1),
-                                          ]),
-                                      child: Consumer<ModelPersonalLoginInfo>(
-                                        builder: (context, value, child) => value
-                                                .isLoading
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                color: CustomColors.greenish,
-                                              ))
-                                            : Text('Create Account',
-                                                style: ButtonsStyle
-                                                    .buttonTextStyle(
-                                                        context)),
-                                      )),
-                                ],
-                              ),
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  height: 50,
+                                  width:
+                                      MediaQuery.of(context).size.width *
+                                          0.5,
+                                  decoration: BoxDecoration(
+                                      color: CustomColors
+                                          .buttonBackgroundColor,
+                                      borderRadius:
+                                          BorderRadius.circular(50),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black
+                                                .withOpacity(0.06),
+                                            offset: const Offset(
+                                              0,
+                                              2,
+                                            ),
+                                            spreadRadius: 3,
+                                            blurRadius: 1),
+                                      ]),
+                                  child: Consumer<ModelPersonalLoginInfo>(
+                                    builder: (context, value, child) => value
+                                            .isLoading
+                                        ? const Center(
+                                            child:
+                                                CircularProgressIndicator(
+                                            color: CustomColors.greenish,
+                                          ))
+                                        : Text('Create Account',
+                                            style: ButtonsStyle
+                                                .buttonTextStyle(
+                                                    context)),
+                                  )),
                             ),
                           ),
                         ],
@@ -270,9 +276,9 @@ class _EmailLoginPageState extends State<EmailLoginPage> {
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -11,8 +11,6 @@ import 'package:wedding_planner/repository/utils/db_handler.dart';
 import 'package:wedding_planner/repository/utils/model_location.dart';
 import 'package:wedding_planner/service_provider_interface/service_provider_dashboard.dart';
 import 'package:wedding_planner/user_interface/bottom_navigationBar_screen.dart';
-
-
 import 'category_dialogue.dart';
 
 class PersonalInfoPage extends StatefulWidget {
@@ -30,7 +28,7 @@ class PersonalInfoPage extends StatefulWidget {
       this.emailOrNumber = '',
       this.countryCode = '',
       this.loginWith = '',
-      required this.mode,
+       this.mode = Strings.normalMode,
       this.doc})
       : super(key: key);
 
@@ -157,10 +155,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   Widget build(BuildContext mainContext) {
-     log(' build PInfo//////${DBHandler.user!.uid}');
+    // log(' build PInfo//////${DBHandler.user!.uid}');
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    log('profilepage');
+   // log('profilepage');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -431,7 +429,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               location: locationController.text.toString(),
                               imgUrl: imgUrl);
                           _provider.isLoading = true;
-                           log(' personal info//////${DBHandler.user!.uid}');
+                         //  log(' personal info//////${DBHandler.user!.uid}');
                           await collectionInfo.doc(DBHandler.user!.uid).set(
                               widget.status == Strings.serviceProvider
                                   ? personalInfo.toMapForProvider()
@@ -465,43 +463,38 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(top: 24.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                alignment: Alignment.center,
-                                height: 50,
-                                width:
-                                    MediaQuery.of(mainContext).size.width * 0.5,
-                                decoration: BoxDecoration(
-                                    color: CustomColors.buttonBackgroundColor,
-                                    borderRadius: BorderRadius.circular(50),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.06),
-                                          offset: const Offset(
-                                            0,
-                                            2,
-                                          ),
-                                          spreadRadius: 3,
-                                          blurRadius: 1),
-                                    ]),
-                                child: Consumer<ModelPersonalLoginInfo>(
-                                  builder: (context, value, child) => value
-                                          .isLoading
-                                      ? const Center(
-                                          child: CircularProgressIndicator(
-                                          color: CustomColors.greenish,
-                                        ))
-                                      : Text(
-                                          widget.mode == Strings.editMode
-                                              ? 'Update'
-                                              : 'Continue',
-                                          style: ButtonsStyle.buttonTextStyle(
-                                              mainContext)),
-                                )),
-                          ],
-                        ),
+                        child: Container(
+                            alignment: Alignment.center,
+                            height: 50,
+                            width:
+                                MediaQuery.of(mainContext).size.width * 0.5,
+                            decoration: BoxDecoration(
+                                color: CustomColors.buttonBackgroundColor,
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black.withOpacity(0.06),
+                                      offset: const Offset(
+                                        0,
+                                        2,
+                                      ),
+                                      spreadRadius: 3,
+                                      blurRadius: 1),
+                                ]),
+                            child: Consumer<ModelPersonalLoginInfo>(
+                              builder: (context, value, child) => value
+                                      .isLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(
+                                      color: CustomColors.greenish,
+                                    ))
+                                  : Text(
+                                      widget.mode == Strings.editMode
+                                          ? 'Update'
+                                          : 'Continue',
+                                      style: ButtonsStyle.buttonTextStyle(
+                                          mainContext)),
+                            )),
                       ),
                     ),
                   ],

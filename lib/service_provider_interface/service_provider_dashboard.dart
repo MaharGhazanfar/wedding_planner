@@ -49,7 +49,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    log(' build PD//////${DBHandler.user!.uid}');
+    //log(' build PD//////${DBHandler.user!.uid}');
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomWidget.myCustomDrawer(
@@ -186,7 +186,7 @@ class _ServiceProviderDashBoardState extends State<ServiceProviderDashBoard> {
                         null) {
                       await FirebaseAuth.instance.signOut();
                        ModelPersonalLoginInfo.prefs!.clear();
-                       DBHandler.user =null;
+
 
                       if (!mounted) return;
 
